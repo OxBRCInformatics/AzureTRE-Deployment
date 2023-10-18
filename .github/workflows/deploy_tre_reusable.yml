@@ -109,6 +109,7 @@ jobs:
           echo "prRHeadSha  : ${{ inputs.prHeadSha }}"
           echo "ciGitRef    : ${{ inputs.ciGitRef }}"
           echo "environment : ${{ inputs.environmentName }}"
+          echo "This pipeline"
 
       - name: Check required values
         id: check_required_values
