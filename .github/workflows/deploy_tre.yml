@@ -14,7 +14,6 @@ on:  # yamllint disable-line rule:truthy
       environment:
         description: The environment to run this workflow in
         type: environment
-        default: Dev
         required: true
 
 # This will prevent multiple runs of this entire workflow.
