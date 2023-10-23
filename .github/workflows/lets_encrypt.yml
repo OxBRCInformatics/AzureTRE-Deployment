@@ -61,10 +61,10 @@ jobs:
             && /opt/certbot/bin/pip install certbot
             make letsencrypt"
           DEVCONTAINER_TAG: ${{ inputs.DEVCONTAINER_TAG }}
-          CI_CACHE_ACR_NAME: ${{ secrets.CI_CACHE_ACR_NAME}}
-          ACR_NAME: ${{ secrets.ACR_NAME }}
+          CI_CACHE_ACR_NAME: ${{ secrets.ACR_NAME}}
           AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
           AZURE_ENVIRONMENT: ${{ vars.AZURE_ENVIRONMENT }}
+          ACR_NAME: ${{ secrets.ACR_NAME }}
           API_CLIENT_ID: "${{ secrets.API_CLIENT_ID }}"
           AAD_TENANT_ID: "${{ secrets.AAD_TENANT_ID }}"
           TEST_APP_ID: "${{ secrets.TEST_APP_ID }}"
@@ -72,6 +72,7 @@ jobs:
           TEST_ACCOUNT_CLIENT_SECRET: "${{ secrets.TEST_ACCOUNT_CLIENT_SECRET }}"
           TRE_ID: ${{ secrets.TRE_ID }}
           LOCATION: ${{ vars.LOCATION }}
+          BUNDLE_TYPE: ${{ matrix.BUNDLE_TYPE }}
           TERRAFORM_STATE_CONTAINER_NAME: ${{ vars.TERRAFORM_STATE_CONTAINER_NAME }}
           MGMT_RESOURCE_GROUP_NAME: ${{ secrets.MGMT_RESOURCE_GROUP_NAME }}
           MGMT_STORAGE_ACCOUNT_NAME: ${{ secrets.MGMT_STORAGE_ACCOUNT_NAME }}
