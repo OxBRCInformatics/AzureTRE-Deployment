@@ -1,0 +1,72 @@
+{
+    "type": "Microsoft.VirtualMachineImages/imageTemplates",
+    "apiVersion": "2022-02-14",
+    "name": "ouh_linux_vm",
+    "location": "uksouth",
+    "dependsOn": [],
+    "tags": {
+        "imagebuilderTemplate": "AzureImageBuilderLinuxSIG",
+        "userIdentity": "enabled"
+    },
+    "identity": {
+      "type": "UserAssigned",
+          "userAssignedIdentities": {
+              "<imgBuilderId>": {}
+          }
+    },
+    "properties": {
+        "buildTimeoutInMinutes": 160,
+        "vmProfile": {
+            "vmSize": "Standard_D4s_v5"
+        },
+        "source": {
+            "type": "PlatformImage",
+            "publisher": "Canonical",
+            "offer": "UbuntuServer",
+            "sku": "18.04-LTS",
+            "version": "latest"
+        },
+        "customize": [
+            {
+                "type": "File",
+                "name": "VMInitScript",
+                "sourceUri": "https://<scriptStorageAcc>.blob.core.windows.net/<scriptStorageAccContainer>/linux/scripts/init_vm.sh",
+                "destination":"/tmp/init_vm.sh"
+            },
+            {
+                "type": "File",
+                "name": "ProfileInitScript",
+                "sourceUri": "https://<scriptStorageAcc>.blob.core.windows.net/<scriptStorageAccContainer>/linux/scripts/init_user_profile.sh",
+                "destination":"/tmp/init_user_profile.sh"
+            },
+            {
+                "type": "File",
+                "name": "AddDefaultOUHUserGroup",
+                "sourceUri": "https://<scriptStorageAcc>.blob.core.windows.net/<scriptStorageAccContainer>/linux/scripts/adduser.conf",
+                "destination":"/tmp/adduser.conf"
+            },
+            {
+                "type": "Shell",
+                "name": "setupVM",
+                "inline": [
+                    "cd /tmp",
+                    "chmod +x init_vm.sh",
+                    "sudo /tmp/init_vm.sh"
+                ]
+            }
+        ],
+        "distribute": [
+            {
+                "type": "SharedImage",
+                "galleryImageId": "/subscriptions/<subscriptionID>/resourceGroups/<rgName>/providers/Microsoft.Compute/galleries/<sharedImageGalName>/images/<imageDefName>",
+                "runOutputName": "<runOutputName>",
+                "artifactTags": {
+                    "source": "azureVmImageBuilder",
+                    "baseosimg": "ubuntu1804"
+                },
+                "replicationRegions":["uksouth"],
+                "storageAccountType": "Standard_LRS"
+            }
+        ]
+    }
+}
