@@ -62,6 +62,7 @@ jobs:
             make letsencrypt"
           DEVCONTAINER_TAG: ${{ inputs.DEVCONTAINER_TAG }}
           CI_CACHE_ACR_NAME: ${{ secrets.CI_CACHE_ACR_NAME}}
+          ACR_NAME: ${{ secrets.ACR_NAME }}
           AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
           AZURE_ENVIRONMENT: ${{ vars.AZURE_ENVIRONMENT }}
           API_CLIENT_ID: "${{ secrets.API_CLIENT_ID }}"
