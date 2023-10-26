@@ -185,7 +185,7 @@ runs:
           -e AZURE_ENVIRONMENT="${{ env.AZURE_ENVIRONMENT }}" \
           -e LOCATION="${{ inputs.LOCATION }}" \
           -e TF_VAR_location="${{ inputs.LOCATION }}" \
-          -e TF_VAR_rp_bundle_values={"image_gallery_id":"$(IMAGE_GALLERY_ID)"}
+          -e TF_VAR_rp_bundle_values="${{ inputs.IMAGE_GALLERY_ID }}"
           -e RESOURCE_LOCATION="${{ inputs.LOCATION }}" \
           -e ARM_CLIENT_ID="${{ fromJSON(inputs.AZURE_CREDENTIALS).clientId }}" \
           -e ARM_CLIENT_SECRET="${{ fromJSON(inputs.AZURE_CREDENTIALS).clientSecret }}" \
@@ -212,6 +212,7 @@ runs:
           -e TF_VAR_tre_address_space="${{ (inputs.TRE_ADDRESS_SPACE != ''
             && inputs.TRE_ADDRESS_SPACE) || '10.0.0.0/16' }}" \
           -e API_CLIENT_ID="${{ inputs.API_CLIENT_ID }}" \
+          -3 IMAGE_GALLERY_ID="${{ inputs.IMAGE_GALLERY_ID }}" \
           -e AAD_TENANT_ID="${{ inputs.AAD_TENANT_ID }}" \
           -e TRE_ID="${{ inputs.TRE_ID }}" \
           -e TF_VAR_tre_id="${{ inputs.TRE_ID }}" \
