@@ -9,10 +9,10 @@ if [ -z "$ENVIRONMENT_NAME" ]; then
     export ENVIRONMENT_NAME="local"
 fi
 
-echo "Environment set: $ENVIRONMENT_NAME."
+echo "Environment set: $ENVIRONMENT_NAME"
 
 # Pull in variables dependent on the envionment we are deploying to.
 if [ -f "$ENV_DIR/environments/$ENVIRONMENT_NAME.env" ]; then
-    echo "Loading environment variables for $ENVIRONMENT_NAME."
-    source "$ENV_DIR/environments/$ENVIRONMENT_NAME.env"
+    echo "Loading environment variables for $ENVIRONMENT_NAME"
+    . "$ENV_DIR/environments/$ENVIRONMENT_NAME.env"
 fi

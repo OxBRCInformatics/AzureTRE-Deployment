@@ -181,6 +181,7 @@ runs:
           -e AZURE_ENVIRONMENT="${{ env.AZURE_ENVIRONMENT }}" \
           -e LOCATION="${{ inputs.LOCATION }}" \
           -e TF_VAR_location="${{ inputs.LOCATION }}" \
+          -e TF_VAR_rp_bundle_values={"image_gallery_id":"$(IMAGE_GALLERY_ID)"}
           -e RESOURCE_LOCATION="${{ inputs.LOCATION }}" \
           -e ARM_CLIENT_ID="${{ fromJSON(inputs.AZURE_CREDENTIALS).clientId }}" \
           -e ARM_CLIENT_SECRET="${{ fromJSON(inputs.AZURE_CREDENTIALS).clientSecret }}" \
