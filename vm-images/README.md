@@ -4,7 +4,7 @@ This folder contains files that deploy the infrastructre used to create and publ
 
 ## Folder Structure
 
-```
+```text
 .
 ├── Makefile                      # Makefile used to drive all scripts and automation
 ├── README.md                     # This README document
@@ -75,7 +75,7 @@ export CVM_IMAGE_BUILDER_ID_NAME=ouhimgbldID01
 export CVM_IMAGE_BUILDER_ROLE_NAME="Azure Image Builder Service Image Creation Role (Dev)"
 ```
 
-The `CVM_ENVIRONMENT_SUFFIX` variable is worth calling out. This prevents you from name-clashing with the Development and Production infrastructure. 
+The `CVM_ENVIRONMENT_SUFFIX` variable is worth calling out. This prevents you from name-clashing with the Development and Production infrastructure.
 If you intend to deploy your own copies of these resources then you should define a `CVM_ENVIRONMENT_SUFFIX` value that is unique to you. This will then be appended to the image template names, offer names, and image defintion names that you generate. In the Development and Productions .env files this value is not set.
 
 ### Named Environments
@@ -135,7 +135,7 @@ An Image Template is generated from the `image_template.json` files within this 
 
 There is a make target for each image template. Use one of the following:
 
-```
+```text
 make vm-create-linux-template
 make vm-create-basic-linux-template
 make vm-create-windows-template
@@ -149,7 +149,7 @@ Finally, an Image Version is build by running the Image Template. This causes Im
 
 There is a make target for each building each image version from their template. Use one of the following:
 
-```
+```text
 make vm-build-linux-image
 make vm-build-windows-image
 make vm-build-basic-linux-image
@@ -163,7 +163,7 @@ You should run these targets each time you want to generate a new Image Version.
 
 The `templates` folder contains one folder per customized VM definition. The structre of this folder is currently (at time of writing) as follows:
 
-```
+```text
 .
 ├── basic-linux
 │   ├── image_metadata.txt
@@ -186,11 +186,11 @@ Within each subfolder you can find the following types of files:
 Each folder contains an `image_template.json` file. This is the template that is delivered to Azure Image Builder and defines the way in which a base VM image will be customised. 
 The following link contains a reference for these files: https://learn.microsoft.com/en-us/azure/virtual-machines/linux/image-builder-json?tabs=json%2Cazure-powershell
 
-Optionally, each folder also contains a `scripts` subfolder, and one or more scripts (Bash, Powershell, or otherwise). These scripts are referenced by the `image_template.json` file, and are accessed and run during the Azure Image Builder steps. 
+Optionally, each folder also contains a `scripts` subfolder, and one or more scripts (Bash, Powershell, or otherwise). These scripts are referenced by the `image_template.json` file, and are accessed and run during the Azure Image Builder steps.
 
 Finally, each folder contains an `image_metadata.txt`. This file contains name/value pairs that are used by the Custom VM scripts. It is important that each folder contains one of these metadata files, and that the file follows the same format as follows:
 
-``` ini
+```ini
 IMAGE_DEFINITION_PREFIX=IMAGE_DEFINITION_PREFIX_HERE
 TEMPLATE_NAME_PREFIX=TEMPLATE_NAME_PREFIX_HERE
 OFFER_PREFIX=OFFER_PREFIX_HERE
@@ -210,8 +210,7 @@ SKU=18.04-LTS
 OSTYPE=Linux
 ```
 
-
-Property | Usage | 
+Property | Usage |
 ---|---
 IMAGE_DEFINITION_PREFIX| Used as a prefix for the image defintion within Azure Compute Gallery. Suffix is the `CVM_ENVIRONMENT_SUFFIX` value from the environment `.env` file. e.g. `OUHBasicLinuxImage` prefix might be combined with `Test01` to become `OUHBasicLinuxImageTest01`
 TEMPLATE_NAME_PREFIX| Used as a prefix for the template name within Azure Compute Gallery. Suffix is the `CVM_ENVIRONMENT_SUFFIX` value from the environment `.env` file. e.g. `OUHBasicLinuxVM` prefix might be combined with `Test01` to become `OUHBasicLinuxVMDev`OUHBasicLinuxVM
