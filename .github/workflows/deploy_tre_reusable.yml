@@ -334,7 +334,6 @@ jobs:
           MGMT_STORAGE_ACCOUNT_NAME: ${{ secrets.MGMT_STORAGE_ACCOUNT_NAME }}
           CORE_ADDRESS_SPACE: ${{ vars.CORE_ADDRESS_SPACE }}
           TRE_ADDRESS_SPACE: ${{ vars.TRE_ADDRESS_SPACE }}
-          IMAGE_GALLERY_ID: ${{ vars.IMAGE_GALLERY_ID }}
           ENABLE_SWAGGER: ${{ vars.ENABLE_SWAGGER }}
           SWAGGER_UI_CLIENT_ID: "${{ secrets.SWAGGER_UI_CLIENT_ID }}"
           API_CLIENT_SECRET: "${{ secrets.API_CLIENT_SECRET }}"
