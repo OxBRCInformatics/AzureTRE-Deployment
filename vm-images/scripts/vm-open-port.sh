@@ -1,4 +1,6 @@
 #!/bin/bash
+# shellcheck disable=SC1091
+
 set -e
 set -o errexit
 set -o pipefail

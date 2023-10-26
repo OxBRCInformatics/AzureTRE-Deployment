@@ -1,4 +1,6 @@
 #!/bin/bash
+# shellcheck disable=SC1091
+
 set -e
 
 # Define colours for output
