@@ -1,3 +1,5 @@
+#!/bin/bash
+# shellcheck disable=SC2148
 # This file should be put in /etc/profile.d directory to initialise user environment
 
 # Add anaconda to PATH

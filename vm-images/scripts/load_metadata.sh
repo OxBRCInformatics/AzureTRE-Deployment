@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2034
 set -e
 
 TEMPLATE_METADATA_FILE="$1"

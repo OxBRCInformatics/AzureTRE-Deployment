@@ -121,7 +121,9 @@ At this point, you now have the infrastructure in place to support the defintion
 
 An image defintion, within Azure Compute Gallery, is essentially like a catalog entry; it's a way of advertising a type of image, allowing it to be discoverable.
 
-Use `make vm-define-images` to create the image definitions within your Azure Compute Gallery. This **only needs to be run once**, but **re-run this every time you decide to add a new image definition to the Azure Compute Gallery**. For example, if you decide "we need to create a new type of custom VM image you would edit `vm-define-images.sh` to add your new image definition, and then re-run this make target.
+Use `make vm-define-images` to create the image definitions within your Azure Compute Gallery.
+This **only needs to be run once**, but **re-run this every time you decide to add a new image definition to the Azure Compute Gallery**.
+For example, if you decide "we need to create a new type of custom VM image you would edit `vm-define-images.sh` to add your new image definition, and then re-run this make target.
 
 ### Activity 3 - Deploying Customisation Scripts to a Storage Account
 
@@ -183,8 +185,8 @@ The `templates` folder contains one folder per customized VM definition. The str
 
 Within each subfolder you can find the following types of files:
 
-Each folder contains an `image_template.json` file. This is the template that is delivered to Azure Image Builder and defines the way in which a base VM image will be customised. 
-The following link contains a reference for these files: https://learn.microsoft.com/en-us/azure/virtual-machines/linux/image-builder-json?tabs=json%2Cazure-powershell
+Each folder contains an `image_template.json` file. This is the template that is delivered to Azure Image Builder and defines the way in which a base VM image will be customised.
+The following link contains a reference for these files: <https://learn.microsoft.com/en-us/azure/virtual-machines/linux/image-builder-json?tabs=json%2Cazure-powershell>
 
 Optionally, each folder also contains a `scripts` subfolder, and one or more scripts (Bash, Powershell, or otherwise). These scripts are referenced by the `image_template.json` file, and are accessed and run during the Azure Image Builder steps.
 

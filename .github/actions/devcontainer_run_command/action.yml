@@ -121,6 +121,10 @@ inputs:
     description: "JSON string containing key/value pairs to injet into the Resource Processor as ENV vars"
     required: false
     default: ""
+  IMAGE_GALLERY_ID:
+    description: "Image gallery ID for custom VM images"
+    required: false
+    default: ""
 
 runs:
   using: composite
