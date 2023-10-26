@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "https://github.com/microsoft/AzureTRE/templates/workspace_services/guacamole/user_resources/guacamole-azure-linuxvm/template_schema.json",
+  "type": "object",
+  "title": "Linux Virtual Machine",
+  "description": "Linux virtual machine.",
+  "required": [
+  ],
+  "authorizedRoles": [
+    "WorkspaceOwner", "WorkspaceResearcher"
+  ],
+  "properties": {
+    "os_image": {
+      "$id": "#/properties/os_image",
+      "type": "string",
+      "title": "Linux image",
+      "description": "Select Linux image to use for VM",
+      "enum": [
+        "Ubuntu 18.04",
+        "OUH Ubuntu 18.04 Data Science VM"
+      ]
+    },
+    "vm_size": {
+      "$id": "#/properties/vm_size",
+      "type": "string",
+      "title": "VM Size",
+      "description": "Select size of VM",
+      "enum": [
+        "2 CPU | 4GB RAM | Text editing | £0.05 / hour",
+        "2 CPU | 8GB RAM | £0.10 / hour",
+        "4 CPU | 16GB RAM | £0.20 / hour",
+        "8 CPU | 32GB RAM | £0.35 / hour",
+        "8 CPU | 64GB RAM | £0.45 / hour",
+        "16 CPU | 64GB RAM | £0.65 / hour",
+        "6 CPU - 112GB RAM | 1 GPU - 16GB RAM | £2.98 / hour",
+        "12 CPU - 224GB RAM | 2 GPU - 32GB RAM | £5.96 / hour"
+      ],
+      "updateable": true
+    },
+    "shared_storage_access": {
+      "$id": "#/properties/shared_storage_access",
+      "type": "boolean",
+      "title": "Shared storage",
+      "default": true,
+      "description": "Enable access to shared storage"
+    }
+  }
+}
