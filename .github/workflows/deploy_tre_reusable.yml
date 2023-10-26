@@ -387,9 +387,9 @@ jobs:
           - {BUNDLE_TYPE: "workspace_service",
              BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspace_services/ohdsi"}
           - {BUNDLE_TYPE: "user_resource",
-             BUNDLE_DIR: "\\/templates/workspace_services/guacamole/user_resources/tre-service-guacamole-windowsvm-ouh2"}
+             BUNDLE_DIR: "\\./templates/workspace_services/guacamole/user_resources/tre-service-guacamole-windowsvm-ouh2"}
           - {BUNDLE_TYPE: "user_resource",
-             BUNDLE_DIR: "\\/templates/workspace_services/guacamole/user_resources/tre-service-guacamole-linuxvm-ouh2"}
+             BUNDLE_DIR: "\\./templates/workspace_services/guacamole/user_resources/tre-service-guacamole-linuxvm-ouh2"}
           - {BUNDLE_TYPE: "user_resource",
              BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspace_services/guacamole/user_resources/guacamole-azure-export-reviewvm"}
           - {BUNDLE_TYPE: "user_resource",
@@ -587,10 +587,10 @@ jobs:
       matrix:
         include:
           - {BUNDLE_TYPE: "user_resource",
-             BUNDLE_DIR: "/templates/workspace_services/guacamole/user_resources/tre-service-guacamole-windowsvm-ouh2",
+             BUNDLE_DIR: "\\./templates/workspace_services/guacamole/user_resources/tre-service-guacamole-windowsvm-ouh2",
              WORKSPACE_SERVICE_NAME: "tre-service-guacamole"}
           - {BUNDLE_TYPE: "user_resource",
-             BUNDLE_DIR: "/templates/workspace_services/guacamole/user_resources/tre-service-guacamole-linuxvm-ouh2",
+             BUNDLE_DIR: "\\./templates/workspace_services/guacamole/user_resources/tre-service-guacamole-linuxvm-ouh2",
              WORKSPACE_SERVICE_NAME: "tre-service-guacamole"}
           - {BUNDLE_TYPE: "user_resource",
              BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspace_services/guacamole/user_resources/guacamole-azure-export-reviewvm",
