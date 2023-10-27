@@ -1,0 +1,49 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "https://github.com/microsoft/AzureTRE/templates/workspace_services/guacamole/user_resources/guacamole-azure-windowsvm/template_schema.json",
+    "type": "object",
+    "title": "Windows Virtual Machine",
+    "description": "Windows virtual machine.",
+    "required": [
+    ],
+    "authorizedRoles": [
+      "WorkspaceOwner", "WorkspaceResearcher"
+    ],
+    "properties": {
+      "os_image": {
+        "$id": "#/properties/os_image",
+        "type": "string",
+        "title": "Windows image",
+        "description": "Select Windows image to use for VM",
+        "enum": [
+          "Windows 10",
+          "Windows 11",
+          "OUH Server 2019 Data Science VM"
+        ]
+      },
+      "vm_size": {
+        "$id": "#/properties/vm_size",
+        "type": "string",
+        "title": "VM Size",
+        "description": "Select size of VM",
+        "enum": [
+          "2 CPU | 4GB RAM | Text editing | £0.05 / hour",
+          "2 CPU | 8GB RAM | £0.15 / hour",
+          "4 CPU | 16GB RAM | £0.30 / hour",
+          "8 CPU | 32GB RAM | £0.65 / hour",
+          "8 CPU | 64GB RAM | £0.75 / hour",
+          "16 CPU | 64GB RAM | £1.25 / hour",
+          "6 CPU - 112GB RAM | 1 GPU - 16GB RAM | £3.21 / hour",
+          "12 CPU - 224GB RAM | 2 GPU - 32GB RAM | £6.42 / hour"
+        ],
+        "updateable": true
+      },
+      "shared_storage_access": {
+        "$id": "#/properties/shared_storage_access",
+        "type": "boolean",
+        "title": "Shared storage",
+        "default": true,
+        "description": "Enable access to shared storage"
+      }
+    }
+}

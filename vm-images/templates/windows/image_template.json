@@ -1,0 +1,56 @@
+{
+    "type": "Microsoft.VirtualMachineImages/imageTemplates",
+    "apiVersion": "2022-02-14",
+    "name": "ouh_windows_vm",
+    "location": "uksouth",
+    "dependsOn": [],
+    "tags": {
+        "imagebuilderTemplate": "AzureImageBuilderWindowsSIG",
+        "userIdentity": "enabled"
+    },
+    "identity": {
+      "type": "UserAssigned",
+          "userAssignedIdentities": {
+              "<imgBuilderId>": {}
+          }
+    },
+    "properties": {
+        "buildTimeoutInMinutes": 180,
+        "vmProfile": {
+            "vmSize": "Standard_D4s_v5"
+        },
+        "source": {
+            "type": "PlatformImage",
+            "publisher": "MicrosoftWindowsServer",
+            "offer": "WindowsServer",
+            "sku": "2019-Datacenter",
+            "version": "latest"
+        },
+        "customize": [
+            {
+                "type": "PowerShell",
+                "name": "CreateBuildPath",
+                "runElevated": true,
+                "scriptUri": "https://<scriptStorageAcc>.blob.core.windows.net/<scriptStorageAccContainer>/windows/scripts/init_vm.ps1"
+            },
+            {
+                "type": "WindowsRestart",
+                "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM  > c:\\buildArtifacts\\azureImageBuilderRestart.txt",
+                "restartTimeout": "5m"
+            }
+        ],
+        "distribute": [
+            {
+                "type": "SharedImage",
+                "galleryImageId": "/subscriptions/<subscriptionID>/resourceGroups/<rgName>/providers/Microsoft.Compute/galleries/<sharedImageGalName>/images/<imageDefName>",
+                "runOutputName": "<runOutputName>",
+                "artifactTags": {
+                    "source": "azureVmImageBuilder",
+                    "baseosimg": "windows2019"
+                },
+                "replicationRegions":["uksouth"],
+                "storageAccountType": "Standard_LRS"
+            }
+        ]
+    }
+}
