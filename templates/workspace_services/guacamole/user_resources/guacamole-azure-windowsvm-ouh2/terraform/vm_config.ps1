@@ -54,5 +54,4 @@ local({
     options(repos = r)
 })
 "@
-$RConfig | Out-File -Encoding Ascii ( New-Item -Path $Env:ProgramFiles\R\R-4.1.2\etc\Rprofile.site -Force )
-
+$RConfig | Out-File -Encoding Ascii ( New-Item -Path $Env:C:\Software\R\etc\Rprofile.site -Force )
