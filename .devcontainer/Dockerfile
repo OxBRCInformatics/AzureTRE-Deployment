@@ -73,6 +73,12 @@ ARG YQ_VERSION="v4.33.3"
 RUN curl -L --fail -o /usr/local/bin/yq "https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64" \
     && chmod +x /usr/local/bin/yq
 
+# Install AzCopy
+RUN curl -L --fail -o /tmp/azcopy.tar.gz "https://aka.ms/downloadazcopy-v10-linux" \
+  && tar -xvzf /tmp/azcopy.tar.gz -C /tmp \
+  && cp /tmp/azcopy_linux_amd64_*/azcopy /usr/local/bin/azcopy \
+  && chmod +x /usr/local/bin/azcopy
+
 ARG PAJV_VERSION="1.2.0"
 RUN npm install -g pajv@${PAJV_VERSION}
 
