@@ -16,5 +16,5 @@ mkdir -p "$oss_home"
 tar -xzf "$archive" -C "$oss_home" --strip-components=1
 rm "$archive"
 
-# echo "${oss_repo}" > "$oss_home/repository.txt"
+echo "${oss_repo}" > "$oss_home/repository.txt"
 echo "${oss_version}" > "$oss_home/version.txt"

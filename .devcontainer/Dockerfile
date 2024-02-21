@@ -64,7 +64,7 @@ RUN export PORTER_VERSION=${PORTER_VERSION} \
 ENV PATH ${PORTER_HOME_V1}:$PATH
 
 # Install azure-cli
-ARG AZURE_CLI_VERSION=2.37.0-1~bullseye
+ARG AZURE_CLI_VERSION=2.50.0-1~bullseye
 COPY .devcontainer/scripts/azure-cli.sh /tmp/
 RUN export AZURE_CLI_VERSION=${AZURE_CLI_VERSION} \
     && /tmp/azure-cli.sh
@@ -72,6 +72,12 @@ RUN export AZURE_CLI_VERSION=${AZURE_CLI_VERSION} \
 ARG YQ_VERSION="v4.33.3"
 RUN curl -L --fail -o /usr/local/bin/yq "https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64" \
     && chmod +x /usr/local/bin/yq
+
+# Install AzCopy
+RUN curl -L --fail -o /tmp/azcopy.tar.gz "https://aka.ms/downloadazcopy-v10-linux" \
+  && tar -xvzf /tmp/azcopy.tar.gz -C /tmp \
+  && cp /tmp/azcopy_linux_amd64_*/azcopy /usr/local/bin/azcopy \
+  && chmod +x /usr/local/bin/azcopy
 
 ARG PAJV_VERSION="1.2.0"
 RUN npm install -g pajv@${PAJV_VERSION}
@@ -93,24 +99,15 @@ RUN echo "export HISTFILE=$HOME/commandhistory/.bash_history" >> "$HOME/.bashrc"
 COPY ./.devcontainer/scripts/gh.sh /tmp/
 RUN if [ "${INTERACTIVE}" = "true" ]; then /tmp/gh.sh; fi
 
-# # Install AzureTRE OSS
-# ARG OSS_VERSION
-# ENV AZURETRE_HOME=/home/$USERNAME/AzureTRE
-# COPY .devcontainer/scripts/install-azure-tre-oss.sh .devcontainer/devcontainer.json /tmp/
-# # hadolint ignore=DL3004
-# RUN oss_repo_in_json=$(grep -oP '(?<="OSS_REPO": ")[^"]*' /tmp/devcontainer.json) \
-#     && oss_version_in_json=$(grep -oP '(?<="OSS_VERSION": ")[^"]*' /tmp/devcontainer.json) \
-#     && /tmp/install-azure-tre-oss.sh "${OSS_REPO:-$oss_repo_in_json}" "${OSS_VERSION:-$oss_version_in_json}" "${AZURETRE_HOME}"  \
-#     && sudo chown -R $USERNAME ${AZURETRE_HOME}
-
 # Install AzureTRE OSS
 ARG OSS_VERSION
 ARG OSS_REPO
 ENV AZURETRE_HOME=/home/$USERNAME/AzureTRE
 COPY .devcontainer/scripts/install-azure-tre-oss.sh .devcontainer/devcontainer.json /tmp/
 # hadolint ignore=DL3004
-RUN oss_version_in_json=$(grep -oP '(?<="OSS_VERSION": ")[^"]*' /tmp/devcontainer.json) \
-    && /tmp/install-azure-tre-oss.sh "${OSS_REPO:-microsoft/AzureTRE}" "${OSS_VERSION:-$oss_version_in_json}" "${AZURETRE_HOME}" \
+RUN oss_repo_in_json=$(grep -oP '(?<="OSS_REPO": ")[^"]*' /tmp/devcontainer.json) \
+    && oss_version_in_json=$(grep -oP '(?<="OSS_VERSION": ")[^"]*' /tmp/devcontainer.json) \
+    && /tmp/install-azure-tre-oss.sh "${OSS_REPO:-$oss_repo_in_json}" "${OSS_VERSION:-$oss_version_in_json}" "${AZURETRE_HOME}"  \
     && sudo chown -R $USERNAME ${AZURETRE_HOME}
 
 # Install tre-cli

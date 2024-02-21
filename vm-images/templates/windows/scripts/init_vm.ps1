@@ -166,8 +166,8 @@ Write-Log "Downloading NVIDIA installer..."
 Invoke-WebRequest -Uri $NVIDIA_DOWNLOAD_URL -UseBasicParsing -OutFile "$NVIDIA_INSTALL_PATH\$NVIDIA_INSTALLER_FILE"
 
 # git
-$git_INSTALLER_FILE="Git-2.39.0-64-bit.exe"
-$git_DOWNLOAD_URL="https://github.com/git-for-windows/git/releases/download/v2.39.0.windows.1/$git_INSTALLER_FILE"
+$git_INSTALLER_FILE="Git-2.43.0-64-bit.exe"
+$git_DOWNLOAD_URL="https://github.com/git-for-windows/git/releases/download/v2.43.0.windows.1/$git_INSTALLER_FILE"
 $git_INSTALL_PATH="$INSTALL_DIRECTORY\git"
 $git_INSTALL_ARGS="/SILENT /DIR=$git_INSTALL_PATH"
 
