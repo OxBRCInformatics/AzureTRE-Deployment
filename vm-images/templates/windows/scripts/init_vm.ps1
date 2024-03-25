@@ -44,8 +44,8 @@ Start-Process $ANACONDA_INSTALLER_FILE -ArgumentList $ANACONDA_INSTALL_ARGS -Wai
 
 
 # VSCODE
-$VSCODE_INSTALLER_FILE="VSCodeSetup-x64-1.71.2.exe"
-$VSCODE_DOWNLOAD_URL="https://update.code.visualstudio.com/1.71.2/win32-x64/stable"
+$VSCODE_INSTALLER_FILE="VSCodeSetup-x64-1.87.2.exe"
+$VSCODE_DOWNLOAD_URL="https://update.code.visualstudio.com/1.87.2/win32-x64/stable"
 $VSCODE_INSTALL_PATH="$INSTALL_DIRECTORY\VSCode"
 $VSCODE_EXTENSION_PATH="$VSCODE_INSTALL_PATH\extensions"
 $VSCODE_INSTALL_ARGS="/VERYSILENT /DIR=$VSCODE_INSTALL_PATH /MERGETASKS=!runcode,addcontextmenufiles,addcontextmenufolders,associatewithfiles,addtopath"
@@ -81,7 +81,7 @@ Start-Process $PROM_INSTALLER_FILE -ArgumentList $PROM_INSTALL_ARGS -Wait
 
 
 # R
-$R_INSTALLER_FILE="R-4.2.2-win.exe"
+$R_INSTALLER_FILE="R-4.3.3-win.exe"
 $R_DOWNLOAD_URL="https://cran.ma.imperial.ac.uk/bin/windows/base/$R_INSTALLER_FILE"
 $R_INSTALL_PATH="$INSTALL_DIRECTORY\R"
 $R_INSTALL_ARGS="/VERYSILENT /NORESTART /ALLUSERS /DIR=$R_INSTALL_PATH"
@@ -95,8 +95,8 @@ Start-Process $R_INSTALLER_FILE -ArgumentList $R_INSTALL_ARGS -Wait
 
 
 # RTools - This need to be install at the default location to avoid rtools not found errors.
-$RTools_INSTALLER_FILE="rtools42-5355-5357.exe"
-$RTools_DOWNLOAD_URL="https://cran.r-project.org/bin/windows/Rtools/rtools42/files/$RTools_INSTALLER_FILE"
+$RTools_INSTALLER_FILE="rtools43-5958-5975.exe"
+$RTools_DOWNLOAD_URL="https://cran.r-project.org/bin/windows/Rtools/rtools43/files/$RTools_INSTALLER_FILE"
 $RTools_INSTALL_ARGS="/VERYSILENT /NORESTART /ALLUSERS"
 
 Write-Log "Downloading RTools installer..."
@@ -107,8 +107,8 @@ Start-Process $RTools_INSTALLER_FILE -ArgumentList $RTools_INSTALL_ARGS -Wait
 
 
 # RStudio
-$RStudio_INSTALLER_FILE="RStudio-2022.07.2-576.exe"
-$RStudio_DOWNLOAD_URL="https://download1.rstudio.org/desktop/windows/$RStudio_INSTALLER_FILE"
+$RStudio_INSTALLER_FILE="RStudio-2023.12.1-402.exe" 
+$RStudio_DOWNLOAD_URL="https://s3.amazonaws.com/rstudio-ide-build/electron/windows/$RStudio_INSTALLER_FILE"
 $RStudio_INSTALL_PATH="$INSTALL_DIRECTORY\RStudio"
 $RStudio_INSTALL_ARGS="/S /D=$RStudio_INSTALL_PATH"
 
