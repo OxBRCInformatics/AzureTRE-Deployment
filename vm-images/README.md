@@ -224,3 +224,5 @@ OSTYPE| The OS type used when publishing the image in Azure Compute Gallery. Can
 ## Finally
 
 Once an Image Version has been build it is possible to create VMs based upon that Image Version. This can be done within the portal, or via the Azure CLI.
+
+This will be replaced by ReadMe in merge branch.
