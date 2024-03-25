@@ -229,6 +229,6 @@ Once an Image Version has been build it is possible to create VMs based upon tha
 
 ## Steps to update a VM image
 1. Follow the appropriate steps in git to set up a test branch and a merge branch.
-1. When on the test branch, run `az login`. Followed by `az set --subscription <DEV subscription id>`. 
+1. When on the test branch, run `az login`. Followed by `az set --subscription <DEV subscription id>`.
     - Run `az account show` to ensure you're connected to DEV.
-1. write step 3. 
+1. write step 3.
