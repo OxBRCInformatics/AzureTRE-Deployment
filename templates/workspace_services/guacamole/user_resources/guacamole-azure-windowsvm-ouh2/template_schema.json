@@ -33,8 +33,8 @@
           "8 CPU | 32GB RAM | £0.65 / hour",
           "8 CPU | 64GB RAM | £0.75 / hour",
           "16 CPU | 64GB RAM | £1.25 / hour",
-          "1 GPU - 16GB RAM | 6 CPU - 112GB RAM |  £3.21 / hour",
-          "2 GPU - 32GB RAM | 12 CPU - 224GB RAM |  £6.42 / hour"
+          "6 CPU - 112GB RAM | 1 GPU - 16GB RAM | £3.21 / hour",
+          "12 CPU - 224GB RAM | 2 GPU - 32GB RAM | £6.42 / hour"
         ],
         "updateable": true
       },
