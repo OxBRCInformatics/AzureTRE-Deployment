@@ -225,10 +225,4 @@ OSTYPE| The OS type used when publishing the image in Azure Compute Gallery. Can
 
 Once an Image Version has been build it is possible to create VMs based upon that Image Version. This can be done within the portal, or via the Azure CLI.
 
-<br>
 
-## Steps to update a VM image
-1. Follow the appropriate steps in git to set up a test branch and a merge branch.
-1. When on the test branch, run `az login`. Followed by `az set --subscription <DEV subscription id>`.
-    - Run `az account show` to ensure you're connected to DEV.
-1. write step 3.
