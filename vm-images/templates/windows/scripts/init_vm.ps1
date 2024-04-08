@@ -8,6 +8,20 @@ function Write-Log {
     Write-Host "$formattedTime init_vm: $message"
 }
 
+function Create-DesktopShortcut {
+    param (
+        [string]$AppName,
+        [string]$ExecutablePath
+    )
+
+    $shell = New-Object -comObject WScript.Shell
+    $shortcut = $shell.CreateShortcut("C:\Users\Public\Desktop\$AppName.lnk")  # Adjust the path and name as needed
+    $shortcut.TargetPath = "$INSTALL_DIRECTORY\$AppName\$ExecutablePath"  # Corrected path of the executable
+    $shortcut.Save()
+
+}
+ß
+
 $BUILD_DIRECTORY="C:\BuildArtifacts"
 $INSTALL_DIRECTORY="C:\Software"
 
@@ -44,8 +58,8 @@ Start-Process $ANACONDA_INSTALLER_FILE -ArgumentList $ANACONDA_INSTALL_ARGS -Wai
 
 
 # VSCODE
-$VSCODE_INSTALLER_FILE="VSCodeSetup-x64-1.71.2.exe"
-$VSCODE_DOWNLOAD_URL="https://update.code.visualstudio.com/1.71.2/win32-x64/stable"
+$VSCODE_INSTALLER_FILE="VSCodeSetup-x64-1.87.2.exe"
+$VSCODE_DOWNLOAD_URL="https://update.code.visualstudio.com/1.87.2/win32-x64/stable"
 $VSCODE_INSTALL_PATH="$INSTALL_DIRECTORY\VSCode"
 $VSCODE_EXTENSION_PATH="$VSCODE_INSTALL_PATH\extensions"
 $VSCODE_INSTALL_ARGS="/VERYSILENT /DIR=$VSCODE_INSTALL_PATH /MERGETASKS=!runcode,addcontextmenufiles,addcontextmenufolders,associatewithfiles,addtopath"
@@ -67,6 +81,9 @@ Start-Process "$VSCODE_INSTALL_PATH\bin\code" -ArgumentList "--extensions-dir $V
 Start-Process "$VSCODE_INSTALL_PATH\bin\code" -ArgumentList "--extensions-dir $VSCODE_EXTENSION_PATH --install-extension REditorSupport.r --force" -Wait
 Start-Process "$VSCODE_INSTALL_PATH\bin\code" -ArgumentList "--extensions-dir $VSCODE_EXTENSION_PATH --install-extension RDebugger.r-debugger --force" -Wait
 
+# Create Desktop shortcutß
+Create-DesktopShortcut -AppName "VSCode" -ExecutablePath "Code.exe"
+
 # ProM Tool
 $PROM_INSTALLER_FILE="prom-6.11-jre8-installer.exe"
 $PROM_DOWNLOAD_URL="http://promtools.org/prom6/downloads/$PROM_INSTALLER_FILE"
@@ -81,7 +98,7 @@ Start-Process $PROM_INSTALLER_FILE -ArgumentList $PROM_INSTALL_ARGS -Wait
 
 
 # R
-$R_INSTALLER_FILE="R-4.2.2-win.exe"
+$R_INSTALLER_FILE="R-4.3.3-win.exe"
 $R_DOWNLOAD_URL="https://cran.ma.imperial.ac.uk/bin/windows/base/$R_INSTALLER_FILE"
 $R_INSTALL_PATH="$INSTALL_DIRECTORY\R"
 $R_INSTALL_ARGS="/VERYSILENT /NORESTART /ALLUSERS /DIR=$R_INSTALL_PATH"
@@ -95,8 +112,8 @@ Start-Process $R_INSTALLER_FILE -ArgumentList $R_INSTALL_ARGS -Wait
 
 
 # RTools - This need to be install at the default location to avoid rtools not found errors.
-$RTools_INSTALLER_FILE="rtools42-5355-5357.exe"
-$RTools_DOWNLOAD_URL="https://cran.r-project.org/bin/windows/Rtools/rtools42/files/$RTools_INSTALLER_FILE"
+$RTools_INSTALLER_FILE="rtools43-5958-5975.exe"
+$RTools_DOWNLOAD_URL="https://cran.r-project.org/bin/windows/Rtools/rtools43/files/$RTools_INSTALLER_FILE"
 $RTools_INSTALL_ARGS="/VERYSILENT /NORESTART /ALLUSERS"
 
 Write-Log "Downloading RTools installer..."
@@ -107,8 +124,8 @@ Start-Process $RTools_INSTALLER_FILE -ArgumentList $RTools_INSTALL_ARGS -Wait
 
 
 # RStudio
-$RStudio_INSTALLER_FILE="RStudio-2022.07.2-576.exe"
-$RStudio_DOWNLOAD_URL="https://download1.rstudio.org/desktop/windows/$RStudio_INSTALLER_FILE"
+$RStudio_INSTALLER_FILE="RStudio-2023.12.1-402.exe"
+$RStudio_DOWNLOAD_URL="https://s3.amazonaws.com/rstudio-ide-build/electron/windows/$RStudio_INSTALLER_FILE"
 $RStudio_INSTALL_PATH="$INSTALL_DIRECTORY\RStudio"
 $RStudio_INSTALL_ARGS="/S /D=$RStudio_INSTALL_PATH"
 
@@ -119,6 +136,8 @@ Invoke-WebRequest -Uri $RStudio_DOWNLOAD_URL -UseBasicParsing -OutFile "$BUILD_D
 Write-Log "Installing RStudio Package..."
 Start-Process $RStudio_INSTALLER_FILE -ArgumentList $RStudio_INSTALL_ARGS -Wait
 
+# Create Desktop shortcutß
+Create-DesktopShortcut -AppName "Rstudio" -ExecutablePath "rstudio.exe"
 
 #.Net Runtime 4.8
 $DotNet_INSTALLER_FILE="ndp481-x86-x64-allos-enu.exe"
@@ -143,6 +162,9 @@ Invoke-WebRequest -Uri $StorageExplorer_DOWNLOAD_URL -UseBasicParsing -OutFile "
 
 Write-Log "Installing Azure Storage Explorer..."
 Start-Process $StorageExplorer_INSTALLER_FILE -ArgumentList $StorageExplorer_INSTALL_ARGS -Wait
+
+# Create Desktop shortcutß
+Create-DesktopShortcut -AppName "StorageExplorer" -ExecutablePath "StorageExplorer.exe"
 
 
 # PostgreSQL
@@ -177,6 +199,18 @@ Invoke-WebRequest -Uri $git_DOWNLOAD_URL -UseBasicParsing -OutFile "$BUILD_DIREC
 Write-Log "Installing git..."
 Start-Process $git_INSTALLER_FILE -ArgumentList $git_INSTALL_ARGS -Wait
 
+# LibreOffice
+$libreoffice_INSTALLER_FILE="LibreOffice_7.4.7_Win_x64.msi"
+$Libreoffice_DOWNLOAD_URL="https://www.libreoffice.org/download/download/$libreoffice_INSTALLER_FILE"
+$Libreoffice_INSTALL_PATH="INSTALL_DIRECTORY\LibreOffice"
+$Libreoffice_INSTALL_ARGS="RebootYesNo=No /qn"
+
+Write-Log "Downloading Libreoffice installer..."
+Invoke-WebRequest -Uri $Libreoffice_DOWNLOAD_URL -UseBasicParsing -OutFile "$BUILD_DIRECTORY\$libreoffice_INSTALLER_FILE"
+
+Write-Log "Installing Libreoffice..."
+Start-Process $libreoffice_INSTALLER_FILE -ArgumentList $Libreoffice_INSTALL_ARGS -Wait
+
 # PATH
 Write-Log "Add Anaconda and R to PATH environment variable"
 [Environment]::SetEnvironmentVariable("PATH", "$Env:PATH;$ANACONDA_INSTALL_PATH\condabin;$R_INSTALL_PATH\bin;$PYTHON_INSTALL_PATH\Scripts", [EnvironmentVariableTarget]::Machine)
@@ -188,5 +222,4 @@ Remove-Item -Path "C:\buildArtifacts\*" -Force -Recurse
 Remove-Item -Path "C:\buildArtifacts" -Force
 
 Write-Log "VM customisation complete."
-
 
