@@ -1,4 +1,4 @@
-# AzureTRE-Deployment Repo
+# OUH AzureTRE-Deployment Repo
 
 This project is intended to assist the deployment of the Azure TRE project in real world environments. This includes deploying using a dev container from your local machine, deploying using GitHub Actions, and publishing custom templates.
 
