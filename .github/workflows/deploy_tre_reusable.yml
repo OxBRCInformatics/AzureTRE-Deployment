@@ -277,7 +277,7 @@ jobs:
           COMMAND: "make ${{ matrix.target }}"
           DEVCONTAINER_TAG: ${{ inputs.DEVCONTAINER_TAG }}
           CI_CACHE_ACR_NAME: ${{ secrets.CI_CACHE_ACR_NAME}}
-          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+          URE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
           AZURE_ENVIRONMENT: ${{ vars.AZURE_ENVIRONMENT }}
           ACR_NAME: ${{ secrets.ACR_NAME }}
 
@@ -387,6 +387,8 @@ jobs:
              BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspace_services/databricks"}
           - {BUNDLE_TYPE: "workspace_service",
              BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspace_services/ohdsi"}
+          - {BUNDLE_TYPE: "workspace_service",
+             BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspace_services/azuresql"}
           - {BUNDLE_TYPE: "user_resource",
              BUNDLE_DIR: "./templates/workspace_services/guacamole/user_resources/guacamole-azure-windowsvm-ouh2"}
           - {BUNDLE_TYPE: "user_resource",
@@ -547,6 +549,8 @@ jobs:
              BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspace_services/databricks"}
           - {BUNDLE_TYPE: "workspace_service",
              BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspace_services/ohdsi"}
+          - {BUNDLE_TYPE: "workspace_service",
+             BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspace_services/azuresql"}
         # Add your bundles here
     environment: ${{ inputs.environmentName }}
     steps:
