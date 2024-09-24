@@ -1,7 +1,7 @@
 ---
 schemaVersion: 1.0.0
 name: tre-service-guacamole-linuxvm-ouh2
-version: 0.1.6
+version: 0.1.7
 description: "An Azure TRE User Resource Template for Guacamole (Linux)"
 dockerfile: Dockerfile.tmpl
 registry: azuretre
@@ -18,15 +18,16 @@ custom:
     "6 CPU - 112GB RAM | 1 GPU - 16GB RAM | £2.98 / hour": Standard_NC6s_v3
     "12 CPU - 224GB RAM | 2 GPU - 32GB RAM | £5.96 / hour": Standard_NC12s_v3
   image_options:
-    "Ubuntu 18.04":
+    "Ubuntu 22.04 LTS":
       source_image_reference:
         publisher: canonical
-        offer: ubuntuserver
-        sku: 18_04-lts-gen2
+        offer: 0001-com-ubuntu-server-jammy
+        sku: 22_04-lts-gen2
         version: latest
+        apt_sku: 22.04
       install_ui: true
       conda_config: false
-    "OUH Ubuntu 18.04 Data Science VM":
+    "OUH Ubuntu 22.04 Data Science VM":
       source_image_name: OUHLinuxImage
       # source_image_reference:
       #   publisher: microsoft-dsvm
@@ -96,7 +97,7 @@ parameters:
     default: "public"
   - name: os_image
     type: string
-    default: "OUH Ubuntu 18.04 Data Science VM"
+    default: "OUH Ubuntu 22.04 Data Science VM"
   - name: vm_size
     type: string
     default: "4 CPU | 16GB RAM | £0.20 / hour"
