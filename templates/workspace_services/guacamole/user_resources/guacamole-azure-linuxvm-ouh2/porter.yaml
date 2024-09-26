@@ -29,7 +29,6 @@ custom:
       conda_config: false
     "OUH Ubuntu 18.04 Data Science VM":
       source_image_name: OUHLinuxImage
-        apt_sku: 22.04
       # source_image_reference:
       #   publisher: microsoft-dsvm
       #   offer: ubuntu-1804
