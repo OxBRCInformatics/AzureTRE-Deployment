@@ -1,7 +1,7 @@
 ---
 schemaVersion: 1.0.0
 name: tre-service-guacamole-linuxvm-ouh2
-version: 1.0.2
+version: 1.0.3
 description: "An Azure TRE User Resource Template for Guacamole (Linux)"
 dockerfile: Dockerfile.tmpl
 registry: azuretre
@@ -29,6 +29,7 @@ custom:
       conda_config: false
     "OUH Ubuntu 18.04 Data Science VM":
       source_image_name: OUHLinuxImage
+        apt_sku: 22.04
       # source_image_reference:
       #   publisher: microsoft-dsvm
       #   offer: ubuntu-1804
