@@ -6,16 +6,6 @@ set -o nounset
 # Uncomment this line to see each command for debugging (careful: this will show secrets!)
 # set -o xtrace
 
-# Notify users about installation progress
-notify-send "Installation in Progress" "The software is being installed. Please wait... This may take a few minutes."
-
-
-# # Disable and stop services to prevent user access
-# sudo systemctl stop xrdp || true
-# sudo systemctl disable xrdp || true
-# sudo systemctl stop gdm3 || true
-# sudo systemctl disable gdm3 || true
-
 # Remove apt sources not included in sources.list file
 sudo rm -f /etc/apt/sources.list.d/*
 
@@ -242,16 +232,6 @@ sudo update-alternatives --config x-www-browser
 echo "init_vm.sh: Preventing Timeout"
 sudo apt-get remove xfce4-screensaver -y
 
-# # After all installations and configurations
-# echo "init_vm.sh: Setup complete."
-
-# # Enable and start services now that setup is done
-# sudo systemctl enable gdm3
-# sudo systemctl start gdm3
-# sudo systemctl enable xrdp
-# sudo systemctl start xrdp
-
-# echo "init_vm.sh: Services enabled and started."
 
 # Cleanup and shutdown (if needed)
 echo "init_vm.sh: Cleanup"
