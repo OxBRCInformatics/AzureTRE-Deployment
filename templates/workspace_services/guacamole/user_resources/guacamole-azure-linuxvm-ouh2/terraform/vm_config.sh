@@ -38,10 +38,6 @@ sudo service xrdp restart
 ## Python 3.8 and Jupyter
 sudo apt install -y jupyter-notebook microsoft-edge-dev
 
-## Install Azure CLI
-echo "init_vm.sh: Installing Azure CLI"
-sudo apt install azure-cli -y
-
 ## VS Code
 echo "init_vm.sh: VS Code"
 sudo apt install -y code
@@ -51,25 +47,26 @@ echo "init_vm.sh: Folders"
 sudo mkdir -p /opt/vscode/user-data
 sudo mkdir -p /opt/vscode/extensions
 
-# Install VSCode Extensions
+# Install Azure CLI
+echo "init_vm.sh: Installing Azure CLI"
+sudo apt install azure-cli -y
+
+## VSCode Extensions
 echo "init_vm.sh: VSCode extensions"
-extensions=(
-    ms-python.python
-    REditorSupport.r
-    RDebugger.r-debugger
-    njpwerner.autodocstring
-    ms-python.data-wrangler
-    GrapeCity.gc-excelviewer
-    formulahendry.auto-complete
-    KevinRose.vsc-python-indent
-    Gruntfuggly.todo-tree
-)
+code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension ms-python.python
+code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension REditorSupport.r
+code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension RDebugger.r-debugger
 
-for ext in "${extensions[@]}"; do
-    code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension "$ext"
-done
+# Additional VS Code Extensions
+code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension njpwerner.autodocstring         # AutoDocstring - Python Docstring Generator
+code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension ms-python.data-wrangler      # Data Wrangler (Microsoft)
+code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension GrapeCity.gc-excelviewer      # Excel Viewer (Grape City)
+code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension formulahendry.auto-complete     # Path Autocomplete (Mihai Vilcu)
+code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension KevinRose.vsc-python-indent      # Python Indent (Kevin Rose)
+code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension Gruntfuggly.todo-tree          # Todo Tree (Gruntfuggly)
 
-## Azure Storage Explorer
+
+# Azure Storage Explorer
 sudo apt-get remove -y dotnet-host-7.0
 sudo apt-get remove -y dotnet-sdk-7.0
 sudo apt-get install -y dotnet-sdk-8.0
@@ -232,7 +229,6 @@ sudo update-alternatives --config x-www-browser
 echo "init_vm.sh: Preventing Timeout"
 sudo apt-get remove xfce4-screensaver -y
 
-
-# Cleanup and shutdown (if needed)
+## Cleanup
 echo "init_vm.sh: Cleanup"
 sudo shutdown -r now
