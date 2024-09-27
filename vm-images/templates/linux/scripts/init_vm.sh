@@ -42,16 +42,16 @@ tar -xf /tmp/prom-6.12-all-platforms.tar.gz -C /opt/prom-tools
 sudo chmod +x /opt/prom-tools/*.sh
 
 
-## VS Code
-echo "init_vm.sh: Folders"
-sudo mkdir /opt/vscode/user-data
-sudo mkdir /opt/vscode/extensions
+# ## VS Code
+# echo "init_vm.sh: Folders"
+# sudo mkdir /opt/vscode/user-data
+# sudo mkdir /opt/vscode/extensions
 
-echo "init_vm.sh: Keys"
-wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
-sudo apt update
-sudo apt install -y code gvfs-bin
+# echo "init_vm.sh: Keys"
+# wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo apt-key add -
+# sudo add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
+# sudo apt update
+# sudo apt install -y code gvfs-bin
 
 ## VSCode Extensions
 echo "init_vm.sh: VSCode extensions"

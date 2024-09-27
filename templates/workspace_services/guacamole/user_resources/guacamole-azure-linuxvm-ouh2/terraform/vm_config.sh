@@ -4,7 +4,7 @@ set -o errexit
 set -o pipefail
 set -o nounset
 # Uncomment this line to see each command for debugging (careful: this will show secrets!)
-set -o xtrace
+# set -o xtrace
 
 # Remove apt sources not included in sources.list file
 sudo rm -f /etc/apt/sources.list.d/*
@@ -47,15 +47,24 @@ echo "init_vm.sh: Folders"
 sudo mkdir -p /opt/vscode/user-data
 sudo mkdir -p /opt/vscode/extensions
 
-# echo "init_vm.sh: azure-cli"
+# Install Azure CLI
+echo "init_vm.sh: Installing Azure CLI"
 sudo apt install azure-cli -y
 
-# TODO: need to look at proxy extentions
 ## VSCode Extensions
-# echo "init_vm.sh: VSCode extensions"
-# code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension ms-python.python
-# code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension REditorSupport.r
-# code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension RDebugger.r-debugger
+echo "init_vm.sh: VSCode extensions"
+code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension ms-python.python
+code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension REditorSupport.r
+code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension RDebugger.r-debugger
+
+# Additional VS Code Extensions
+code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension njpwerner.autodocstring         # AutoDocstring - Python Docstring Generator
+code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension ms-python.data-wrangler      # Data Wrangler (Microsoft)
+code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension GrapeCity.gc-excelviewer      # Excel Viewer (Grape City)
+code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension formulahendry.auto-complete     # Path Autocomplete (Mihai Vilcu)
+code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension KevinRose.vsc-python-indent      # Python Indent (Kevin Rose)
+code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension Gruntfuggly.todo-tree          # Todo Tree (Gruntfuggly)
+
 
 # Azure Storage Explorer
 sudo apt-get remove -y dotnet-host-7.0
@@ -91,6 +100,9 @@ END
 
 ## R
 echo "init_vm.sh: R Setup"
+wget -q https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc -O- | sudo apt-key add -
+sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+sudo apt update
 sudo apt install -y r-base
 
 # RStudio Desktop
@@ -121,8 +133,8 @@ if [ "${SHARED_STORAGE_ACCESS}" -eq 1 ]; then
 
   # Create required file paths
   sudo mkdir -p "$mntPath"
-  sudo mkdir -p "/etc/smbcredentials"
-  sudo mkdir -p $mntRoot
+  sudo mkdir -p "$credentialRoot"
+  sudo mkdir -p "$mntRoot"
 
   ### Auto FS to persist storage
   # Create credential file
@@ -136,28 +148,63 @@ if [ "${SHARED_STORAGE_ACCESS}" -eq 1 ]; then
   # Change permissions on the credential file so only root can read or modify the password file.
   sudo chmod 600 "$smbCredentialFile"
 
-  # Configure autofs
-  echo "$fileShareName -fstype=cifs,rw,dir_mode=0777,credentials=$smbCredentialFile :$smbPath" | sudo tee /etc/auto.fileshares > /dev/null
+  # Configure autofs with adjusted options
+  echo "$fileShareName -fstype=cifs,rw,uid=$(id -u),gid=$(id -g),file_mode=0777,dir_mode=0777,credentials=$smbCredentialFile ://$smbPath" | sudo tee /etc/auto.fileshares > /dev/null
   echo "$mntRoot /etc/auto.fileshares --timeout=60" | sudo tee /etc/auto.master > /dev/null
 
   # Restart service to register changes
   sudo systemctl restart autofs
 
-  # Autofs mounts when accessed for 60 seconds.  Folder created for constant visible mount
+  # Create a visible link to the shared directory
   sudo ln -s "$mntPath" "/$fileShareName"
+
+  # Ensure permissions are set correctly on the mount point
+  sudo chmod 777 "$mntPath"
 fi
+
+
+# Anaconda
+echo "init_vm.sh: Anaconda"
+sudo apt -y install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor1 libxcomposite1 libasound2 libxi6 libxtst6
+wget https://repo.anaconda.com/archive/Anaconda3-2022.05-Linux-x86_64.sh -P /tmp
+chmod +x /tmp/Anaconda3-2022.05-Linux-x86_64.sh
+bash /tmp/Anaconda3-2022.05-Linux-x86_64.sh -b -p /opt/anaconda
+/opt/anaconda/bin/conda install -y -c anaconda anaconda-navigator
 
 ### Anaconda Config
 if [ "${CONDA_CONFIG}" -eq 1 ]; then
   echo "init_vm.sh: Anaconda"
-  export PATH="/anaconda/condabin":$PATH
-  export PATH="/anaconda/bin":$PATH
-  export PATH="/anaconda/envs/py38_default/bin":$PATH
+  export PATH="/opt/condabin":$PATH
+  export PATH="/opt/bin":$PATH
+  export PATH="/opt/envs/py38_default/bin":$PATH
   conda config --add channels "${NEXUS_PROXY_URL}"/repository/conda-mirror/main/  --system
   conda config --add channels "${NEXUS_PROXY_URL}"/repository/conda-repo/main/  --system
   conda config --remove channels defaults --system
   conda config --set channel_alias "${NEXUS_PROXY_URL}"/repository/conda-mirror/  --system
 fi
+
+## JDK
+sudo apt install -y openjdk-8-jdk
+
+## ProM Tools
+wget http://promtools.org/prom6/downloads/prom-6.12-all-platforms.tar.gz -P /tmp
+sudo mkdir /opt/prom-tools
+tar -xf /tmp/prom-6.12-all-platforms.tar.gz -C /opt/prom-tools
+sudo chmod +x /opt/prom-tools/*.sh
+
+## PostgreSQL
+# Create the file repository configuration:
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+
+# Import the repository signing key:
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+
+# Update the package lists:
+sudo apt-get update
+
+# Install the latest version of PostgreSQL.
+# If you want a specific version, use 'postgresql-12' or similar instead of 'postgresql':
+sudo apt-get -y install postgresql
 
 # Docker install and config
 sudo apt-get remove -y moby-tini || true
