@@ -238,6 +238,11 @@ echo "init_vm.sh: Preventing Timeout"
 sudo apt-get remove xfce4-screensaver -y
 sudo apt-get remove -y light-locker
 
+xfconf-query -c xfce4-screensaver -p /active -s false
+xfconf-query -c xfce4-session -p /LockScreen -s false
+xfconf-query -c xfce4-session -p /Session/Idle -s 0
+
+
 ## Cleanup
 echo "init_vm.sh: Cleanup"
 sudo shutdown -r now
