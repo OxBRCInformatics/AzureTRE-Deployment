@@ -9,6 +9,7 @@ set -o nounset
 # Remove apt sources not included in sources.list file
 sudo rm -f /etc/apt/sources.list.d/*
 
+
 # Update apt packages from configured Nexus sources
 echo "init_vm.sh: START"
 sudo apt update || true
@@ -34,6 +35,10 @@ sudo -u "${VM_USER}" -i bash -c 'echo xset -dpms >> ~/.xsession'
 # Make sure xrdp service starts up with the system
 sudo systemctl enable xrdp
 sudo service xrdp restart
+
+# Disable colord service if color management is not required
+sudo systemctl disable colord
+sudo systemctl stop colord
 
 ## Python 3.8 and Jupyter
 sudo apt install -y jupyter-notebook microsoft-edge-dev
