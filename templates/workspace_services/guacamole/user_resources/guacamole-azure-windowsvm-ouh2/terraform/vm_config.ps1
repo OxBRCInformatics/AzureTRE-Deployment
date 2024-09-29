@@ -36,8 +36,8 @@ if( ${CondaConfig} -eq 1 )
 }
 
 # Define the download URL and output path
-$libreOfficeUrl = "https://download.documentfoundation.org/libreoffice/stable/7.6.2/win/x86_64/LibreOffice_7.6.2_Win_x64.msi"
-$installerPath = "$env:TEMP\LibreOffice_7.6.2_Win_x64.msi"
+$libreOfficeUrl = "https://download.documentfoundation.org/libreoffice/stable/24.2.6/win/x86_64/LibreOffice_24.2.6_Win_x86-64.msi"
+$installerPath = "C:\BuildArtifacts\LibreOffice_24.2.6_Win_x86-64.msi"
 
 # Download the LibreOffice installer
 Invoke-WebRequest -Uri $libreOfficeUrl -OutFile $installerPath
