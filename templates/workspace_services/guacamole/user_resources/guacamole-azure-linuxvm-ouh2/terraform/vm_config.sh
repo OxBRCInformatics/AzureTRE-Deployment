@@ -58,17 +58,17 @@ sudo apt install azure-cli -y
 
 ## VSCode Extensions
 echo "init_vm.sh: VSCode extensions"
-code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension ms-python.python
-code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension REditorSupport.r
-code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension RDebugger.r-debugger
+sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension ms-python.python
+sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension REditorSupport.r
+sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension RDebugger.r-debugger
 
 # Additional VS Code Extensions
-code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension njpwerner.autodocstring         # AutoDocstring - Python Docstring Generator
-code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension ms-python.data-wrangler      # Data Wrangler (Microsoft)
-code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension GrapeCity.gc-excelviewer      # Excel Viewer (Grape City)
-code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension formulahendry.auto-complete     # Path Autocomplete (Mihai Vilcu)
-code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension KevinRose.vsc-python-indent      # Python Indent (Kevin Rose)
-code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension Gruntfuggly.todo-tree          # Todo Tree (Gruntfuggly)
+sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension njpwerner.autodocstring         # AutoDocstring - Python Docstring Generator
+sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension ms-python.data-wrangler      # Data Wrangler (Microsoft)
+sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension GrapeCity.gc-excelviewer      # Excel Viewer (Grape City)
+sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension formulahendry.auto-complete     # Path Autocomplete (Mihai Vilcu)
+sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension KevinRose.vsc-python-indent      # Python Indent (Kevin Rose)
+sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension Gruntfuggly.todo-tree          # Todo Tree (Gruntfuggly)
 
 
 # Azure Storage Explorer
@@ -167,6 +167,9 @@ if [ "${SHARED_STORAGE_ACCESS}" -eq 1 ]; then
   sudo chmod 777 "$mntPath"
 fi
 
+# Install LibreOffice
+echo "init_vm.sh: Installing LibreOffice"
+sudo apt install -y libreoffice
 
 # Anaconda
 echo "init_vm.sh: Anaconda"
@@ -233,6 +236,7 @@ sudo update-alternatives --config x-www-browser
 # Prevent screen timeout
 echo "init_vm.sh: Preventing Timeout"
 sudo apt-get remove xfce4-screensaver -y
+sudo apt-get remove -y light-locker
 
 ## Cleanup
 echo "init_vm.sh: Cleanup"
