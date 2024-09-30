@@ -139,7 +139,7 @@ if [ "${SHARED_STORAGE_ACCESS}" -eq 1 ]; then
 
   # Create required file paths
   sudo mkdir -p "$mntPath"
-  sudo mkdir -p "/etc/smbcredentials"
+  sudo mkdir -p "$credentialRoot"
   sudo mkdir -p $mntRoot
 
   ### Auto FS to persist storage
