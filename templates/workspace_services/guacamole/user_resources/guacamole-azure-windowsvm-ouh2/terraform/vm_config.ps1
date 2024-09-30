@@ -35,38 +35,6 @@ if( ${CondaConfig} -eq 1 )
   conda config --set channel_alias ${nexus_proxy_url}/repository/conda-mirror/  --system
 }
 
-# # Define the download URL and output path
-# $libreOfficeUrl = "https://download.documentfoundation.org/libreoffice/stable/24.2.6/win/x86_64/LibreOffice_24.2.6_Win_x86-64.msi"
-# $installerPath = "C:\BuildArtifacts\LibreOffice_24.2.6_Win_x86-64.msi"
-
-# # Download the LibreOffice installer
-# Invoke-WebRequest -Uri $libreOfficeUrl -OutFile $installerPath
-
-# # Wait for the download to complete
-# Write-Host "LibreOffice installer downloaded."
-
-# # Install LibreOffice silently (no user interaction)
-# Start-Process msiexec.exe -ArgumentList "/i `"$installerPath`" /quiet /norestart" -Wait
-
-# # Clean up the installer file after installation
-# Remove-Item $installerPath
-
-# Write-Host "LibreOffice has been installed."
-
-# Define the installer file and URL for the latest version
-$VSCODE_DOWNLOAD_URL = "https://update.code.visualstudio.com/latest/win32-x64/stable"
-$VSCODE_INSTALLER_FILE = "VSCodeSetup.exe"
-$VSCODE_INSTALL_PATH = "C:\Program Files\Microsoft VS Code"
-
-# Download the latest installer
-Invoke-WebRequest -Uri $VSCODE_DOWNLOAD_URL -OutFile $VSCODE_INSTALLER_FILE
-
-# Install or update Visual Studio Code
-Start-Process -FilePath $VSCODE_INSTALLER_FILE -ArgumentList "/VERYSILENT /DIR=$VSCODE_INSTALL_PATH /MERGETASKS=!runcode,addcontextmenufiles,addcontextmenufolders,associatewithfiles,addtopath" -Wait
-
-# Remove the installer file after installation
-Remove-Item $VSCODE_INSTALLER_FILE
-
 ### Additional VS code extensions
 Start-Process "$VSCODE_INSTALL_PATH\bin\code" -ArgumentList "--extensions-dir $VSCODE_EXTENSION_PATH --install-extension njpwerner.autodocstring --force" -Wait
 Start-Process "$VSCODE_INSTALL_PATH\bin\code" -ArgumentList "--extensions-dir $VSCODE_EXTENSION_PATH --install-extension ms-python.data-wrangler --force" -Wait
