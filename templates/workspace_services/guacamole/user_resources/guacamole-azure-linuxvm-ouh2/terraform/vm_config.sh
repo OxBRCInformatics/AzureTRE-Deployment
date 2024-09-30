@@ -44,17 +44,18 @@ sudo systemctl stop colord
 sudo apt install -y jupyter-notebook microsoft-edge-dev
 
 ## VS Code
-echo "init_vm.sh: VS Code"
+echo "init_vm.sh: Adding Microsoft GPG Key and Repository for VS Code"
+wget -qO- https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor > /usr/share/keyrings/packages.microsoft.gpg
+echo "deb [signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
+
+# Update and install VS Code
+sudo apt update
 sudo apt install -y code
 sudo apt install -y gvfs-bin || true
 
 echo "init_vm.sh: Folders"
 sudo mkdir -p /opt/vscode/user-data
 sudo mkdir -p /opt/vscode/extensions
-
-# Install Azure CLI
-echo "init_vm.sh: Installing Azure CLI"
-sudo apt install azure-cli -y
 
 ## VSCode Extensions
 echo "init_vm.sh: VSCode extensions"
@@ -70,6 +71,9 @@ sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode
 sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension KevinRose.vsc-python-indent      # Python Indent (Kevin Rose)
 sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension Gruntfuggly.todo-tree          # Todo Tree (Gruntfuggly)
 
+# Install Azure CLI
+echo "init_vm.sh: Installing Azure CLI"
+sudo apt install azure-cli -y
 
 # Azure Storage Explorer
 sudo apt-get remove -y dotnet-host-7.0
