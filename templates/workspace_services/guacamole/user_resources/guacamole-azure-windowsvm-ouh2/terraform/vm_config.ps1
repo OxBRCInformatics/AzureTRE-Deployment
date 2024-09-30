@@ -34,7 +34,9 @@ if( ${CondaConfig} -eq 1 )
   conda config --remove channels defaults --system
   conda config --set channel_alias ${nexus_proxy_url}/repository/conda-mirror/  --system
 }
-
+$INSTALL_DIRECTORY="C:\Software"
+$VSCODE_INSTALL_PATH="$INSTALL_DIRECTORY\VSCode"
+$VSCODE_EXTENSION_PATH="$VSCODE_INSTALL_PATH\extensions"
 ### Additional VS code extensions
 Start-Process "$VSCODE_INSTALL_PATH\bin\code" -ArgumentList "--extensions-dir $VSCODE_EXTENSION_PATH --install-extension njpwerner.autodocstring --force" -Wait
 Start-Process "$VSCODE_INSTALL_PATH\bin\code" -ArgumentList "--extensions-dir $VSCODE_EXTENSION_PATH --install-extension ms-python.data-wrangler --force" -Wait
