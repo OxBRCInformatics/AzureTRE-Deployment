@@ -1,7 +1,7 @@
 ---
 schemaVersion: 1.0.0
 name: tre-service-guacamole-linuxvm-ouh2
-version: 1.0.8
+version: 1.0.9
 description: "An Azure TRE User Resource Template for Guacamole (Linux)"
 dockerfile: Dockerfile.tmpl
 registry: azuretre
@@ -26,7 +26,7 @@ custom:
         version: latest
         apt_sku: 22.04
       install_ui: true
-      conda_config: false
+      conda_config: true
 
     ## Removing custom Linux image as it becomes obsolete with the update to Ubuntu 22.04 and pre-installed software via vm_config.sh
     # "OUH Ubuntu 18.04 Data Science VM":

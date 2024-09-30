@@ -44,18 +44,15 @@ sudo systemctl stop colord
 sudo apt install -y jupyter-notebook microsoft-edge-dev
 
 ## VS Code
-echo "init_vm.sh: Adding Microsoft GPG Key and Repository for VS Code"
-wget -qO- https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor > /usr/share/keyrings/packages.microsoft.gpg
-echo "deb [signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
-
-# Update and install VS Code
-sudo apt update
-sudo apt install -y code
-sudo apt install -y gvfs-bin || true
-
 echo "init_vm.sh: Folders"
-sudo mkdir -p /opt/vscode/user-data
-sudo mkdir -p /opt/vscode/extensions
+sudo mkdir /opt/vscode/user-data
+sudo mkdir /opt/vscode/extensions
+
+echo "init_vm.sh: Keys"
+wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
+sudo apt update
+sudo apt install -y code gvfs-bin
 
 ## VSCode Extensions
 echo "init_vm.sh: VSCode extensions"
@@ -142,8 +139,8 @@ if [ "${SHARED_STORAGE_ACCESS}" -eq 1 ]; then
 
   # Create required file paths
   sudo mkdir -p "$mntPath"
-  sudo mkdir -p "$credentialRoot"
-  sudo mkdir -p "$mntRoot"
+  sudo mkdir -p "/etc/smbcredentials"
+  sudo mkdir -p $mntRoot
 
   ### Auto FS to persist storage
   # Create credential file
@@ -157,14 +154,14 @@ if [ "${SHARED_STORAGE_ACCESS}" -eq 1 ]; then
   # Change permissions on the credential file so only root can read or modify the password file.
   sudo chmod 600 "$smbCredentialFile"
 
-  # Configure autofs with adjusted options
-  echo "$fileShareName -fstype=cifs,rw,uid=$(id -u),gid=$(id -g),file_mode=0777,dir_mode=0777,credentials=$smbCredentialFile ://$smbPath" | sudo tee /etc/auto.fileshares > /dev/null
+  # Configure autofs
+  echo "$fileShareName -fstype=cifs,rw,dir_mode=0777,credentials=$smbCredentialFile :$smbPath" | sudo tee /etc/auto.fileshares > /dev/null
   echo "$mntRoot /etc/auto.fileshares --timeout=60" | sudo tee /etc/auto.master > /dev/null
 
   # Restart service to register changes
   sudo systemctl restart autofs
 
-  # Create a visible link to the shared directory
+  # Autofs mounts when accessed for 60 seconds.  Folder created for constant visible mount
   sudo ln -s "$mntPath" "/$fileShareName"
 
   # Ensure permissions are set correctly on the mount point
@@ -186,9 +183,9 @@ bash /tmp/Anaconda3-2022.05-Linux-x86_64.sh -b -p /opt/anaconda
 ### Anaconda Config
 if [ "${CONDA_CONFIG}" -eq 1 ]; then
   echo "init_vm.sh: Anaconda"
-  export PATH="/opt/condabin":$PATH
-  export PATH="/opt/bin":$PATH
-  export PATH="/opt/envs/py38_default/bin":$PATH
+  export PATH="/opt/anaconda/condabin":$PATH
+  export PATH="/opt/anaconda/bin":$PATH
+  export PATH="/opt/anaconda/envs/py38_default/bin":$PATH
   conda config --add channels "${NEXUS_PROXY_URL}"/repository/conda-mirror/main/  --system
   conda config --add channels "${NEXUS_PROXY_URL}"/repository/conda-repo/main/  --system
   conda config --remove channels defaults --system
