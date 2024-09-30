@@ -42,16 +42,16 @@ tar -xf /tmp/prom-6.12-all-platforms.tar.gz -C /opt/prom-tools
 sudo chmod +x /opt/prom-tools/*.sh
 
 
-## VS Code
-echo "init_vm.sh: Folders"
-sudo mkdir /opt/vscode/user-data
-sudo mkdir /opt/vscode/extensions
+# ## VS Code
+# echo "init_vm.sh: Folders"
+# sudo mkdir /opt/vscode/user-data
+# sudo mkdir /opt/vscode/extensions
 
-echo "init_vm.sh: Keys"
-wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
-sudo apt update
-sudo apt install -y code gvfs-bin
+# echo "init_vm.sh: Keys"
+# wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo apt-key add -
+# sudo add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
+# sudo apt update
+# sudo apt install -y code gvfs-bin
 
 ## VSCode Extensions
 echo "init_vm.sh: VSCode extensions"
@@ -74,10 +74,37 @@ wget https://download1.rstudio.org/desktop/bionic/amd64/rstudio-2022.07.2-576-am
 sudo gdebi --non-interactive /tmp/rstudio-2022.07.2-576-amd64.deb
 
 
-## Azure Storage Explorer
+# Azure Storage Explorer
+sudo apt-get remove -y dotnet-host-7.0
+sudo apt-get remove -y dotnet-sdk-7.0
+sudo apt-get install -y dotnet-sdk-8.0
 sudo apt install gnome-keyring -y
-sudo snap install storage-explorer
-sudo snap connect storage-explorer:password-manager-service :password-manager-service
+
+sudo chmod 666 /etc/profile
+
+echo "export DOTNET_ROOT=/usr/share/dotnet
+export PATH=$PATH:/usr/share/dotnet
+" | sudo tee -a /etc/profile
+
+sudo chmod 644 /etc/profile
+
+wget -q "${NEXUS_PROXY_URL}"/repository/microsoft-download/A/E/3/AE32C485-B62B-4437-92F7-8B6B2C48CB40/StorageExplorer-linux-x64.tar.gz -P /tmp
+sudo mkdir /opt/storage-explorer
+sudo tar xvf /tmp/StorageExplorer-linux-x64.tar.gz -C /opt/storage-explorer
+sudo chmod +x /opt/storage-explorer/*
+
+sudo tee /usr/share/applications/storage-explorer.desktop <<END
+[Desktop Entry]
+Name=Storage Explorer
+Comment=Azure Storage Explorer
+Exec=/opt/storage-explorer/StorageExplorer
+Icon=/opt/storage-explorer/resources/app/out/app/icon.png
+Terminal=false
+Type=Application
+StartupNotify=false
+StartupWMClass=Code
+Categories=Development;
+END
 
 
 ## PostgreSQL
