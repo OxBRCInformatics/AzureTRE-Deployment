@@ -87,6 +87,10 @@ RUN if [ "${INTERACTIVE}" = "false" ]; then \
 apt-get update && apt-get install --no-install-recommends -y git \
 && apt-get clean -y && rm -rf /var/lib/apt/lists/* ; fi
 
+# Override pip version
+ARG PIP_VERSION=24.2  # Override pip version
+RUN pip3 --no-cache-dir install pip==${PIP_VERSION} && pip3 config set global.disable-pip-version-check true
+
 USER $USERNAME
 
 # Save command line history
