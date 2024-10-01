@@ -170,7 +170,7 @@ sudo apt-get remove xfce4-screensaver -y
 
 ## VS Code
 echo "init_vm.sh: VS Code"
-sudo apt install -y code
+sudo DEBIAN_FRONTEND=noninteractive apt install -y code
 sudo apt install -y gvfs-bin || true
 
 echo "init_vm.sh: Folders"
