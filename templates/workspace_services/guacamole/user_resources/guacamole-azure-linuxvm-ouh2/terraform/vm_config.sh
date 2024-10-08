@@ -2,9 +2,10 @@
 
 set -o errexit
 set -o pipefail
-set -o nounset
+# set -o nounset
 # Uncomment this line to see each command for debugging (careful: this will show secrets!)
-set -o xtrace
+# set -o xtrace
+
 
 # Remove apt sources not included in sources.list file
 sudo rm -f /etc/apt/sources.list.d/*
@@ -34,30 +35,6 @@ sudo -u "${VM_USER}" -i bash -c 'echo xset -dpms >> ~/.xsession'
 # Make sure xrdp service starts up with the system
 sudo systemctl enable xrdp
 sudo service xrdp restart
-
-## Python 3.8 and Jupyter
-sudo apt install -y jupyter-notebook microsoft-edge-dev
-
-## VS Code
-echo "init_vm.sh: VS Code"
-wget -q "${NEXUS_PROXY_URL}"/repository/microsoft-keys/microsoft.asc -O- | sudo apt-key add -
-echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
-sudo apt install -y code
-# sudo apt install -y gvfs-bin || true
-
-echo "init_vm.sh: Folders"
-sudo mkdir -p /opt/vscode/user-data
-sudo mkdir -p /opt/vscode/extensions
-
-# echo "init_vm.sh: azure-cli"
-sudo apt install azure-cli -y
-
-# TODO: need to look at proxy extentions
-## VSCode Extensions
-# echo "init_vm.sh: VSCode extensions"
-# code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension ms-python.python
-# code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension REditorSupport.r
-# code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension RDebugger.r-debugger
 
 # Azure Storage Explorer
 sudo apt-get remove -y dotnet-host-7.0
@@ -91,18 +68,9 @@ StartupWMClass=Code
 Categories=Development;
 END
 
-## R
-echo "init_vm.sh: R Setup"
-sudo apt install -y r-base
 
-# RStudio Desktop
-echo "init_vm.sh: RStudio"
-wget "${NEXUS_PROXY_URL}"/repository/r-studio-download/electron/jammy/amd64/rstudio-2023.12.1-402-amd64.deb -P /tmp/2204
-wget "${NEXUS_PROXY_URL}"/repository/r-studio-download/electron/focal/amd64/rstudio-2023.12.1-402-amd64.deb -P /tmp/2004
-sudo gdebi --non-interactive /tmp/"${APT_SKU}"/rstudio-2023.12.1-402-amd64.deb
-
-# Fix for blank screen on DSVM (/sh -> /bash due to conflict with profile.d scripts)
-sudo sed -i 's|!/bin/sh|!/bin/bash|g' /etc/xrdp/startwm.sh
+# Make sure xrdp service starts up with the system
+# sudo systemctl enable xrdp
 
 if [ "${SHARED_STORAGE_ACCESS}" -eq 1 ]; then
   # Install required packages
@@ -149,12 +117,25 @@ if [ "${SHARED_STORAGE_ACCESS}" -eq 1 ]; then
   sudo ln -s "$mntPath" "/$fileShareName"
 fi
 
+## R
+echo "init_vm.sh: R Setup"
+sudo apt install -y r-base
+
+# RStudio Desktop
+echo "init_vm.sh: RStudio"
+wget "${NEXUS_PROXY_URL}"/repository/r-studio-download/electron/jammy/amd64/rstudio-2023.12.1-402-amd64.deb -P /tmp/2204
+wget "${NEXUS_PROXY_URL}"/repository/r-studio-download/electron/focal/amd64/rstudio-2023.12.1-402-amd64.deb -P /tmp/2004
+sudo gdebi --non-interactive /tmp/"${APT_SKU}"/rstudio-2023.12.1-402-amd64.deb
+
+# Fix for blank screen on DSVM (/sh -> /bash due to conflict with profile.d scripts)
+sudo sed -i 's|!/bin/sh|!/bin/bash|g' /etc/xrdp/startwm.sh
+
 ### Anaconda Config
 if [ "${CONDA_CONFIG}" -eq 1 ]; then
-  echo "init_vm.sh: Anaconda"
-  export PATH="/anaconda/condabin":$PATH
-  export PATH="/anaconda/bin":$PATH
-  export PATH="/anaconda/envs/py38_default/bin":$PATH
+  export PATH="/opt/anaconda/condabin":$PATH
+  export PATH="/opt/anaconda/bin":$PATH
+  export PATH="/opt/anaconda/envs/py38_default/bin":$PATH
+  conda config
   conda config --add channels "${NEXUS_PROXY_URL}"/repository/conda-mirror/main/  --system
   conda config --add channels "${NEXUS_PROXY_URL}"/repository/conda-repo/main/  --system
   conda config --remove channels defaults --system
@@ -171,14 +152,11 @@ jq -n --arg proxy "${NEXUS_PROXY_URL}:8083" '{"registry-mirrors": [$proxy]}' > /
 sudo systemctl daemon-reload
 sudo systemctl restart docker
 
-# R config
-sudo echo -e "local({\n    r <- getOption(\"repos\")\n    r[\"Nexus\"] <- \"""${NEXUS_PROXY_URL}\"/repository/r-proxy/\"\n    options(repos = r)\n})" | sudo tee /etc/R/Rprofile.site
-
 # Jupiter Notebook Config
 sudo sed -i -e 's/Terminal=true/Terminal=false/g' /usr/share/applications/jupyter-notebook.desktop
 
-# Default Browser
-sudo update-alternatives --config x-www-browser
+# R config
+sudo echo -e "local({\n    r <- getOption(\"repos\")\n    r[\"Nexus\"] <- \"""${NEXUS_PROXY_URL}/repository/r-proxy/\"\n    options(repos = r)\n})" | sudo tee /etc/R/Rprofile.site
 
 # Prevent screen timeout
 echo "init_vm.sh: Preventing Timeout"
