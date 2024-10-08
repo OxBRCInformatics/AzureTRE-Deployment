@@ -6,8 +6,8 @@ set -o nounset
 # Uncomment this line to see each command for debugging (careful: this will show secrets!)
 set -o xtrace
 
-# # Remove apt sources not included in sources.list file
-# sudo rm -f /etc/apt/sources.list.d/*
+# Remove apt sources not included in sources.list file
+sudo rm -f /etc/apt/sources.list.d/*
 
 # Update apt packages from configured Nexus sources
 echo "init_vm.sh: START"
@@ -38,8 +38,24 @@ sudo service xrdp restart
 ## Python 3.8 and Jupyter
 sudo apt install -y jupyter-notebook microsoft-edge-dev
 
+## VS Code
+echo "init_vm.sh: VS Code"
+sudo apt install -y code
+sudo apt install -y gvfs-bin || true
+
+echo "init_vm.sh: Folders"
+sudo mkdir -p /opt/vscode/user-data
+sudo mkdir -p /opt/vscode/extensions
+
 # echo "init_vm.sh: azure-cli"
 sudo apt install azure-cli -y
+
+# TODO: need to look at proxy extentions
+## VSCode Extensions
+# echo "init_vm.sh: VSCode extensions"
+# code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension ms-python.python
+# code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension REditorSupport.r
+# code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension RDebugger.r-debugger
 
 # Azure Storage Explorer
 sudo apt-get remove -y dotnet-host-7.0
@@ -129,8 +145,6 @@ if [ "${SHARED_STORAGE_ACCESS}" -eq 1 ]; then
 
   # Autofs mounts when accessed for 60 seconds.  Folder created for constant visible mount
   sudo ln -s "$mntPath" "/$fileShareName"
-
-  sudo chmod 777 "$mntPath"
 fi
 
 ### Anaconda Config
@@ -167,22 +181,6 @@ sudo update-alternatives --config x-www-browser
 # Prevent screen timeout
 echo "init_vm.sh: Preventing Timeout"
 sudo apt-get remove xfce4-screensaver -y
-
-## VS Code
-echo "init_vm.sh: VS Code"
-sudo DEBIAN_FRONTEND=noninteractive apt install -y code
-sudo apt install -y gvfs-bin || true
-
-echo "init_vm.sh: Folders"
-sudo mkdir -p /opt/vscode/user-data
-sudo mkdir -p /opt/vscode/extensions
-
-# TODO: need to look at proxy extentions
-## VSCode Extensions
-# echo "init_vm.sh: VSCode extensions"
-# code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension ms-python.python
-# code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension REditorSupport.r
-# code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension RDebugger.r-debugger
 
 ## Cleanup
 echo "init_vm.sh: Cleanup"
