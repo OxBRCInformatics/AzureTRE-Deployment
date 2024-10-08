@@ -40,8 +40,10 @@ sudo apt install -y jupyter-notebook microsoft-edge-dev
 
 ## VS Code
 echo "init_vm.sh: VS Code"
+wget -q "${NEXUS_PROXY_URL}"/repository/microsoft-keys/microsoft.asc -O- | sudo apt-key add -
+echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
 sudo apt install -y code
-sudo apt install -y gvfs-bin || true
+# sudo apt install -y gvfs-bin || true
 
 echo "init_vm.sh: Folders"
 sudo mkdir -p /opt/vscode/user-data
