@@ -556,7 +556,7 @@ jobs:
           - {BUNDLE_TYPE: "workspace_service",
              BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspace_services/azuresql"}
           - {BUNDLE_TYPE: "workspace_service",
-             BUNDLE_DIR: "./templates/workspace_services/openai"}
+             BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspace_services/openai"}
         # Add your bundles here
     environment: ${{ inputs.environmentName }}
     steps:
