@@ -14,7 +14,7 @@ locals {
     tre_workspace_service_id = var.parent_service_id
     tre_user_resource_id     = var.tre_resource_id
   }
-  nexus_proxy_url = "http://nexus-${data.azurerm_public_ip.app_gateway_ip.fqdn}"
+  nexus_proxy_url = "https://nexus-${data.azurerm_public_ip.app_gateway_ip.fqdn}"
   # Load VM SKU/image details from porter.yaml
   porter_yaml   = yamldecode(file("${path.module}/../porter.yaml"))
   vm_sizes      = local.porter_yaml["custom"]["vm_sizes"]
@@ -25,5 +25,5 @@ locals {
   # selected_image_source_refs is an array to enable easy use of a dynamic block
   selected_image_source_refs = lookup(local.selected_image, "source_image_reference", null) == null ? [] : [local.selected_image.source_image_reference]
   selected_image_source_id   = lookup(local.selected_image, "source_image_name", null) == null ? null : "${var.image_gallery_id}/images/${local.selected_image.source_image_name}"
-  apt_sku                    = local.selected_image_source_refs[0]["apt_sku"]
+  apt_sku                    = length(local.selected_image_source_refs) > 0 ? local.selected_image_source_refs[0]["apt_sku"] : "22.04"
 }
