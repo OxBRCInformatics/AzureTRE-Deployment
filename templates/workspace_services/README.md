@@ -19,6 +19,7 @@ Workspace Templates are located in this folder. These Templates are for the Comp
   |   16 CPU             | 64GB           | £1.25 / hour | Standard_D16s_v5
   |   6 CPU - 112GB RAM  | 1 GPU - 16GB   | £3.21 / hour | Standard_NC6s_v3
   |   12 CPU - 224GB RAM | 2 GPU - 32GB   | £6.42 / hour | Standard_NC12s_v3
+  |
 
 ## Current VM Image options
 
