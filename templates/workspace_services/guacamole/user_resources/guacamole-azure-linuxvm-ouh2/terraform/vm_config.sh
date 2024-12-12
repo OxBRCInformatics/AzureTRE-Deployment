@@ -24,13 +24,25 @@ DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true dpkg-reconfigure
 sudo apt install -y xfce4 xfce4-goodies xorg dbus-x11 x11-xserver-utils
 echo /usr/sbin/gdm3 > /etc/X11/default-display-manager
 
+# Disable lock screen via GNOME lockdown settings
+gsettings set org.gnome.desktop.lockdown disable-lock-screen true
+
 ## Install xrdp so Guacamole can connect via RDP
 echo "init_vm.sh: xrdp"
 sudo apt install -y xrdp xorgxrdp xfce4-session
 sudo adduser xrdp ssl-cert
 sudo -u "${VM_USER}" -i bash -c 'echo xfce4-session > ~/.xsession'
-sudo -u "${VM_USER}" -i bash -c 'echo xset s off >> ~/.xsession'
-sudo -u "${VM_USER}" -i bash -c 'echo xset -dpms >> ~/.xsession'
+sudo -u "${VM_USER}" -i bash -c 'echo xset s off >> ~/.xsession'  # Disable screensaver timeout
+sudo -u "${VM_USER}" -i bash -c 'echo xset -dpms >> ~/.xsession' # Disable DPMS screen power management
+
+# Disable the lock screen in xfce4-power-manager
+echo "Disabling lock screen in xfce4-power-manager"
+sudo -u "${VM_USER}" bash -c 'echo "<property name=\"lock-screen-suspend-hibernate\" type=\"bool\" value=\"false\"/>" >> ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-power-manager.xml'
+
+# Disable lock screen in xfce4-screensaver
+echo "Disabling lock screen in xfce4-screensaver"
+sudo -u "${VM_USER}" bash -c 'echo "[Xfce4Screensaver]" > ~/.config/xfce4/xfce4-screensaver/settings.conf'
+sudo -u "${VM_USER}" bash -c 'echo "lock-enabled=false" >> ~/.config/xfce4/xfce4-screensaver/settings.conf'
 
 # Make sure xrdp service starts up with the system
 sudo systemctl enable xrdp
@@ -107,7 +119,7 @@ if [ "${SHARED_STORAGE_ACCESS}" -eq 1 ]; then
   sudo chmod 600 "$smbCredentialFile"
 
   # Configure autofs
-  echo "$fileShareName -fstype=cifs,rw,dir_mode=0777,credentials=$smbCredentialFile :$smbPath" | sudo tee /etc/auto.fileshares > /dev/null
+  echo "$fileShareName -fstype=cifs,rw,file_mode=0777,dir_mode=0777,credentials=$smbCredentialFile :$smbPath" | sudo tee /etc/auto.fileshares > /dev/null
   echo "$mntRoot /etc/auto.fileshares --timeout=60" | sudo tee /etc/auto.master > /dev/null
 
   # Restart service to register changes
