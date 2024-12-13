@@ -40,22 +40,12 @@ sudo -u "${VM_USER}" -i bash -c 'echo xset -dpms >> ~/.xsession' # Disable DPMS 
 
 # Disable the lock screen in xfce4-power-manager
 echo "Disabling lock screen in xfce4-power-manager"
-sudo -u "${VM_USER}" bash -c 'mkdir -p ~/.config/xfce4/xfconf/xfce-perchannel-xml/'
-sudo -u "${VM_USER}" bash -c 'cat > ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-power-manager.xml <<EOF
-<?xml version="1.0" encoding="UTF-8"?>
-<channel name="xfce4-power-manager" version="1.0">
-  <property name="lock-screen-suspend-hibernate" type="bool" value="false"/>
-  <property name="blank-on-inactive" type="int" value="0"/>
-</channel>
-EOF'
+sudo -u "${VM_USER}" bash -c 'echo "<property name=\"lock-screen-suspend-hibernate\" type=\"bool\" value=\"false\"/>" >> ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-power-manager.xml'
 
 # Disable lock screen in xfce4-screensaver
 echo "Disabling lock screen in xfce4-screensaver"
-sudo -u "${VM_USER}" bash -c 'mkdir -p ~/.config/xfce4/xfce4-screensaver/'
-sudo -u "${VM_USER}" bash -c 'cat > ~/.config/xfce4/xfce4-screensaver/settings.conf <<EOF
-[Xfce4Screensaver]
-lock-enabled=false
-EOF'
+sudo -u "${VM_USER}" bash -c 'echo "[Xfce4Screensaver]" > ~/.config/xfce4/xfce4-screensaver/settings.conf'
+sudo -u "${VM_USER}" bash -c 'echo "lock-enabled=false" >> ~/.config/xfce4/xfce4-screensaver/settings.conf'
 
 # Make sure xrdp service starts up with the system
 sudo systemctl enable xrdp
