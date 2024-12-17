@@ -29,6 +29,8 @@ echo "init_vm.sh: xrdp"
 sudo apt install -y xrdp xorgxrdp xfce4-session
 sudo adduser xrdp ssl-cert
 sudo -u "${VM_USER}" -i bash -c 'echo xfce4-session > ~/.xsession'
+sudo -u "${VM_USER}" -i bash -c 'echo xset s off >> ~/.xsession'
+sudo -u "${VM_USER}" -i bash -c 'echo xset -dpms >> ~/.xsession'
 
 # Make sure xrdp service starts up with the system
 sudo systemctl enable xrdp
