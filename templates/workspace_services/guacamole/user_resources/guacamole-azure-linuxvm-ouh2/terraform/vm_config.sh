@@ -19,6 +19,7 @@ sudo apt-get update || true
 
 ## Desktop
 echo "init_vm.sh: Desktop"
+sudo apt-get install gdm3
 sudo systemctl start gdm3 || true
 DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true dpkg-reconfigure gdm3 || true
 sudo apt install -y xfce4 xfce4-goodies xorg dbus-x11 x11-xserver-utils
@@ -161,9 +162,24 @@ sudo systemctl restart docker
 # Jupiter Notebook Config
 sudo sed -i -e 's/Terminal=true/Terminal=false/g' /usr/share/applications/jupyter-notebook.desktop
 
-# Prevent screen timeout
-echo "init_vm.sh: Preventing Timeout"
+## Prevent screen timeout and lock screen
+echo "init_vm.sh: Disabling lock screen"
+
+# Remove xfce4-screensaver (to disable screen saver)
 sudo apt-get remove xfce4-screensaver -y
+
+# Disable lock screen using gsettings
+gsettings set org.gnome.desktop.screensaver lock-enabled false
+gsettings set org.gnome.desktop.screensaver idle-activation-enabled false
+
+# Disable lock screen via XFCE Power Manager settings
+xfconf-query -c xfce4-power-manager -p /general/lockscreen-suspend-hibernate -s false
+xfconf-query -c xfce4-power-manager -p /general/lockscreen -s false
+
+# Also, if using gdm3, ensure it's not locking the session
+sudo sh -c 'echo "[org/gnome/desktop/screensaver]\nlock-enabled=false" >> /etc/gdm3/greeter.dconf-defaults'
+
+
 
 ## Cleanup
 echo "init_vm.sh: Cleanup"
