@@ -19,7 +19,6 @@ sudo apt-get update || true
 
 ## Desktop
 echo "init_vm.sh: Desktop"
-sudo apt-get install gdm3
 sudo systemctl start gdm3 || true
 DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true dpkg-reconfigure gdm3 || true
 sudo apt install -y xfce4 xfce4-goodies xorg dbus-x11 x11-xserver-utils
@@ -175,10 +174,6 @@ gsettings set org.gnome.desktop.screensaver idle-activation-enabled false
 # Disable lock screen via XFCE Power Manager settings
 xfconf-query -c xfce4-power-manager -p /general/lockscreen-suspend-hibernate -s false
 xfconf-query -c xfce4-power-manager -p /general/lockscreen -s false
-
-# Also, if using gdm3, ensure it's not locking the session
-sudo sh -c 'echo "[org/gnome/desktop/screensaver]\nlock-enabled=false" >> /etc/gdm3/greeter.dconf-defaults'
-
 
 
 ## Cleanup
