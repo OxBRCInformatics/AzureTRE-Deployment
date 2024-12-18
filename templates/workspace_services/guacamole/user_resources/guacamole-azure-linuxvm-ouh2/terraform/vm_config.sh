@@ -127,11 +127,15 @@ wget "${NEXUS_PROXY_URL}"/repository/r-studio-download/electron/jammy/amd64/rstu
 wget "${NEXUS_PROXY_URL}"/repository/r-studio-download/electron/focal/amd64/rstudio-2023.12.1-402-amd64.deb -P /tmp/2004
 sudo gdebi --non-interactive /tmp/"${APT_SKU}"/rstudio-2023.12.1-402-amd64.deb
 
+# R config
+sudo echo -e "local({\n    r <- getOption(\"repos\")\n    r[\"Nexus\"] <- \"""${NEXUS_PROXY_URL}/repository/r-proxy/\"\n    options(repos = r)\n})" | sudo tee /etc/R/Rprofile.site
+
+
 # Fix for blank screen on DSVM (/sh -> /bash due to conflict with profile.d scripts)
 sudo sed -i 's|!/bin/sh|!/bin/bash|g' /etc/xrdp/startwm.sh
 
 ### Anaconda Config
-if [ "${CONDA_CONFIG}" -eq 1 ]; then
+if [ "${CONDA_CONFIG}" == "true" ]; then
   export PATH="/opt/anaconda/condabin":$PATH
   export PATH="/opt/anaconda/bin":$PATH
   export PATH="/opt/anaconda/envs/py38_default/bin":$PATH
@@ -143,20 +147,19 @@ if [ "${CONDA_CONFIG}" -eq 1 ]; then
 fi
 
 # Docker install and config
-sudo apt-get remove -y moby-tini || true
+sudo apt-get update
 sudo apt-get install -y r-base-core
 sudo apt-get install -y ca-certificates curl gnupg lsb-release
-sudo apt-get install -y docker-compose-plugin docker-ce-cli containerd.io jq
-sudo apt-get install -y docker-ce
-jq -n --arg proxy "${NEXUS_PROXY_URL}:8083" '{"registry-mirrors": [$proxy]}' > /etc/docker/daemon.json
-sudo systemctl daemon-reload
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin jq
+# Create Docker config directory if it doesn't exist
+sudo mkdir -p /etc/docker/
+# Configure Docker registry mirrors
+jq -n --arg proxy "${NEXUS_PROXY_URL}:8083" '{"registry-mirrors": [$proxy]}' | sudo tee /etc/docker/daemon.json > /dev/null
+# Restart Docker service to apply configuration
 sudo systemctl restart docker
 
 # Jupiter Notebook Config
 sudo sed -i -e 's/Terminal=true/Terminal=false/g' /usr/share/applications/jupyter-notebook.desktop
-
-# R config
-sudo echo -e "local({\n    r <- getOption(\"repos\")\n    r[\"Nexus\"] <- \"""${NEXUS_PROXY_URL}/repository/r-proxy/\"\n    options(repos = r)\n})" | sudo tee /etc/R/Rprofile.site
 
 # Prevent screen timeout
 echo "init_vm.sh: Preventing Timeout"
