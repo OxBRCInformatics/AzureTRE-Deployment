@@ -134,8 +134,9 @@ sudo echo -e "local({\n    r <- getOption(\"repos\")\n    r[\"Nexus\"] <- \"""${
 # Fix for blank screen on DSVM (/sh -> /bash due to conflict with profile.d scripts)
 sudo sed -i 's|!/bin/sh|!/bin/bash|g' /etc/xrdp/startwm.sh
 
-# Create the Desktop directory if it doesn't exist
-sudo -u "$VM_USER" mkdir -p /home/"$VM_USER"/Desktop
+sudo bash -c "cat > /home" << 'EOF'
+testing a file
+EOF
 
 # Add a README file to the Desktop
 README_PATH="/home/$VM_USER/Desktop/README.txt"
