@@ -134,49 +134,45 @@ sudo echo -e "local({\n    r <- getOption(\"repos\")\n    r[\"Nexus\"] <- \"""${
 # Fix for blank screen on DSVM (/sh -> /bash due to conflict with profile.d scripts)
 sudo sed -i 's|!/bin/sh|!/bin/bash|g' /etc/xrdp/startwm.sh
 
-sudo bash -c "cat > /home" << 'EOF'
-testing a file
-EOF
-
 # Add a README file to the Desktop
-README_PATH="/home/$VM_USER/Desktop/README.txt"
-sudo -u "$VM_USER" bash -c "cat > $README_PATH" << 'EOF'
-Welcome to your Linux VM!
+# README_PATH="/home/$VM_USER/Desktop/README.txt"
+# sudo -u "$VM_USER" bash -c "cat > $README_PATH" << 'EOF'
+# Welcome to your Linux VM!
 
-This VM is pre-configured with the following tools:
-- XFCE Desktop Environment
-- Azure Storage Explorer
-- RStudio Desktop
-- Docker
-- Anaconda
+# This VM is pre-configured with the following tools:
+# - XFCE Desktop Environment
+# - Azure Storage Explorer
+# - RStudio Desktop
+# - Docker
+# - Anaconda
 
-To get started:
-1. Open any application using the Applications Menu.
-2. Use RStudio or Jupyter Notebook for data analysis.
-3. Access your shared file storage at /fileshares/vm-shared-storage (if configured).
-4. See the package mirror options by accessing http://nexus-tvstre.uksouth.cloudapp.azure.com
+# To get started:
+# 1. Open any application using the Applications Menu.
+# 2. Use RStudio or Jupyter Notebook for data analysis.
+# 3. Access your shared file storage at /fileshares/vm-shared-storage (if configured).
+# 4. See the package mirror options by accessing http://nexus-tvstre.uksouth.cloudapp.azure.com
 
-Recommendations:
-1. R packages may fail to install initially. If you see an error, edit Rprofile to use the local package mirror:
+# Recommendations:
+# 1. R packages may fail to install initially. If you see an error, edit Rprofile to use the local package mirror:
 
-sudo nano /usr/lib/R/etc/Rprofile.site
+# sudo nano /usr/lib/R/etc/Rprofile.site
 
-Replace the local(...) lines at the bottom with:
-local({
-    r <- getOption("repos")
-    r["Nexus"] <- "http://nexus-tvstre.uksouth.cloudapp.azure.com/repository/r-proxy/"
-    options(repos = r)
-})
+# Replace the local(...) lines at the bottom with:
+# local({
+#     r <- getOption("repos")
+#     r["Nexus"] <- "http://nexus-tvstre.uksouth.cloudapp.azure.com/repository/r-proxy/"
+#     options(repos = r)
+# })
 
-2. Disable XFCE Lock Screen otherwise you may get locked out:
+# 2. Disable XFCE Lock Screen otherwise you may get locked out:
 
-Open Applications > Settings > Screensaver; click on Lock Screen tab, disable the Lock Screen.
+# Open Applications > Settings > Screensaver; click on Lock Screen tab, disable the Lock Screen.
 
 
-For further assistance, contact your administrator.
+# For further assistance, contact your administrator.
 
-Enjoy!
-EOF
+# Enjoy!
+# EOF
 
 # Set appropriate permissions for the README file
 sudo chmod 644 "$README_PATH"
