@@ -22,9 +22,10 @@ To work with devcontainers you will need:
 - [Remote containers extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
 ## Version upgrades
+
 | Version | Key points | Date of OUH upgrade |
 | -- | -- | -- |
-| v0.20.0 | Increase size of Nexus VM, Add option to configure auto shutdown for Linux VM | 18-03-2025 | 
+| v0.20.0 | Increase size of Nexus VM, Add option to configure auto shutdown for Linux VM | 18-03-2025 |
 
 ## Contributing
 
