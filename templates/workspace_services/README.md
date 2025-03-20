@@ -11,15 +11,15 @@ Workspace Templates are located in this folder. These Templates are for the Comp
 
   | CPU | GPU / RAM | Price | Size |
   | --- | --- | --- | --- |
-  |   2 CPU              | 4GB                    | £0.05 / hour | Standard_B2s
-  |   2 CPU              | 8GB                    | £0.15 / hour | Standard_D2s_v5
-  |   4 CPU              | 16GB                   | £0.30 / hour | Standard_D4s_v5
-  |   8 CPU              | 32GB                   | £0.65 / hour | Standard_D8s_v5
-  |   8 CPU              | 64GB                   | £0.75 / hour | Standard_E8as_v4
-  |   16 CPU             | 64GB                   | £1.25 / hour | Standard_D16s_v5
-  |   6 CPU              | 55GB RAM - 1 A10 GPU   | £0.45 / hour | Standard_NV6ads_A10_v5
-  |   6 CPU - 112GB RAM  | 1 GPU - 16GB           | £3.21 / hour | Standard_NC6s_v3
-  |   12 CPU - 224GB RAM | 2 GPU - 32GB           | £6.42 / hour | Standard_NC12s_v3
+  |   2 CPU              | 4GB                    | £0.05 / hour | Standard_B2s           |
+  |   2 CPU              | 8GB                    | £0.15 / hour | Standard_D2s_v5        |
+  |   4 CPU              | 16GB                   | £0.30 / hour | Standard_D4s_v5        |
+  |   8 CPU              | 32GB                   | £0.65 / hour | Standard_D8s_v5        |
+  |   8 CPU              | 64GB                   | £0.75 / hour | Standard_E8as_v4       |
+  |   16 CPU             | 64GB                   | £1.25 / hour | Standard_D16s_v5       |
+  |   6 CPU              | 55GB RAM - 1 A10 GPU   | £0.45 / hour | Standard_NV6ads_A10_v5 |
+  |   6 CPU - 112GB RAM  | 1 GPU - 16GB           | £3.21 / hour | Standard_NC6s_v3       |
+  |   12 CPU - 224GB RAM | 2 GPU - 32GB           | £6.42 / hour | Standard_NC12s_v3      |
   
 ## Current VM Image options
 
@@ -38,9 +38,9 @@ Workspace Templates are located in this folder. These Templates are for the Comp
 The `guacamole-azure-linuxvm` and `guacamole-azure-windowsvm` folders follow a consistent layout.
 To update one of these templates (or to create a new template based on these folders) to use different image details or VM sizes, there are a few files that need to be updated:
 
-| File                   | Description                                                                                                                                                                                                                                                                        |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `porter.yaml`          | This file describes the template and the name should be updated when creating a template based on the folder.<br> This file also contains a `custom` data section that describes the VM properties.<br> Additionally, the version needs to be updated to deploy an updated version |
+| File |  Description |
+| ---- | ------------ |
+| `porter.yaml`          | This file describes the template and the name should be updated when creating a template based on the folder. This file also contains a `custom` data section that describes the VM properties. Additionally, the version needs to be updated to deploy an updated version |
 | `template_schema.json` | This file controls the validation applied to the template, for example specifying the valid options for fields such as size and image                                                                                                                                              |
 
 ### Configuration
