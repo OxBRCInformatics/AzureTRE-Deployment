@@ -35,6 +35,6 @@ locals {
   secure_boot_enabled        = lookup(local.selected_image, "secure_boot_enabled", false)
   vtpm_enabled               = lookup(local.selected_image, "vtpm_enabled", false)
   apt_sku                    = length(local.selected_image_source_refs) > 0 ? local.selected_image_source_refs[0]["apt_sku"] : "22.04"
-  cmk_name                 = "tre-encryption-${local.workspace_resource_name_suffix}"
-  encryption_identity_name = "id-encryption-${var.tre_id}-${local.short_workspace_id}"
+  cmk_name                   = "tre-encryption-${local.workspace_resource_name_suffix}"
+  encryption_identity_name   = "id-encryption-${var.tre_id}-${local.short_workspace_id}"
 }

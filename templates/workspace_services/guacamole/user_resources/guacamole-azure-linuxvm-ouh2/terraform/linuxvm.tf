@@ -42,7 +42,7 @@ resource "azurerm_linux_virtual_machine" "linuxvm" {
   network_interface_ids           = [azurerm_network_interface.internal.id]
   size                            = local.vm_sizes[var.vm_size]
   disable_password_authentication = false
-  admin_username                = local.admin_username
+  admin_username                  = local.admin_username
   admin_password                  = random_password.password.result
   secure_boot_enabled             = local.secure_boot_enabled
   vtpm_enabled                    = local.vtpm_enabled
