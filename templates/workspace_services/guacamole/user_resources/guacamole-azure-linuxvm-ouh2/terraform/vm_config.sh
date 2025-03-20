@@ -14,7 +14,7 @@ sudo rm -f /etc/apt/sources.list.d/*
 echo "init_vm.sh: START"
 sudo apt update || true
 sudo apt upgrade -y
-sudo apt install -y gnupg2 software-properties-common apt-transport-https wget dirmngr gdebi-core
+sudo apt install -y gnupg2 software-properties-common apt-transport-https wget dirmngr gdebi-core debconf-utils
 sudo apt-get update || true
 
 ## Desktop
@@ -24,17 +24,14 @@ DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true dpkg-reconfigure
 sudo apt install -y xfce4 xfce4-goodies xorg dbus-x11 x11-xserver-utils
 echo /usr/sbin/gdm3 > /etc/X11/default-display-manager
 
-## Install xrdp so Guacamole can connect via RDP
-echo "init_vm.sh: xrdp"
-sudo apt install -y xrdp xorgxrdp xfce4-session
-sudo adduser xrdp ssl-cert
-sudo -u "${VM_USER}" -i bash -c 'echo xfce4-session > ~/.xsession'
-sudo -u "${VM_USER}" -i bash -c 'echo xset s off >> ~/.xsession'
-sudo -u "${VM_USER}" -i bash -c 'echo xset -dpms >> ~/.xsession'
+## Python 3.8 and Jupyter
+sudo apt install -y jupyter-notebook microsoft-edge-dev
 
-# Make sure xrdp service starts up with the system
-sudo systemctl enable xrdp
-sudo service xrdp restart
+## VS Code
+echo "init_vm.sh: VS Code"
+echo code code/add-microsoft-repo boolean false | sudo debconf-set-selections
+sudo apt install -y code
+sudo apt install -y gvfs-bin || true
 
 # Azure Storage Explorer
 sudo apt-get remove -y dotnet-host-7.0
@@ -107,7 +104,7 @@ if [ "${SHARED_STORAGE_ACCESS}" -eq 1 ]; then
   sudo chmod 600 "$smbCredentialFile"
 
   # Configure autofs
-  echo "$fileShareName -fstype=cifs,rw,file_mode=0777,dir_mode=0777,credentials=$smbCredentialFile :$smbPath" | sudo tee /etc/auto.fileshares > /dev/null
+  echo "$fileShareName -fstype=cifs,rw,file_mode=0777,dir_mode=0777,uid=1000,gid=1000,mfsymlinks,credentials=$smbCredentialFile :$smbPath" | sudo tee /etc/auto.fileshares > /dev/null
   echo "$mntRoot /etc/auto.fileshares --timeout=60" | sudo tee /etc/auto.master > /dev/null
 
   # Restart service to register changes
@@ -128,11 +125,7 @@ wget "${NEXUS_PROXY_URL}"/repository/r-studio-download/electron/focal/amd64/rstu
 sudo gdebi --non-interactive /tmp/"${APT_SKU}"/rstudio-2023.12.1-402-amd64.deb
 
 # R config
-sudo echo -e "local({\n    r <- getOption(\"repos\")\n    r[\"Nexus\"] <- \"""${NEXUS_PROXY_URL}/repository/r-proxy/\"\n    options(repos = r)\n})" | sudo tee /etc/R/Rprofile.site
-
-
-# Fix for blank screen on DSVM (/sh -> /bash due to conflict with profile.d scripts)
-sudo sed -i 's|!/bin/sh|!/bin/bash|g' /etc/xrdp/startwm.sh
+sudo echo -e "local({\n    r <- getOption(\"repos\")\n    r[\"Nexus\"] <- \"""${NEXUS_PROXY_URL}/repository/r-proxy/\"\n    options(repos = r)\n}) \nSys.setenv(R_LIBCURL_SSL_REVOKE_BEST_EFFORT=TRUE)" | sudo tee /etc/R/Rprofile.site
 
 # Add a README file to the Desktop
 # README_PATH="/home/$VM_USER/Desktop/README.txt"
@@ -199,8 +192,9 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plu
 # Create Docker config directory if it doesn't exist
 sudo mkdir -p /etc/docker/
 # Configure Docker registry mirrors
-jq -n --arg proxy "${NEXUS_PROXY_URL}:8083" '{"registry-mirrors": [$proxy]}' | sudo tee /etc/docker/daemon.json > /dev/null
-# Restart Docker service to apply configuration
+jq -n --arg proxy "${NEXUS_PROXY_URL}:8083" '{"registry-mirrors": [$proxy]}' > /etc/docker/daemon.json
+sudo usermod -aG docker "${VM_USER}"
+sudo systemctl daemon-reload
 sudo systemctl restart docker
 
 # Jupiter Notebook Config
@@ -212,15 +206,32 @@ echo "init_vm.sh: Disabling lock screen"
 # Remove xfce4-screensaver (to disable screen saver)
 sudo apt-get remove xfce4-screensaver -y
 
-# Disable lock screen using gsettings
-gsettings set org.gnome.desktop.screensaver lock-enabled false
-gsettings set org.gnome.desktop.screensaver idle-activation-enabled false
+# Create a polkit rule to allow color profile creation without authentication
+sudo bash -c "cat >/etc/polkit-1/localauthority/50-local.d/45-allow-colord.pkla" <<EOF
+[Allow Colord all Users]
+Identity=unix-user:*
+Action=org.freedesktop.color-manager.create-device;org.freedesktop.color-manager.create-profile;org.freedesktop.color-manager.delete-device;org.freedesktop.color-manager.delete-profile;org.freedesktop.color-manager.modify-device;org.freedesktop.color-manager.modify-profile
+ResultAny=no
+ResultInactive=no
+ResultActive=yes
+EOF
 
-# Disable lock screen via XFCE Power Manager settings
-xfconf-query -c xfce4-power-manager -p /general/lockscreen-suspend-hibernate -s false
-xfconf-query -c xfce4-power-manager -p /general/lockscreen -s false
+## Install xrdp so Guacamole can connect via RDP
+echo "init_vm.sh: xrdp"
+sudo apt install -y xrdp xorgxrdp xfce4-session
+sudo adduser xrdp ssl-cert
+sudo -u "${VM_USER}" -i bash -c 'echo xfce4-session > ~/.xsession'
+sudo -u "${VM_USER}" -i bash -c 'echo xset s off >> ~/.xsession'
+sudo -u "${VM_USER}" -i bash -c 'echo xset -dpms >> ~/.xsession'
+sudo -u "${VM_USER}" -i bash -c 'echo Xft.dpi: 192 >> ~/.Xresources'
 
+# Fix for blank screen on DSVM (/sh -> /bash due to conflict with profile.d scripts)
+sudo sed -i 's|!/bin/sh|!/bin/bash|g' /etc/xrdp/startwm.sh
+
+# Make sure xrdp service starts up with the system
+sudo systemctl enable xrdp
+sudo service xrdp restart
 
 ## Cleanup
 echo "init_vm.sh: Cleanup"
-sudo shutdown -r now
+

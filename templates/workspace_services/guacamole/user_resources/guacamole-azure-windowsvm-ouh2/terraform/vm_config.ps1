@@ -43,15 +43,24 @@ $DaemonConfig = @"
 "@
 $DaemonConfig | Out-File -Encoding Ascii ( New-Item -Path $env:ProgramData\docker\config\daemon.json -Force )
 
-# R config
-# $RconfigFilePathWindows = C:\Progra~1\R\4.1.2\etc\Rprofile.site
-#Add-Content $RconfigFilePathWindows "local({`n    r <- getOption(`"repos`")`n    r[`"Nexus`"] <- `"${nexus_proxy_url}/repository/r-proxy/`"`n    options(repos = r)`n})"
-# echo "local({`n    r <- getOption(`"repos`")`n    r[`"Nexus`"] <- `"${nexus_proxy_url}/repository/r-proxy/`"`n    options(repos = r)`n})" > $RconfigFilePathWindows
+# Sys.setenv(R_LIBCURL_SSL_REVOKE_BEST_EFFORT=TRUE) needed to allow https connection. Skips verification?
+
 $RConfig = @"
 local({
     r <- getOption("repos")
     r["Nexus"] <- "${nexus_proxy_url}/repository/r-proxy/"
     options(repos = r)
 })
+
+Sys.setenv(R_LIBCURL_SSL_REVOKE_BEST_EFFORT=TRUE)
 "@
 $RConfig | Out-File -Encoding Ascii ( New-Item -Path $Env:C:\Software\R\etc\Rprofile.site -Force )
+
+# Update from upstream below, not required for our set up but leaving here in case needed in future. https://github.com/microsoft/AzureTRE/pull/4332
+# $RBasePath = "$Env:ProgramFiles\R"
+# $RVersions = Get-ChildItem -Path $RBasePath -Directory | Where-Object { $_.Name -like "R-*" }
+
+# foreach ($RVersion in $RVersions) {
+#     $ConfigPath = Join-Path -Path $RVersion.FullName -ChildPath "etc\Rprofile.site"
+#     $RConfig | Out-File -Encoding Ascii (New-Item -Path $ConfigPath -Force)
+# }
