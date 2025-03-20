@@ -28,6 +28,8 @@ custom:
         apt_sku: 22.04
       install_ui: true
       conda_config: true
+      secure_boot_enabled: true
+      vtpm_enabled: true
     # "OUH Ubuntu 22.04 Data Science VM":
     #   source_image_name: OUHLinuxImage
     #   # source_image_reference:
@@ -42,6 +44,8 @@ custom:
     #   source_image_name: your-image
     #   install_ui: true
     #   conda_config: true
+    #   secure_boot_enabled: false
+    #   vtpm_enabled: false
 
 
 credentials:
@@ -130,6 +134,12 @@ parameters:
     default: "vm-shared-storage"
   - name: owner_id
     type: string
+  - name: enable_cmk_encryption
+    type: boolean
+    default: false
+  - name: key_store_id
+    type: string
+    default: ""
 
 outputs:
   - name: ip
@@ -179,10 +189,14 @@ install:
         enable_shutdown_schedule: ${ bundle.parameters.enable_shutdown_schedule }
         shutdown_time: ${ bundle.parameters.shutdown_time }
         shutdown_timezone: ${ bundle.parameters.shutdown_timezone }
+        enable_cmk_encryption: ${ bundle.parameters.enable_cmk_encryption }
+        key_store_id: ${ bundle.parameters.key_store_id }
         auth_client_id: ${ bundle.credentials.auth_client_id }
         auth_client_secret: ${ bundle.credentials.auth_client_secret }
         auth_tenant_id: ${ bundle.credentials.auth_tenant_id }
       backendConfig:
+        use_azuread_auth: "true"
+        use_oidc: "true"
         resource_group_name: ${ bundle.parameters.tfstate_resource_group_name }
         storage_account_name: ${ bundle.parameters.tfstate_storage_account_name }
         container_name: ${ bundle.parameters.tfstate_container_name }
@@ -210,10 +224,14 @@ upgrade:
         enable_shutdown_schedule: ${ bundle.parameters.enable_shutdown_schedule }
         shutdown_time: ${ bundle.parameters.shutdown_time }
         shutdown_timezone: ${ bundle.parameters.shutdown_timezone }
+        enable_cmk_encryption: ${ bundle.parameters.enable_cmk_encryption }
+        key_store_id: ${ bundle.parameters.key_store_id }
         auth_client_id: ${ bundle.credentials.auth_client_id }
         auth_client_secret: ${ bundle.credentials.auth_client_secret }
         auth_tenant_id: ${ bundle.credentials.auth_tenant_id }
       backendConfig:
+        use_azuread_auth: "true"
+        use_oidc: "true"
         resource_group_name: ${ bundle.parameters.tfstate_resource_group_name }
         storage_account_name: ${ bundle.parameters.tfstate_storage_account_name }
         container_name: ${ bundle.parameters.tfstate_container_name }
@@ -233,6 +251,9 @@ uninstall:
         - ${ bundle.parameters.tfstate_storage_account_name }
         - ${ bundle.parameters.tfstate_container_name }
         - ${ bundle.parameters.id }
+      envs:
+        ARM_USE_AZUREAD: "true"
+        ARM_USE_OIDC: "true"
 
   - terraform:
       description: "Delete the Guacamole User Resource Service"
@@ -250,10 +271,14 @@ uninstall:
         enable_shutdown_schedule: ${ bundle.parameters.enable_shutdown_schedule }
         shutdown_time: ${ bundle.parameters.shutdown_time }
         shutdown_timezone: ${ bundle.parameters.shutdown_timezone }
+        enable_cmk_encryption: ${ bundle.parameters.enable_cmk_encryption }
+        key_store_id: ${ bundle.parameters.key_store_id }
         auth_client_id: ${ bundle.credentials.auth_client_id }
         auth_client_secret: ${ bundle.credentials.auth_client_secret }
         auth_tenant_id: ${ bundle.credentials.auth_tenant_id }
       backendConfig:
+        use_azuread_auth: "true"
+        use_oidc: "true"
         resource_group_name: ${ bundle.parameters.tfstate_resource_group_name }
         storage_account_name: ${ bundle.parameters.tfstate_storage_account_name }
         container_name: ${ bundle.parameters.tfstate_container_name }
@@ -265,6 +290,8 @@ start:
         - "output"
       description: "Get resource ID from Terraform outputs"
       backendConfig:
+        use_azuread_auth: "true"
+        use_oidc: "true"
         resource_group_name: ${ bundle.parameters.tfstate_resource_group_name }
         storage_account_name: ${ bundle.parameters.tfstate_storage_account_name }
         container_name: ${ bundle.parameters.tfstate_container_name }
@@ -299,6 +326,8 @@ stop:
         - "output"
       description: "Get VM resource_id from Terraform outputs"
       backendConfig:
+        use_azuread_auth: "true"
+        use_oidc: "true"
         resource_group_name: ${ bundle.parameters.tfstate_resource_group_name }
         storage_account_name: ${ bundle.parameters.tfstate_storage_account_name }
         container_name: ${ bundle.parameters.tfstate_container_name }
@@ -333,6 +362,8 @@ reset_password:
         - "output"
       description: "Get VM details from Terraform outputs"
       backendConfig:
+        use_azuread_auth: "true"
+        use_oidc: "true"
         resource_group_name: ${ bundle.parameters.tfstate_resource_group_name }
         storage_account_name: ${ bundle.parameters.tfstate_storage_account_name }
         container_name: ${ bundle.parameters.tfstate_container_name }
