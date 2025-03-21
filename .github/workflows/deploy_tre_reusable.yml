@@ -381,8 +381,6 @@ jobs:
           - {BUNDLE_TYPE: "workspace_service",
              BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspace_services/gitea"}
           - {BUNDLE_TYPE: "workspace_service",
-             BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspace_services/mlflow"}
-          - {BUNDLE_TYPE: "workspace_service",
              BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspace_services/mysql"}
           - {BUNDLE_TYPE: "workspace_service",
              BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspace_services/health-services"}
@@ -544,8 +542,6 @@ jobs:
              BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspace_services/azureml"}
           - {BUNDLE_TYPE: "workspace_service",
              BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspace_services/gitea"}
-          - {BUNDLE_TYPE: "workspace_service",
-             BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspace_services/mlflow"}
           - {BUNDLE_TYPE: "workspace_service",
              BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspace_services/mysql"}
           - {BUNDLE_TYPE: "workspace_service",
