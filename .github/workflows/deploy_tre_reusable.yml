@@ -320,10 +320,7 @@ jobs:
       - name: API Healthcheck
         uses: ./.github/actions/devcontainer_run_command
         with:
-          # COMMAND: "make api-healthcheck"
-          run: |
-            response=$(curl --silent --write-out "%{http_code}" --output /dev/stderr https://tre6fa27692.uksouth.cloudapp.azure.com/api/health)
-            echo "API Response: $response"
+          COMMAND: "make api-healthcheck"
           DEVCONTAINER_TAG: ${{ inputs.DEVCONTAINER_TAG }}
           CI_CACHE_ACR_NAME: ${{ secrets.CI_CACHE_ACR_NAME}}
           AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
