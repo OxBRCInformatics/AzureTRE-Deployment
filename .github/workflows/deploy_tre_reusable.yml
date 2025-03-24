@@ -72,6 +72,12 @@ on:  # yamllint disable-line rule:truthy
       AZURE_CREDENTIALS:
         description: ""
         required: true
+      DOCKER_USERNAME:
+        description: "Docker Hub username"
+        required: true
+      DOCKER_TOKEN:
+        description: "Docker Hub access token"
+        required: true
 
 # This will prevent multiple runs of this entire workflow.
 # We should NOT cancel in progress runs as that can destabilize the environment.
@@ -132,13 +138,17 @@ jobs:
           if [ "${{ secrets.AZURE_CREDENTIALS }}" == '' ]; then
             echo "Missing secret: AZURE_CREDENTIALS" && exit 1
           fi
-
           if [ "${{ inputs.DEVCONTAINER_TAG }}" == '' ]; then
             echo "Missing input: DEVCONTAINER_TAG" && exit 1
           fi
-
           if [ "${{ vars.LOCATION }}" == '' ]; then
             echo "Missing variable: LOCATION" && exit 1
+          fi
+          if [ "${{ secrets.DOCKER_USERNAME }}" == '' ]; then
+            echo "Missing secret: DOCKER_USERNAME" && exit 1
+          fi
+          if [ "${{ secrets.DOCKER_TOKEN }}" == '' ]; then
+            echo "Missing secret: DOCKER_TOKEN" && exit 1
           fi
 
       - name: Checkout
@@ -148,6 +158,9 @@ jobs:
           # if the following values are missing (i.e. not triggered via comment workflow)
           # then the default checkout will apply
           ref: ${{ inputs.prRef }}
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Set up Docker BuildKit
         uses: docker/setup-buildx-action@v3
