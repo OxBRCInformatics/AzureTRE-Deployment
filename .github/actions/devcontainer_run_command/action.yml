@@ -114,6 +114,12 @@ inputs:
     description: "Firewall SKU"
     required: false
     default: ""
+  DOCKER_USERNAME:
+    description: "Docker Hub username"
+    required: true
+  DOCKER_TOKEN:
+    description: "Docker Hub access token"
+    required: true
 
 runs:
   using: composite
@@ -136,6 +142,10 @@ runs:
       if: contains(inputs.COMMAND, 'bootstrap') != true
       run: |
         az acr login --name "${{ inputs.CI_CACHE_ACR_NAME }}"
+
+    - name: Log in to Docker Hub
+      shell: bash
+      run: echo "${{ inputs.DOCKER_TOKEN }}" | docker login -u "${{ inputs.DOCKER_USERNAME }}" --password-stdin
 
     - name: Construct TRE_URL
       shell: bash
