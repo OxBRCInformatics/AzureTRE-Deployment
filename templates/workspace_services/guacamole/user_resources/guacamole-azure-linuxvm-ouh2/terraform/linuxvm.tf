@@ -12,16 +12,6 @@ resource "azurerm_network_interface" "internal" {
   lifecycle { ignore_changes = [tags] }
 }
 
-resource "random_string" "username" {
-  length      = 4
-  upper       = true
-  lower       = true
-  numeric     = true
-  min_numeric = 1
-  min_lower   = 1
-  special     = false
-}
-
 resource "random_password" "password" {
   length           = 16
   lower            = true
@@ -77,7 +67,7 @@ resource "azurerm_linux_virtual_machine" "linuxvm" {
   # ignore changes to secure_boot_enabled and vtpm_enabled as these are destructive
   # (may be allowed once https://github.com/hashicorp/terraform-provider-azurerm/issues/25808 is fixed)
   #
-  lifecycle { ignore_changes = [tags, secure_boot_enabled, vtpm_enabled] }
+  lifecycle { ignore_changes = [tags, secure_boot_enabled, vtpm_enabled, admin_username] }
 }
 
 resource "azurerm_disk_encryption_set" "linuxvm_disk_encryption" {
