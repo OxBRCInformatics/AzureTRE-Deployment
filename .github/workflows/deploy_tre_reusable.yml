@@ -283,6 +283,9 @@ jobs:
           # then the default checkout will apply
           ref: ${{ inputs.prRef }}
 
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
       - name: Docker build
         uses: ./.github/actions/devcontainer_run_command
         with:
@@ -309,6 +312,9 @@ jobs:
           # then the default checkout will apply
           ref: ${{ inputs.prRef }}
 
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
       - name: Start TRE
         uses: ./.github/actions/devcontainer_run_command
         with:
@@ -334,6 +340,9 @@ jobs:
           # if the following values are missing (i.e. not triggered via comment workflow)
           # then the default checkout will apply
           ref: ${{ inputs.prRef }}
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Deploy TRE Core
         uses: ./.github/actions/devcontainer_run_command
@@ -431,6 +440,9 @@ jobs:
           # then the default checkout will apply
           ref: ${{ inputs.prRef }}
 
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
       - name: Publish bundle
         uses: ./.github/actions/devcontainer_run_command
         with:
@@ -484,6 +496,9 @@ jobs:
           # then the default checkout will apply
           ref: ${{ inputs.prRef }}
 
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
       - name: Publish bundle
         uses: ./.github/actions/devcontainer_run_command
         with:
@@ -536,6 +551,10 @@ jobs:
           # if the following values are missing (i.e. not triggered via comment workflow)
           # then the default checkout will apply
           ref: ${{ inputs.prRef }}
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
       - name: Register bundle
         uses: ./.github/actions/devcontainer_run_command
         with:
@@ -605,6 +624,10 @@ jobs:
           # if the following values are missing (i.e. not triggered via comment workflow)
           # then the default checkout will apply
           ref: ${{ inputs.prRef }}
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
       - name: Register bundle
         uses: ./.github/actions/devcontainer_run_command
         with:
@@ -662,6 +685,10 @@ jobs:
           # if the following values are missing (i.e. not triggered via comment workflow)
           # then the default checkout will apply
           ref: ${{ inputs.prRef }}
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
       - name: Register bundle
         uses: ./.github/actions/devcontainer_run_command
         with:
@@ -703,6 +730,9 @@ jobs:
           # if the following values are missing (i.e. not triggered via comment workflow)
           # then the default checkout will apply
           ref: ${{ inputs.prRef }}
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Deploy firewall
         uses: ./.github/actions/devcontainer_run_command
@@ -757,6 +787,10 @@ jobs:
           # if the following values are missing (i.e. not triggered via comment workflow)
           # then the default checkout will apply
           ref: ${{ inputs.prRef }}
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
       - name: Deploy UI
         uses: ./.github/actions/devcontainer_run_command
         with:
