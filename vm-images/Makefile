@@ -23,6 +23,9 @@ vm-deploy-core: ## deploy core infra required for custom VMs (run once per envir
 vm-define-linux-image: ## create linux image definitions within Azure Compute Gallery
 	. ./scripts/load_env.sh && ./scripts/vm-define-images.sh ./templates/linux/image_metadata.txt
 
+vm-define-linuxv2-image: ## create linuxv2 image definitions within Azure Compute Gallery
+	. ./scripts/load_env.sh && ./scripts/vm-define-images.sh ./templates/linuxv2/image_metadata.txt
+
 vm-define-basic-linux-image: ## create basic linux image definitions within Azure Compute Gallery
 	. ./scripts/load_env.sh && ./scripts/vm-define-images.sh ./templates/basic-linux/image_metadata.txt
 
@@ -35,6 +38,9 @@ vm-deploy-template-artifacts: ## copy VM templates and supporting scripts to sto
 vm-create-linux-template: ## create the linux template in Azure (run once per template)
 	. ./scripts/load_env.sh && ./scripts/vm-create-template.sh --template-url ./templates/linux/image_template.json --metadata-url ./templates/linux/image_metadata.txt
 
+vm-create-linuxv2-template: ## create the linux template in Azure (run once per template)
+	. ./scripts/load_env.sh && ./scripts/vm-create-template.sh --template-url ./templates/linuxv2/image_template.json --metadata-url ./templates/linuxv2/image_metadata.txt
+
 vm-create-basic-linux-template: ## create the basic linux template in Azure (run once per template)
 	. ./scripts/load_env.sh && ./scripts/vm-create-template.sh --template-url ./templates/basic-linux/image_template.json --metadata-url ./templates/basic-linux/image_metadata.txt
 
@@ -44,6 +50,9 @@ vm-create-windows-template: ## createthe windows template (run once per template
 vm-build-linux-image: ## builds the custom Linux VM image
 	. ./scripts/load_env.sh && ./scripts/vm-build-image.sh --metadata-url ./templates/linux/image_metadata.txt
 
+vm-build-linuxv2-image: ## builds the custom Linux VM image
+	. ./scripts/load_env.sh && ./scripts/vm-build-image.sh --metadata-url ./templates/linuxv2/image_metadata.txt
+
 vm-build-basic-linux-image: ## builds the basic Linux VM image
 	. ./scripts/load_env.sh && ./scripts/vm-build-image.sh --metadata-url ./templates/basic-linux/image_metadata.txt
 
@@ -52,6 +61,9 @@ vm-build-windows-image: ## builds the custom Windows VM image
 
 vm-remove-linux-template: ## remove the linux template in Azure
 	. ./scripts/load_env.sh && ./scripts/vm-remove-template.sh --metadata-url ./templates/linux/image_metadata.txt
+
+vm-remove-linuxv2-template: ## remove the linux template in Azure
+	. ./scripts/load_env.sh && ./scripts/vm-remove-template.sh --metadata-url ./templates/linuxv2/image_metadata.txt
 
 vm-remove-basic-linux-template: ## remove the basic linux template in Azure
 	. ./scripts/load_env.sh && ./scripts/vm-remove-template.sh --metadata-url ./templates/basic-linux/image_metadata.txt
@@ -70,6 +82,12 @@ vm-rebuild-linux-template: ## Rebuild linux vm template
 	. ./scripts/load_env.sh && ./scripts/vm-remove-template.sh --metadata-url ./templates/linux/image_metadata.txt
 	. ./scripts/load_env.sh && ./scripts/vm-create-template.sh --template-url ./templates/linux/image_template.json --metadata-url ./templates/linux/image_metadata.txt
 	. ./scripts/load_env.sh && ./scripts/vm-build-image.sh --metadata-url ./templates/linux/image_metadata.txt
+
+vm-rebuild-linuxv2-template: ## Rebuild linux vm v2 template
+	. ./scripts/load_env.sh && ./scripts/vm-deploy-template-artifacts.sh ./templates
+	. ./scripts/load_env.sh && ./scripts/vm-remove-template.sh --metadata-url ./templates/linuxv2/image_metadata.txt
+	. ./scripts/load_env.sh && ./scripts/vm-create-template.sh --template-url ./templates/linuxv2/image_template.json --metadata-url ./templates/linuxv2/image_metadata.txt
+	. ./scripts/load_env.sh && ./scripts/vm-build-image.sh --metadata-url ./templates/linuxv2/image_metadata.txt
 
 vm-create-linux-test-vm: ## create test linux vm in Azure
 	. ./scripts/load_env.sh && ./scripts/vm-create-test-vm.sh --metadata-url ./templates/linux/image_metadata.txt

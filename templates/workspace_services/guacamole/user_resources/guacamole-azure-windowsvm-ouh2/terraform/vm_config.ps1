@@ -22,6 +22,45 @@ index-url = ${nexus_proxy_url}/repository/pypi/simple
 trusted-host = ${nexus_proxy_url}
 "@
 
+# Define installation path
+$installPath = "C:\Software\RStudio"
+
+# Check if RStudio is installed
+if (-not (Test-Path "$installPath\rstudio.exe")) {
+    Write-Output "init_vm.ps1: Installing RStudio"
+
+    # Define download URL (update as needed)
+    $NEXUS_PROXY_URL = "YOUR_NEXUS_PROXY_URL"
+    $rstudioUrl = "$NEXUS_PROXY_URL/repository/r-studio-download/electron/windows/rstudio-2023.12.1-402.exe"
+    $installerPath = "$env:TEMP\rstudio-2023.12.1-402.exe"
+
+    # Download the installer
+    Invoke-WebRequest -Uri $rstudioUrl -OutFile $installerPath
+
+    # Install RStudio to C:\Software\RStudio silently
+    Start-Process -FilePath $installerPath -ArgumentList "/S /D=$installPath" -Wait
+
+    Write-Output "RStudio installation complete."
+} else {
+    Write-Output "RStudio is already installed."
+}
+
+# Create a desktop shortcut for RStudio
+$desktopPath = [System.IO.Path]::Combine([System.Environment]::GetFolderPath("Desktop"), "RStudio.lnk")
+$rstudioPath = "$installPath\rstudio.exe"
+
+if (Test-Path $rstudioPath) {
+    $WshShell = New-Object -ComObject WScript.Shell
+    $shortcut = $WshShell.CreateShortcut($desktopPath)
+    $shortcut.TargetPath = $rstudioPath
+    $shortcut.WorkingDirectory = $installPath
+    $shortcut.Save()
+
+    Write-Output "Desktop shortcut for RStudio created."
+} else {
+    Write-Output "RStudio executable not found. Shortcut not created."
+}
+
 # We need to write the ini file in UTF8 (No BOM) as pip won't understand Powershell's default encoding (unicode)
 $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $False
 [System.IO.File]::WriteAllLines($PipConfigFilePath, $ConfigBody, $Utf8NoBomEncoding)

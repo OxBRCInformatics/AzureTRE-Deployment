@@ -13,12 +13,13 @@ source "$ENV_DIR/load_metadata.sh" "$1"
 # print metadata to console
 echo -e "  Template Metadata:"
 echo ""
-echo -e "  ${GREEN}CVM_IMAGE_DEFINITION${NO_COLOUR}: ${CVM_IMAGE_DEFINITION}"
-echo -e "  ${GREEN}CVM_TEMPLATE_NAME${NO_COLOUR}:    ${CVM_TEMPLATE_NAME}"
-echo -e "  ${GREEN}CVM_OFFER${NO_COLOUR}:            ${CVM_OFFER}"
-echo -e "  ${GREEN}CVM_PUBLISHER_NAME${NO_COLOUR}:   ${CVM_PUBLISHER_NAME}"
-echo -e "  ${GREEN}CVM_SKU${NO_COLOUR}:              ${CVM_SKU}"
-echo -e "  ${GREEN}CVM_OSTYPE${NO_COLOUR}:           ${CVM_OSTYPE}"
+echo -e "  ${GREEN}CVM_IMAGE_DEFINITION${NO_COLOUR}:  ${CVM_IMAGE_DEFINITION}"
+echo -e "  ${GREEN}CVM_TEMPLATE_NAME${NO_COLOUR}:     ${CVM_TEMPLATE_NAME}"
+echo -e "  ${GREEN}CVM_OFFER${NO_COLOUR}:             ${CVM_OFFER}"
+echo -e "  ${GREEN}CVM_PUBLISHER_NAME${NO_COLOUR}:    ${CVM_PUBLISHER_NAME}"
+echo -e "  ${GREEN}CVM_SKU${NO_COLOUR}:               ${CVM_SKU}"
+echo -e "  ${GREEN}CVM_OSTYPE${NO_COLOUR}:            ${CVM_OSTYPE}"
+echo -e "  ${GREEN}CVM_HYPERV_GENERATION${NO_COLOUR}: ${CVM_HYPERV_GENERATION}"
 echo ""
 
 # Create image definition
@@ -28,4 +29,5 @@ az sig image-definition create  --resource-group "${CVM_RESOURCE_GROUP}" \
                                 --publisher "${CVM_PUBLISHER_NAME}" \
                                 --offer "${CVM_OFFER}" \
                                 --sku "${CVM_SKU}" \
-                                --os-type "${CVM_OSTYPE}"
+                                --os-type "${CVM_OSTYPE}" \
+                                --hyper-v-generation "${CVM_HYPERV_GENERATION}"

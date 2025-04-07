@@ -1,7 +1,7 @@
 {
     "type": "Microsoft.VirtualMachineImages/imageTemplates",
     "apiVersion": "2022-02-14",
-    "name": "ouh_linux_vm",
+    "name": "ouh_linux_vm_v2",
     "location": "uksouth",
     "dependsOn": [],
     "tags": {
@@ -9,21 +9,22 @@
         "userIdentity": "enabled"
     },
     "identity": {
-      "type": "UserAssigned",
-          "userAssignedIdentities": {
-              "<imgBuilderId>": {}
-          }
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+            "<imgBuilderId>": {}
+        }
     },
     "properties": {
-        "buildTimeoutInMinutes": 200,
+        "buildTimeoutInMinutes": 300,
         "vmProfile": {
-            "vmSize": "Standard_D4s_v5"
+            "vmSize": "Standard_D4s_v5",
+            "hyperVGeneration": "V2"
         },
         "source": {
             "type": "PlatformImage",
             "publisher": "Canonical",
-            "offer": "UbuntuServer",
-            "sku": "18.04-LTS",
+            "offer": "0001-com-ubuntu-server-jammy",
+            "sku": "22_04-lts-gen2",
             "version": "latest"
         },
         "customize": [
@@ -31,19 +32,7 @@
                 "type": "File",
                 "name": "VMInitScript",
                 "sourceUri": "https://<scriptStorageAcc>.blob.core.windows.net/<scriptStorageAccContainer>/linux/scripts/init_vm.sh",
-                "destination":"/tmp/init_vm.sh"
-            },
-            {
-                "type": "File",
-                "name": "ProfileInitScript",
-                "sourceUri": "https://<scriptStorageAcc>.blob.core.windows.net/<scriptStorageAccContainer>/linux/scripts/init_user_profile.sh",
-                "destination":"/tmp/init_user_profile.sh"
-            },
-            {
-                "type": "File",
-                "name": "AddDefaultOUHUserGroup",
-                "sourceUri": "https://<scriptStorageAcc>.blob.core.windows.net/<scriptStorageAccContainer>/linux/scripts/adduser.conf",
-                "destination":"/tmp/adduser.conf"
+                "destination": "/tmp/init_vm.sh"
             },
             {
                 "type": "Shell",
@@ -62,9 +51,9 @@
                 "runOutputName": "<runOutputName>",
                 "artifactTags": {
                     "source": "azureVmImageBuilder",
-                    "baseosimg": "ubuntu1804"
+                    "baseosimg": "ubuntu2204-gen2"
                 },
-                "replicationRegions":["uksouth"],
+                "replicationRegions": ["uksouth"],
                 "storageAccountType": "Standard_LRS"
             }
         ]

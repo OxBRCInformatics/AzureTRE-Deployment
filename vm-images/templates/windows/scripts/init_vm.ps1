@@ -1,4 +1,3 @@
-
 function Write-Log {
     param (
         $message
@@ -45,7 +44,7 @@ Start-Process $PYTHON_INSTALLER_FILE -ArgumentList $PYTHON_INSTALL_ARGS -Wait
 
 
 # ANACONDA
-$ANACONDA_INSTALLER_FILE="Anaconda3-2022.05-Windows-x86_64.exe"
+$ANACONDA_INSTALLER_FILE="Anaconda3-2024.06-1-Windows-x86_64.exe"
 $ANACONDA_DOWNLOAD_URL="https://repo.anaconda.com/archive/$ANACONDA_INSTALLER_FILE"
 $ANACONDA_INSTALL_PATH="$INSTALL_DIRECTORY\Anaconda3"
 $ANACONDA_INSTALL_ARGS="/InstallationType=AllUsers /RegisterPython=0 /S /D=$ANACONDA_INSTALL_PATH"
@@ -58,12 +57,11 @@ Start-Process $ANACONDA_INSTALLER_FILE -ArgumentList $ANACONDA_INSTALL_ARGS -Wai
 
 
 # VSCODE
-$VSCODE_INSTALLER_FILE="VSCodeSetup-x64-1.87.2.exe"
-$VSCODE_DOWNLOAD_URL="https://update.code.visualstudio.com/1.87.2/win32-x64/stable"
+$VSCODE_INSTALLER_FILE="VSCodeSetup-x64-1.97.1.exe"
+$VSCODE_DOWNLOAD_URL="https://update.code.visualstudio.com/1.97.1/win32-x64/stable"
 $VSCODE_INSTALL_PATH="$INSTALL_DIRECTORY\VSCode"
 $VSCODE_EXTENSION_PATH="$VSCODE_INSTALL_PATH\extensions"
 $VSCODE_INSTALL_ARGS="/VERYSILENT /DIR=$VSCODE_INSTALL_PATH /MERGETASKS=!runcode,addcontextmenufiles,addcontextmenufolders,associatewithfiles,addtopath"
-$VSCODE_INSTALL_PATH="$INSTALL_DIRECTORY\VSCode"
 [Environment]::SetEnvironmentVariable("VSCODE_EXTENSIONS", "$VSCODE_EXTENSION_PATH", [EnvironmentVariableTarget]::Machine)
 
 
@@ -98,7 +96,7 @@ Start-Process $PROM_INSTALLER_FILE -ArgumentList $PROM_INSTALL_ARGS -Wait
 
 
 # R
-$R_INSTALLER_FILE="R-4.3.3-win.exe"
+$R_INSTALLER_FILE="R-4.4.3-win.exe"
 $R_DOWNLOAD_URL="https://cran.ma.imperial.ac.uk/bin/windows/base/$R_INSTALLER_FILE"
 $R_INSTALL_PATH="$INSTALL_DIRECTORY\R"
 $R_INSTALL_ARGS="/VERYSILENT /NORESTART /ALLUSERS /DIR=$R_INSTALL_PATH"
@@ -123,26 +121,26 @@ Write-Log "Installing RTools..."
 Start-Process $RTools_INSTALLER_FILE -ArgumentList $RTools_INSTALL_ARGS -Wait
 
 
-# RStudio
-$RStudio_INSTALLER_FILE="RStudio-2023.12.1-402.exe"
-$RStudio_DOWNLOAD_URL="https://s3.amazonaws.com/rstudio-ide-build/electron/windows/$RStudio_INSTALLER_FILE"
-$RStudio_INSTALL_PATH="$INSTALL_DIRECTORY\RStudio"
-$RStudio_INSTALL_ARGS="/S /D=$RStudio_INSTALL_PATH"
+# # RStudio
+# $RStudio_INSTALLER_FILE = "RStudio-2024.12.1-563.exe"
+# $RStudio_DOWNLOAD_URL = "https://download1.rstudio.org/windows/RStudio-2024.12.1-563.exe"
+# $RStudio_INSTALL_PATH = "$INSTALL_DIRECTORY\RStudio"
+# $RStudio_INSTALL_ARGS = "/S /D=$RStudio_INSTALL_PATH"
 
 
-Write-Log "Downloading RStudio Package installer..."
-Invoke-WebRequest -Uri $RStudio_DOWNLOAD_URL -UseBasicParsing -OutFile "$BUILD_DIRECTORY\$RStudio_INSTALLER_FILE"
+# Write-Log "Downloading RStudio Package installer..."
+# Invoke-WebRequest -Uri $RStudio_DOWNLOAD_URL -UseBasicParsing -OutFile "$BUILD_DIRECTORY\$RStudio_INSTALLER_FILE"
 
-Write-Log "Installing RStudio Package..."
-Start-Process $RStudio_INSTALLER_FILE -ArgumentList $RStudio_INSTALL_ARGS -Wait
+# Write-Log "Installing RStudio Package..."
+# Start-Process $RStudio_INSTALLER_FILE -ArgumentList $RStudio_INSTALL_ARGS -Wait
 
-# Create Desktop shortcutß
-Create-DesktopShortcut -AppName "Rstudio" -ExecutablePath "rstudio.exe"
+# # Create Desktop shortcutß
+# Create-DesktopShortcut -AppName "Rstudio" -ExecutablePath "rstudio.exe"
 
 #.Net Runtime 4.8
-$DotNet_INSTALLER_FILE="ndp481-x86-x64-allos-enu.exe"
-$DotNet_DOWNLOAD_URL="https://go.microsoft.com/fwlink/?linkid=2203305"
-$DotNet_INSTALL_ARGS="/q /norestart"
+$DotNet_INSTALLER_FILE = "ndp48-x86-x64-allos-enu.exe"
+$DotNet_DOWNLOAD_URL = "https://go.microsoft.com/fwlink/?linkid=2088631"
+$DotNet_INSTALL_ARGS = "/q /norestart"
 
 Write-Log "Downloading .Net Runtime installer..."
 Invoke-WebRequest -Uri $DotNet_DOWNLOAD_URL -UseBasicParsing -OutFile "$BUILD_DIRECTORY\$DotNet_INSTALLER_FILE"
@@ -168,7 +166,7 @@ Create-DesktopShortcut -AppName "StorageExplorer" -ExecutablePath "StorageExplor
 
 
 # PostgreSQL
-$PostgreSQL_INSTALLER_FILE="StorageExplorer.exe"
+$PostgreSQL_INSTALLER_FILE="PostgreSQL.exe"
 $PostgreSQL_DOWNLOAD_URL="https://sbp.enterprisedb.com/getfile.jsp?fileid=1258212"
 $PostgreSQL_INSTALL_ARGS="--mode unattended"
 
@@ -200,8 +198,8 @@ Write-Log "Installing git..."
 Start-Process $git_INSTALLER_FILE -ArgumentList $git_INSTALL_ARGS -Wait
 
 # LibreOffice
-$libreoffice_INSTALLER_FILE="LibreOffice_7.4.7_Win_x64.msi"
-$Libreoffice_DOWNLOAD_URL="https://www.libreoffice.org/download/download/$libreoffice_INSTALLER_FILE"
+$libreoffice_INSTALLER_FILE="LibreOffice_25.2.2_Win_x86-64.msi"
+$Libreoffice_DOWNLOAD_URL="https://www.libreoffice.org/donate/dl/win-x86_64/25.2.2/en-US/$libreoffice_INSTALLER_FILE"
 $Libreoffice_INSTALL_PATH="INSTALL_DIRECTORY\LibreOffice"
 $Libreoffice_INSTALL_ARGS="RebootYesNo=No /qn"
 
@@ -222,4 +220,3 @@ Remove-Item -Path "C:\buildArtifacts\*" -Force -Recurse
 Remove-Item -Path "C:\buildArtifacts" -Force
 
 Write-Log "VM customisation complete."
-

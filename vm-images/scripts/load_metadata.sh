@@ -11,6 +11,7 @@ CVM_OFFER_PREFIX=$(awk -F "=" '/OFFER_PREFIX/ {print $2}' "${TEMPLATE_METADATA_F
 CVM_PUBLISHER_NAME=$(awk -F "=" '/PUBLISHER_NAME/ {print $2}' "${TEMPLATE_METADATA_FILE}")
 CVM_SKU=$(awk -F "=" '/SKU/{print $2}' "${TEMPLATE_METADATA_FILE}")
 CVM_OSTYPE=$(awk -F "=" '/OSTYPE/{print $2}' "${TEMPLATE_METADATA_FILE}")
+CVM_HYPERV_GENERATION=$(awk -F "=" '/HYPERV_GENERATION/{print $2}' "${TEMPLATE_METADATA_FILE}")
 
 if [[ -z $CVM_IMAGE_DEFINITION_PREFIX ]]; then
   echo "CVM_IMAGE_DEFINITION_PREFIX is missing from ${TEMPLATE_METADATA_FILE}:"
@@ -42,6 +43,10 @@ if [[ -z $CVM_OSTYPE ]]; then
   exit 1
 fi
 
+if [[ -z $CVM_HYPERV_GENERATION ]]; then
+  echo "CVM_HYPERV_GENERATION is missing from ${TEMPLATE_METADATA_FILE}:"
+  exit 1
+fi
 
 # add environment suffix to prefix metadata
 CVM_IMAGE_DEFINITION="${CVM_IMAGE_DEFINITION_PREFIX}${CVM_ENVIRONMENT_SUFFIX}"
