@@ -22,43 +22,6 @@ index-url = ${nexus_proxy_url}/repository/pypi/simple
 trusted-host = ${nexus_proxy_url}
 "@
 
-# Define installation path
-$installPath = "C:\Software\RStudio"
-
-# Check if RStudio is installed
-if (-not (Test-Path "$installPath\rstudio.exe")) {
-    Write-Output "init_vm.ps1: Installing RStudio"
-
-    $rstudioUrl = "${nexus_proxy_url}/repository/r-studio-download/electron/windows/rstudio-2023.12.1-402.exe"
-    $installerPath = "$env:TEMP\rstudio-2023.12.1-402.exe"
-
-    # Download the installer
-    Invoke-WebRequest -Uri $rstudioUrl -OutFile $installerPath
-
-    # Install RStudio to C:\Software\RStudio silently
-    Start-Process -FilePath $installerPath -ArgumentList "/S /D=$installPath" -Wait
-
-    Write-Output "RStudio installation complete."
-} else {
-    Write-Output "RStudio is already installed."
-}
-
-# Create a desktop shortcut for RStudio
-$desktopPath = [System.IO.Path]::Combine([System.Environment]::GetFolderPath("Desktop"), "RStudio.lnk")
-$rstudioPath = "$installPath\rstudio.exe"
-
-if (Test-Path $rstudioPath) {
-    $WshShell = New-Object -ComObject WScript.Shell
-    $shortcut = $WshShell.CreateShortcut($desktopPath)
-    $shortcut.TargetPath = $rstudioPath
-    $shortcut.WorkingDirectory = $installPath
-    $shortcut.Save()
-
-    Write-Output "Desktop shortcut for RStudio created."
-} else {
-    Write-Output "RStudio executable not found. Shortcut not created."
-}
-
 # We need to write the ini file in UTF8 (No BOM) as pip won't understand Powershell's default encoding (unicode)
 $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $False
 [System.IO.File]::WriteAllLines($PipConfigFilePath, $ConfigBody, $Utf8NoBomEncoding)
@@ -80,8 +43,10 @@ $DaemonConfig = @"
 "@
 $DaemonConfig | Out-File -Encoding Ascii ( New-Item -Path $env:ProgramData\docker\config\daemon.json -Force )
 
-# Sys.setenv(R_LIBCURL_SSL_REVOKE_BEST_EFFORT=TRUE) needed to allow https connection. Skips verification?
-
+# R config
+# $RconfigFilePathWindows = C:\Progra~1\R\4.1.2\etc\Rprofile.site
+#Add-Content $RconfigFilePathWindows "local({`n    r <- getOption(`"repos`")`n    r[`"Nexus`"] <- `"${nexus_proxy_url}/repository/r-proxy/`"`n    options(repos = r)`n})"
+# echo "local({`n    r <- getOption(`"repos`")`n    r[`"Nexus`"] <- `"${nexus_proxy_url}/repository/r-proxy/`"`n    options(repos = r)`n})" > $RconfigFilePathWindows
 $RConfig = @"
 local({
     r <- getOption("repos")
@@ -92,12 +57,3 @@ local({
 Sys.setenv(R_LIBCURL_SSL_REVOKE_BEST_EFFORT=TRUE)
 "@
 $RConfig | Out-File -Encoding Ascii ( New-Item -Path $Env:C:\Software\R\etc\Rprofile.site -Force )
-
-# Update from upstream below, not required for our set up but leaving here in case needed in future. https://github.com/microsoft/AzureTRE/pull/4332
-# $RBasePath = "$Env:ProgramFiles\R"
-# $RVersions = Get-ChildItem -Path $RBasePath -Directory | Where-Object { $_.Name -like "R-*" }
-
-# foreach ($RVersion in $RVersions) {
-#     $ConfigPath = Join-Path -Path $RVersion.FullName -ChildPath "etc\Rprofile.site"
-#     $RConfig | Out-File -Encoding Ascii (New-Item -Path $ConfigPath -Force)
-# }
