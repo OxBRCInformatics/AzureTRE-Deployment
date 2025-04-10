@@ -29,9 +29,7 @@ $installPath = "C:\Software\RStudio"
 if (-not (Test-Path "$installPath\rstudio.exe")) {
     Write-Output "init_vm.ps1: Installing RStudio"
 
-    # Define download URL (update as needed)
-    $NEXUS_PROXY_URL = "YOUR_NEXUS_PROXY_URL"
-    $rstudioUrl = "$NEXUS_PROXY_URL/repository/r-studio-download/electron/windows/rstudio-2023.12.1-402.exe"
+    $rstudioUrl = "${nexus_proxy_url}/repository/r-studio-download/electron/windows/rstudio-2023.12.1-402.exe"
     $installerPath = "$env:TEMP\rstudio-2023.12.1-402.exe"
 
     # Download the installer
