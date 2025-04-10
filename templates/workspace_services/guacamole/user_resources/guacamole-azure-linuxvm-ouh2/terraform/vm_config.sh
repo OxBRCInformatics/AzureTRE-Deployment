@@ -2,9 +2,10 @@
 
 set -o errexit
 set -o pipefail
-set -o nounset
+# set -o nounset
 # Uncomment this line to see each command for debugging (careful: this will show secrets!)
-set -o xtrace
+# set -o xtrace
+
 
 # Remove apt sources not included in sources.list file
 sudo rm -f /etc/apt/sources.list.d/*
@@ -13,7 +14,7 @@ sudo rm -f /etc/apt/sources.list.d/*
 echo "init_vm.sh: START"
 sudo apt update || true
 sudo apt upgrade -y
-sudo apt install -y gnupg2 software-properties-common apt-transport-https wget dirmngr gdebi-core debconf-utils
+sudo apt install -y gnupg2 software-properties-common apt-transport-https wget dirmngr gdebi-core
 sudo apt-get update || true
 
 ## Desktop
@@ -23,28 +24,17 @@ DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true dpkg-reconfigure
 sudo apt install -y xfce4 xfce4-goodies xorg dbus-x11 x11-xserver-utils
 echo /usr/sbin/gdm3 > /etc/X11/default-display-manager
 
-## Python 3.8 and Jupyter
-sudo apt install -y jupyter-notebook microsoft-edge-dev
+## Install xrdp so Guacamole can connect via RDP
+echo "init_vm.sh: xrdp"
+sudo apt install -y xrdp xorgxrdp xfce4-session
+sudo adduser xrdp ssl-cert
+sudo -u "${VM_USER}" -i bash -c 'echo xfce4-session > ~/.xsession'
+sudo -u "${VM_USER}" -i bash -c 'echo xset s off >> ~/.xsession'
+sudo -u "${VM_USER}" -i bash -c 'echo xset -dpms >> ~/.xsession'
 
-## VS Code
-echo "init_vm.sh: VS Code"
-echo code code/add-microsoft-repo boolean false | sudo debconf-set-selections
-sudo apt install -y code
-sudo apt install -y gvfs-bin || true
-
-echo "init_vm.sh: Folders"
-sudo mkdir -p /opt/vscode/user-data
-sudo mkdir -p /opt/vscode/extensions
-
-# echo "init_vm.sh: azure-cli"
-sudo apt install azure-cli -y
-
-# TODO: need to look at proxy extentions
-## VSCode Extensions
-# echo "init_vm.sh: VSCode extensions"
-# code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension ms-python.python
-# code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension REditorSupport.r
-# code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension RDebugger.r-debugger
+# Make sure xrdp service starts up with the system
+sudo systemctl enable xrdp
+sudo service xrdp restart
 
 # Azure Storage Explorer
 sudo apt-get remove -y dotnet-host-7.0
@@ -78,14 +68,9 @@ StartupWMClass=Code
 Categories=Development;
 END
 
-## R
-echo "init_vm.sh: R Setup"
-sudo apt install -y r-base
 
-# RStudio Desktop
-echo "init_vm.sh: RStudio"
-wget "${NEXUS_PROXY_URL}"/repository/r-studio-download/electron/jammy/amd64/rstudio-2023.12.1-402-amd64.deb -P /tmp/2204
-sudo gdebi --non-interactive /tmp/"${APT_SKU}"/rstudio-2023.12.1-402-amd64.deb
+# Make sure xrdp service starts up with the system
+# sudo systemctl enable xrdp
 
 if [ "${SHARED_STORAGE_ACCESS}" -eq 1 ]; then
   # Install required packages
@@ -122,7 +107,7 @@ if [ "${SHARED_STORAGE_ACCESS}" -eq 1 ]; then
   sudo chmod 600 "$smbCredentialFile"
 
   # Configure autofs
-  echo "$fileShareName -fstype=cifs,rw,dir_mode=0777,uid=1000,gid=1000,mfsymlinks,credentials=$smbCredentialFile :$smbPath" | sudo tee /etc/auto.fileshares > /dev/null
+  echo "$fileShareName -fstype=cifs,rw,file_mode=0777,dir_mode=0777,credentials=$smbCredentialFile :$smbPath" | sudo tee /etc/auto.fileshares > /dev/null
   echo "$mntRoot /etc/auto.fileshares --timeout=60" | sudo tee /etc/auto.master > /dev/null
 
   # Restart service to register changes
@@ -132,12 +117,74 @@ if [ "${SHARED_STORAGE_ACCESS}" -eq 1 ]; then
   sudo ln -s "$mntPath" "/$fileShareName"
 fi
 
+## R
+echo "init_vm.sh: R Setup"
+sudo apt install -y r-base
+
+# RStudio Desktop
+echo "init_vm.sh: RStudio"
+wget "${NEXUS_PROXY_URL}"/repository/r-studio-download/electron/jammy/amd64/rstudio-2023.12.1-402-amd64.deb -P /tmp/2204
+wget "${NEXUS_PROXY_URL}"/repository/r-studio-download/electron/focal/amd64/rstudio-2023.12.1-402-amd64.deb -P /tmp/2004
+sudo gdebi --non-interactive /tmp/"${APT_SKU}"/rstudio-2023.12.1-402-amd64.deb
+
+# R config
+sudo echo -e "local({\n    r <- getOption(\"repos\")\n    r[\"Nexus\"] <- \"""${NEXUS_PROXY_URL}/repository/r-proxy/\"\n    options(repos = r)\n})" | sudo tee /etc/R/Rprofile.site
+
+
+# Fix for blank screen on DSVM (/sh -> /bash due to conflict with profile.d scripts)
+sudo sed -i 's|!/bin/sh|!/bin/bash|g' /etc/xrdp/startwm.sh
+
+# Add a README file to the Desktop
+# README_PATH="/home/$VM_USER/Desktop/README.txt"
+# sudo -u "$VM_USER" bash -c "cat > $README_PATH" << 'EOF'
+# Welcome to your Linux VM!
+
+# This VM is pre-configured with the following tools:
+# - XFCE Desktop Environment
+# - Azure Storage Explorer
+# - RStudio Desktop
+# - Docker
+# - Anaconda
+
+# To get started:
+# 1. Open any application using the Applications Menu.
+# 2. Use RStudio or Jupyter Notebook for data analysis.
+# 3. Access your shared file storage at /fileshares/vm-shared-storage (if configured).
+# 4. See the package mirror options by accessing http://nexus-tvstre.uksouth.cloudapp.azure.com
+
+# Recommendations:
+# 1. R packages may fail to install initially. If you see an error, edit Rprofile to use the local package mirror:
+
+# sudo nano /usr/lib/R/etc/Rprofile.site
+
+# Replace the local(...) lines at the bottom with:
+# local({
+#     r <- getOption("repos")
+#     r["Nexus"] <- "http://nexus-tvstre.uksouth.cloudapp.azure.com/repository/r-proxy/"
+#     options(repos = r)
+# })
+
+# 2. Disable XFCE Lock Screen otherwise you may get locked out:
+
+# Open Applications > Settings > Screensaver; click on Lock Screen tab, disable the Lock Screen.
+
+
+# For further assistance, contact your administrator.
+
+# Enjoy!
+# EOF
+
+# Set appropriate permissions for the README file
+sudo chmod 644 "$README_PATH"
+sudo chown "$VM_USER:$VM_USER" "$README_PATH"
+
+
 ### Anaconda Config
-if [ "${CONDA_CONFIG}" -eq 1 ]; then
-  echo "init_vm.sh: Anaconda"
-  export PATH="/anaconda/condabin":$PATH
-  export PATH="/anaconda/bin":$PATH
-  export PATH="/anaconda/envs/py38_default/bin":$PATH
+if [ "${CONDA_CONFIG}" == "true" ]; then
+  export PATH="/opt/anaconda/condabin":$PATH
+  export PATH="/opt/anaconda/bin":$PATH
+  export PATH="/opt/anaconda/envs/py38_default/bin":$PATH
+  conda config
   conda config --add channels "${NEXUS_PROXY_URL}"/repository/conda-mirror/main/  --system
   conda config --add channels "${NEXUS_PROXY_URL}"/repository/conda-repo/main/  --system
   conda config --remove channels defaults --system
@@ -145,54 +192,35 @@ if [ "${CONDA_CONFIG}" -eq 1 ]; then
 fi
 
 # Docker install and config
-sudo apt-get remove -y moby-tini || true
+sudo apt-get update
 sudo apt-get install -y r-base-core
 sudo apt-get install -y ca-certificates curl gnupg lsb-release
-sudo apt-get install -y docker-compose-plugin docker-ce-cli containerd.io jq
-sudo apt-get install -y docker-ce
-jq -n --arg proxy "${NEXUS_PROXY_URL}:8083" '{"registry-mirrors": [$proxy]}' > /etc/docker/daemon.json
-sudo usermod -aG docker "${VM_USER}"
-sudo systemctl daemon-reload
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin jq
+# Create Docker config directory if it doesn't exist
+sudo mkdir -p /etc/docker/
+# Configure Docker registry mirrors
+jq -n --arg proxy "${NEXUS_PROXY_URL}:8083" '{"registry-mirrors": [$proxy]}' | sudo tee /etc/docker/daemon.json > /dev/null
+# Restart Docker service to apply configuration
 sudo systemctl restart docker
-
-# R config
-sudo echo -e "local({\n    r <- getOption(\"repos\")\n    r[\"Nexus\"] <- \"""${NEXUS_PROXY_URL}\"/repository/r-proxy/\"\n    options(repos = r)\n})" | sudo tee /etc/R/Rprofile.site
 
 # Jupiter Notebook Config
 sudo sed -i -e 's/Terminal=true/Terminal=false/g' /usr/share/applications/jupyter-notebook.desktop
 
-# Default Browser
-sudo update-alternatives --config x-www-browser
+## Prevent screen timeout and lock screen
+echo "init_vm.sh: Disabling lock screen"
 
-# Prevent screen timeout
-echo "init_vm.sh: Preventing Timeout"
+# Remove xfce4-screensaver (to disable screen saver)
 sudo apt-get remove xfce4-screensaver -y
 
-# Create a polkit rule to allow color profile creation without authentication
-sudo bash -c "cat >/etc/polkit-1/localauthority/50-local.d/45-allow-colord.pkla" <<EOF
-[Allow Colord all Users]
-Identity=unix-user:*
-Action=org.freedesktop.color-manager.create-device;org.freedesktop.color-manager.create-profile;org.freedesktop.color-manager.delete-device;org.freedesktop.color-manager.delete-profile;org.freedesktop.color-manager.modify-device;org.freedesktop.color-manager.modify-profile
-ResultAny=no
-ResultInactive=no
-ResultActive=yes
-EOF
+# Disable lock screen using gsettings
+gsettings set org.gnome.desktop.screensaver lock-enabled false
+gsettings set org.gnome.desktop.screensaver idle-activation-enabled false
 
-## Install xrdp so Guacamole can connect via RDP
-echo "init_vm.sh: xrdp"
-sudo apt install -y xrdp xorgxrdp xfce4-session
-sudo adduser xrdp ssl-cert
-sudo -u "${VM_USER}" -i bash -c 'echo xfce4-session > ~/.xsession'
-sudo -u "${VM_USER}" -i bash -c 'echo xset s off >> ~/.xsession'
-sudo -u "${VM_USER}" -i bash -c 'echo xset -dpms >> ~/.xsession'
-sudo -u "${VM_USER}" -i bash -c 'echo Xft.dpi: 192 >> ~/.Xresources'
+# Disable lock screen via XFCE Power Manager settings
+xfconf-query -c xfce4-power-manager -p /general/lockscreen-suspend-hibernate -s false
+xfconf-query -c xfce4-power-manager -p /general/lockscreen -s false
 
-# Fix for blank screen on DSVM (/sh -> /bash due to conflict with profile.d scripts)
-sudo sed -i 's|!/bin/sh|!/bin/bash|g' /etc/xrdp/startwm.sh
-
-# Make sure xrdp service starts up with the system
-sudo systemctl enable xrdp
-sudo service xrdp restart
 
 ## Cleanup
 echo "init_vm.sh: Cleanup"
+sudo shutdown -r now
