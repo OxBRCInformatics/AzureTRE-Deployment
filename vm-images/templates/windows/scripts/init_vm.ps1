@@ -121,21 +121,22 @@ Write-Log "Installing RTools..."
 Start-Process $RTools_INSTALLER_FILE -ArgumentList $RTools_INSTALL_ARGS -Wait
 
 
-# # RStudio
-# $RStudio_INSTALLER_FILE = "RStudio-2024.12.1-563.exe"
-# $RStudio_DOWNLOAD_URL = "https://download1.rstudio.org/windows/RStudio-2024.12.1-563.exe"
-# $RStudio_INSTALL_PATH = "$INSTALL_DIRECTORY\RStudio"
-# $RStudio_INSTALL_ARGS = "/S /D=$RStudio_INSTALL_PATH"
+
+# RStudio
+$RStudio_INSTALLER_FILE="RStudio-2024.12.1-563.exe"
+$RStudio_DOWNLOAD_URL="https://download1.rstudio.org/electron/windows/$RStudio_INSTALLER_FILE"
+$RStudio_INSTALL_PATH="$INSTALL_DIRECTORY\RStudio"
+$RStudio_INSTALL_ARGS="/S /D=$RStudio_INSTALL_PATH"
 
 
-# Write-Log "Downloading RStudio Package installer..."
-# Invoke-WebRequest -Uri $RStudio_DOWNLOAD_URL -UseBasicParsing -OutFile "$BUILD_DIRECTORY\$RStudio_INSTALLER_FILE"
+Write-Log "Downloading RStudio Package installer..."
+Invoke-WebRequest -Uri $RStudio_DOWNLOAD_URL -UseBasicParsing -OutFile "$BUILD_DIRECTORY\$RStudio_INSTALLER_FILE"
 
-# Write-Log "Installing RStudio Package..."
-# Start-Process $RStudio_INSTALLER_FILE -ArgumentList $RStudio_INSTALL_ARGS -Wait
+Write-Log "Installing RStudio Package..."
+Start-Process $RStudio_INSTALLER_FILE -ArgumentList $RStudio_INSTALL_ARGS -Wait
 
-# # Create Desktop shortcutß
-# Create-DesktopShortcut -AppName "Rstudio" -ExecutablePath "rstudio.exe"
+# Create Desktop shortcutß
+Create-DesktopShortcut -AppName "Rstudio" -ExecutablePath "rstudio.exe"
 
 #.Net Runtime 4.8
 $DotNet_INSTALLER_FILE = "ndp48-x86-x64-allos-enu.exe"
