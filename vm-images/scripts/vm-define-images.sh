@@ -1,25 +1,25 @@
 #!/bin/bash
-# shellcheck disable=SC1091
-
 set -e
 
 # Define colours for output
 GREEN="\033[0;32m"
 NO_COLOUR="\033[0m"
 
-ENV_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-source "$ENV_DIR/load_metadata.sh" "$1"
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+source "$SCRIPT_DIR/load_metadata_from_json.sh" "$1"
 
 # print metadata to console
 echo -e "  Template Metadata:"
 echo ""
-echo -e "  ${GREEN}CVM_IMAGE_DEFINITION${NO_COLOUR}:  ${CVM_IMAGE_DEFINITION}"
-echo -e "  ${GREEN}CVM_TEMPLATE_NAME${NO_COLOUR}:     ${CVM_TEMPLATE_NAME}"
-echo -e "  ${GREEN}CVM_OFFER${NO_COLOUR}:             ${CVM_OFFER}"
-echo -e "  ${GREEN}CVM_PUBLISHER_NAME${NO_COLOUR}:    ${CVM_PUBLISHER_NAME}"
-echo -e "  ${GREEN}CVM_SKU${NO_COLOUR}:               ${CVM_SKU}"
-echo -e "  ${GREEN}CVM_OSTYPE${NO_COLOUR}:            ${CVM_OSTYPE}"
-echo -e "  ${GREEN}CVM_HYPERV_GENERATION${NO_COLOUR}: ${CVM_HYPERV_GENERATION}"
+echo -e "  ${GREEN}CVM_IMAGE_DEFINITION     ${CVM_IMAGE_DEFINITION}"
+echo -e "  ${GREEN}CVM_TEMPLATE_NAME        ${CVM_TEMPLATE_NAME}"
+echo -e "  ${GREEN}CVM_OFFER                ${CVM_OFFER}"
+echo -e "  ${GREEN}CVM_PUBLISHER_NAME       ${CVM_PUBLISHER_NAME}"
+echo -e "  ${GREEN}CVM_SKU                  ${CVM_SKU}"
+echo -e "  ${GREEN}CVM_OSTYPE               ${CVM_OSTYPE}"
+echo -e "  ${GREEN}CVM_IMAGE_TAGS           ${CVM_IMAGE_TAGS}"
+echo -e "  ${GREEN}CVM_IMAGE_DESCRIPTION    ${CVM_IMAGE_DESCRIPTION}"
 echo ""
 
 # Create image definition
@@ -30,4 +30,7 @@ az sig image-definition create  --resource-group "${CVM_RESOURCE_GROUP}" \
                                 --offer "${CVM_OFFER}" \
                                 --sku "${CVM_SKU}" \
                                 --os-type "${CVM_OSTYPE}" \
-                                --hyper-v-generation "${CVM_HYPERV_GENERATION}"
+                                --location "${CVM_LOCATION}" \
+                                --tags $CVM_IMAGE_TAGS \
+                                --description "${CVM_IMAGE_DESCRIPTION}" \
+                                --hyper-v-generation "${CVM_IMAGE_HYPERV_VERSION}"

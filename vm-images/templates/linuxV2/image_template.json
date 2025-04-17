@@ -27,6 +27,23 @@
             "sku": "22_04-lts-gen2",
             "version": "latest"
         },
+        "customize": [
+            {
+                "type": "File",
+                "name": "VMInitScript",
+                "sourceUri": "https://<scriptStorageAcc>.blob.core.windows.net/<scriptStorageAccContainer>/linux/scripts/init_vm.sh",
+                "destination":"/tmp/init_vm.sh"
+            },
+            {
+                "type": "Shell",
+                "name": "setupVM",
+                "inline": [
+                    "cd /tmp",
+                    "chmod +x init_vm.sh",
+                    "sudo /tmp/init_vm.sh"
+                ]
+            }
+        ],
         "distribute": [
             {
                 "type": "SharedImage",

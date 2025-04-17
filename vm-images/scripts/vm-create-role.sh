@@ -8,10 +8,6 @@ NO_COLOUR="\033[0m"
 # Get the directory that this script is in
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-# get subscription ID
-echo -e "➡ ${GREEN}Get Subscription ID${NO_COLOUR}"
-SUBSCRIPTION_ID=$(az account show --query id --output tsv)
-
 # load and populate template
 IMAGE_BUILDER_ROLE_TEMPLATE=$(cat "$DIR"/../roles/image_builder_role_definition_template.json)
 IMAGE_BUILDER_ROLE_TEMPLATE=${IMAGE_BUILDER_ROLE_TEMPLATE//<roleName>/${CVM_IMAGE_BUILDER_ROLE_NAME}}

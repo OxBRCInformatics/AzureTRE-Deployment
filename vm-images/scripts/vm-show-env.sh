@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+
 GREEN="\033[0;32m"
 BLUE="\033[0;34m"
 NO_COLOUR="\033[0m"
@@ -7,12 +8,12 @@ NO_COLOUR="\033[0m"
 echo -e "\nCustom VM Environment Settings:\n"
 echo -e ""
 
-
 # Subscription
-SUBSCRIPTION_ID=$(az account show --query id --output tsv)
+SUBSCRIPTION_NAME=$(az account list --query "[?id == '${SUBSCRIPTION_ID}'].[name]" --output tsv)
 
 echo -e "${BLUE}Subscription${NO_COLOUR}\n"
 echo -e "  ${GREEN}SUBSCRIPTION_ID${NO_COLOUR}:             ${SUBSCRIPTION_ID}"
+echo -e "  ${GREEN}SUBSCRIPTION_NAME${NO_COLOUR}:           ${SUBSCRIPTION_NAME}"
 echo -e ""
 
 # Environment
@@ -41,4 +42,9 @@ echo -e ""
 # Custom Role Definition
 echo -e "${BLUE}Custom Role Definition${NO_COLOUR}\n"
 echo -e "  ${GREEN}CVM_IMAGE_BUILDER_ROLE_NAME${NO_COLOUR}: ${CVM_IMAGE_BUILDER_ROLE_NAME}"
+echo -e ""
+
+# Resource Tags
+echo -e "${BLUE}Resource Tags${NO_COLOUR}\n"
+echo -e "  ${GREEN}CVM_TAGS${NO_COLOUR}: ${CVM_TAGS}"
 echo -e ""
