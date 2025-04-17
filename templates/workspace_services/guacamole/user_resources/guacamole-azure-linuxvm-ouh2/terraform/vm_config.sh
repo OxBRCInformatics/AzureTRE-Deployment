@@ -2,10 +2,9 @@
 
 set -o errexit
 set -o pipefail
-# set -o nounset
+set -o nounset
 # Uncomment this line to see each command for debugging (careful: this will show secrets!)
-# set -o xtrace
-
+set -o xtrace
 
 # Remove apt sources not included in sources.list file
 sudo rm -f /etc/apt/sources.list.d/*
@@ -14,7 +13,7 @@ sudo rm -f /etc/apt/sources.list.d/*
 echo "init_vm.sh: START"
 sudo apt update || true
 sudo apt upgrade -y
-sudo apt install -y gnupg2 software-properties-common apt-transport-https wget dirmngr gdebi-core
+sudo apt install -y gnupg2 software-properties-common apt-transport-https wget dirmngr gdebi-core debconf-utils
 sudo apt-get update || true
 
 ## Desktop
@@ -24,17 +23,8 @@ DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true dpkg-reconfigure
 sudo apt install -y xfce4 xfce4-goodies xorg dbus-x11 x11-xserver-utils
 echo /usr/sbin/gdm3 > /etc/X11/default-display-manager
 
-## Install xrdp so Guacamole can connect via RDP
-echo "init_vm.sh: xrdp"
-sudo apt install -y xrdp xorgxrdp xfce4-session
-sudo adduser xrdp ssl-cert
-sudo -u "${VM_USER}" -i bash -c 'echo xfce4-session > ~/.xsession'
-sudo -u "${VM_USER}" -i bash -c 'echo xset s off >> ~/.xsession'
-sudo -u "${VM_USER}" -i bash -c 'echo xset -dpms >> ~/.xsession'
-
-# Make sure xrdp service starts up with the system
-sudo systemctl enable xrdp
-sudo service xrdp restart
+## Python 3.8 and Jupyter
+sudo apt install -y jupyter-notebook microsoft-edge-dev
 
 # Azure Storage Explorer
 sudo apt-get remove -y dotnet-host-7.0
@@ -121,10 +111,6 @@ fi
 sudo echo -e "local({\n    r <- getOption(\"repos\")\n    r[\"Nexus\"] <- \"""${NEXUS_PROXY_URL}/repository/r-proxy/\"\n    options(repos = r)\n})" | sudo tee /etc/R/Rprofile.site
 
 
-# Fix for blank screen on DSVM (/sh -> /bash due to conflict with profile.d scripts)
-sudo sed -i 's|!/bin/sh|!/bin/bash|g' /etc/xrdp/startwm.sh
-
-
 ### Anaconda Config
 if [ "${CONDA_CONFIG}" == "true" ]; then
   export PATH="/opt/anaconda/condabin":$PATH
@@ -137,11 +123,7 @@ if [ "${CONDA_CONFIG}" == "true" ]; then
   conda config --set channel_alias "${NEXUS_PROXY_URL}"/repository/conda-mirror/  --system
 fi
 
-# Docker install and config
-sudo apt-get update
-sudo apt-get install -y r-base-core
-sudo apt-get install -y ca-certificates curl gnupg lsb-release
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin jq
+# Docker config
 # Create Docker config directory if it doesn't exist
 sudo mkdir -p /etc/docker/
 # Configure Docker registry mirrors
@@ -151,19 +133,24 @@ sudo systemctl restart docker
 
 ## Prevent screen timeout and lock screen
 echo "init_vm.sh: Disabling lock screen"
-
 # Remove xfce4-screensaver (to disable screen saver)
 sudo apt-get remove xfce4-screensaver -y
 
-# Disable lock screen using gsettings
-gsettings set org.gnome.desktop.screensaver lock-enabled false
-gsettings set org.gnome.desktop.screensaver idle-activation-enabled false
+## Install xrdp so Guacamole can connect via RDP
+echo "init_vm.sh: xrdp"
+sudo apt install -y xrdp xorgxrdp xfce4-session
+sudo adduser xrdp ssl-cert
+sudo -u "${VM_USER}" -i bash -c 'echo xfce4-session > ~/.xsession'
+sudo -u "${VM_USER}" -i bash -c 'echo xset s off >> ~/.xsession'
+sudo -u "${VM_USER}" -i bash -c 'echo xset -dpms >> ~/.xsession'
+sudo -u "${VM_USER}" -i bash -c 'echo Xft.dpi: 192 >> ~/.Xresources'
 
-# Disable lock screen via XFCE Power Manager settings
-xfconf-query -c xfce4-power-manager -p /general/lockscreen-suspend-hibernate -s false
-xfconf-query -c xfce4-power-manager -p /general/lockscreen -s false
+# Fix for blank screen on DSVM (/sh -> /bash due to conflict with profile.d scripts)
+sudo sed -i 's|!/bin/sh|!/bin/bash|g' /etc/xrdp/startwm.sh
 
+# Make sure xrdp service starts up with the system
+sudo systemctl enable xrdp
+sudo service xrdp restart
 
 ## Cleanup
 echo "init_vm.sh: Cleanup"
-sudo shutdown -r now

@@ -21,7 +21,7 @@ sudo systemctl enable xrdp
 
 # Install desktop environment if image doesn't have one already
 Write-Log "Install XFCE"
-sudo apt-get install xorg xfce4 xfce4-goodies dbus-x11 x11-xserver-utils gdebi-core xfce4-screensaver- --yes
+sudo apt-get install xorg xfce4 xfce4-goodies dbus-x11 x11-xserver-utils gdebi-core xfce4-screensaver --yes
 echo xfce4-session > ~/.xsession
 
 # Fix for blank screen on DSVM (/sh -> /bash due to conflict with profile.d scripts)
@@ -79,9 +79,9 @@ sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode
 ## Anaconda
 Write-Log "Install Anaconda"
 sudo apt -y install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor1 libxcomposite1 libasound2 libxi6 libxtst6
-wget https://repo.anaconda.com/archive/Anaconda3-2022.10-Linux-x86_64.sh -P /tmp
-chmod +x /tmp/Anaconda3-2022.10-Linux-x86_64.sh
-sudo bash /tmp/Anaconda3-2022.10-Linux-x86_64.sh -b -p /opt/anaconda
+wget https://repo.anaconda.com/archive/Anaconda3-2024.06-1-Linux-x86_64.sh -P /tmp
+chmod +x /tmp/Anaconda3-2024.06-1-Linux-x86_64.sh
+sudo bash /tmp/Anaconda3-2024.06-1-Linux-x86_64.sh -b -p /opt/anaconda
 /opt/anaconda/bin/conda install -y -c anaconda anaconda-navigator
 
 ## R
@@ -93,8 +93,8 @@ sudo apt install -y r-base
 
 ## RStudio Desktop
 Write-Log "Install RStudio"
-wget -q https://download1.rstudio.org/electron/jammy/amd64/rstudio-2023.03.0-386-amd64.deb -P /tmp
-sudo gdebi --non-interactive /tmp/rstudio-2023.03.0-386-amd64.deb
+wget -q https://download1.rstudio.org/electron/jammy/amd64/rstudio-2024.12.1-563-amd64.deb -P /tmp
+sudo gdebi --non-interactive /tmp/rstudio-2024.12.1-563-amd64.deb
 
 
 
@@ -127,11 +127,20 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plug
 
 ## Azure Data Studio
 Write-Log "Install Azure Data Studio"
-ADS_VERSION="azuredatastudio-linux-1.51.1.deb"
-wget https://azuredatastudio-update.azurewebsites.net/latest/linux-deb-x64/stable/
-sudo dpkg -i ./${ADS_VERSION}
-sudo apt-get install libunwind8 -y
-rm ./${ADS_VERSION}
+# Static filename for the latest download
+ADS_FILENAME="azuredatastudio-latest.deb"
+ADS_URL="https://azuredatastudio-update.azurewebsites.net/latest/linux-deb-x64/stable/"
+
+# Download and rename the latest version
+wget --content-disposition "$ADS_URL"
+mv azuredatastudio-linux-*.deb "$ADS_FILENAME"
+
+# Install prerequisites and ADS
+sudo apt-get install -y libunwind8
+sudo dpkg -i "$ADS_FILENAME" || sudo apt-get install -f -y
+
+# Clean up
+rm -f "$ADS_FILENAME"
 
 ## ADS Extensions
 Write-Log "Install ADS extensions"
