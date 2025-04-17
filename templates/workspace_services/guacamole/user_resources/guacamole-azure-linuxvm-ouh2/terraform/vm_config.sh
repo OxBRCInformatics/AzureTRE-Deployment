@@ -108,8 +108,9 @@ if [ "${SHARED_STORAGE_ACCESS}" -eq 1 ]; then
 fi
 
 # R config
-sudo echo -e "local({\n    r <- getOption(\"repos\")\n    r[\"Nexus\"] <- \"""${NEXUS_PROXY_URL}/repository/r-proxy/\"\n    options(repos = r)\n})" | sudo tee /etc/R/Rprofile.site
-
+if [ "${R_CONFIG}" == "true" ]; then
+  sudo echo -e "local({\n    r <- getOption(\"repos\")\n    r[\"Nexus\"] <- \"""${NEXUS_PROXY_URL}/repository/r-proxy/\"\n    options(repos = r)\n})" | sudo tee /etc/R/Rprofile.site
+fi
 
 ### Anaconda Config
 if [ "${CONDA_CONFIG}" == "true" ]; then
@@ -124,12 +125,14 @@ if [ "${CONDA_CONFIG}" == "true" ]; then
 fi
 
 # Docker config
-# Create Docker config directory if it doesn't exist
-sudo mkdir -p /etc/docker/
-# Configure Docker registry mirrors
-jq -n --arg proxy "${NEXUS_PROXY_URL}:8083" '{"registry-mirrors": [$proxy]}' | sudo tee /etc/docker/daemon.json > /dev/null
-# Restart Docker service to apply configuration
-sudo systemctl restart docker
+if [ "${DOCKER_CONFIG}" == "true" ]; then
+  # Create Docker config directory if it doesn't exist
+  sudo mkdir -p /etc/docker/
+  # Configure Docker registry mirrors
+  jq -n --arg proxy "${NEXUS_PROXY_URL}:8083" '{"registry-mirrors": [$proxy]}' | sudo tee /etc/docker/daemon.json > /dev/null
+  # Restart Docker service to apply configuration
+  sudo systemctl restart docker
+fi
 
 ## Prevent screen timeout and lock screen
 echo "init_vm.sh: Disabling lock screen"

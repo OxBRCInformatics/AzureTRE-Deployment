@@ -121,6 +121,8 @@ data "template_file" "vm_config" {
     FILESHARE_NAME        = var.shared_storage_access ? var.shared_storage_name : ""
     NEXUS_PROXY_URL       = local.nexus_proxy_url
     CONDA_CONFIG          = local.selected_image.conda_config ? 1 : 0
+    R_CONFIG              = local.selected_image.r_config ? 1 : 0
+    DOCKER_CONFIG         = local.selected_image.docker_config ? 1 : 0
     VM_USER               = local.admin_username
     APT_SKU               = replace(local.apt_sku, ".", "")
   }
