@@ -52,12 +52,5 @@ fi
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source "$DIR/load_metadata_from_json.sh" "$METADATA_URL"
 
-# Build vm image
-echo -e "  ${GREEN}Building Image from Template${NO_COLOUR}"
-echo -e "  ${GREEN}Please be patient. This process can takes 40+ minutes.${NO_COLOUR}"
-az resource invoke-action --resource-group "${CVM_RESOURCE_GROUP}" \
-                          --resource-type  Microsoft.VirtualMachineImages/imageTemplates \
-                          --name "${CVM_TEMPLATE_NAME}" \
-                          --action Run
-
-echo -e "  ${GREEN}Build Complete ${NO_COLOUR}"
+# Create the vm image template
+az image builder delete --name "${CVM_TEMPLATE_NAME}" --resource-group "${CVM_RESOURCE_GROUP}"

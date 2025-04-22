@@ -53,5 +53,7 @@ local({
     r["Nexus"] <- "${nexus_proxy_url}/repository/r-proxy/"
     options(repos = r)
 })
+
+Sys.setenv(R_LIBCURL_SSL_REVOKE_BEST_EFFORT=TRUE)
 "@
 $RConfig | Out-File -Encoding Ascii ( New-Item -Path $Env:C:\Software\R\etc\Rprofile.site -Force )
