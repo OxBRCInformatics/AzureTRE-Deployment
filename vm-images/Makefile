@@ -20,84 +20,60 @@ vm-view-role: ## views the custom role defintion
 vm-deploy-core: ## deploy core infra required for custom VMs (run once per environment)
 	. ./scripts/load_env.sh && ./scripts/vm-deploy-core.sh
 
-vm-define-linux-image: ## create linux image definitions within Azure Compute Gallery
-	. ./scripts/load_env.sh && ./scripts/vm-define-images.sh ./templates/linux/image_metadata.txt
+vm-destroy-core: ## destroy all custom VMs infrastructure
+	. ./scripts/load_env.sh && ./scripts/vm-destroy-core.sh
 
-vm-define-basic-linux-image: ## create basic linux image definitions within Azure Compute Gallery
-	. ./scripts/load_env.sh && ./scripts/vm-define-images.sh ./templates/basic-linux/image_metadata.txt
+vm-show-metadata: ## load template metadata and print to screen (requires first argument of TEMPLATE_PATH=<path_to_template>)
+	. ./scripts/load_env.sh \
+	&& . ./scripts/load_metadata_from_json.sh $(TEMPLATE_PATH)/image_metadata.json \
+	&& . ./scripts/show_metadata.sh
 
-vm-define-windows-image: ## create windows image definitions within Azure Compute Gallery
-	. ./scripts/load_env.sh && ./scripts/vm-define-images.sh ./templates/windows/image_metadata.txt
+vm-define-image: ## create the specified image definition (requires first argument of TEMPLATE_PATH=<path_to_template>)
+	./scripts/check_template.sh $(TEMPLATE_PATH) \
+	&& . ./scripts/load_env.sh \
+	&& ./scripts/vm-define-images.sh $(TEMPLATE_PATH)/image_metadata.json
 
 vm-deploy-template-artifacts: ## copy VM templates and supporting scripts to storage in Azure (run when templates are updated)
 	. ./scripts/load_env.sh && ./scripts/vm-deploy-template-artifacts.sh ./templates
 
-vm-create-linux-template: ## create the linux template in Azure (run once per template)
-	. ./scripts/load_env.sh && ./scripts/vm-create-template.sh --template-url ./templates/linux/image_template.json --metadata-url ./templates/linux/image_metadata.txt
+vm-create-image-template: ## create the specified image template in Azure (requires first argument of TEMPLATE_PATH=<path_to_template>)
+	./scripts/check_template.sh $(TEMPLATE_PATH) \
+	&& . ./scripts/load_env.sh \
+	&& ./scripts/vm-create-template.sh --template-url $(TEMPLATE_PATH)/image_template.json --metadata-url $(TEMPLATE_PATH)/image_metadata.json
 
-vm-create-basic-linux-template: ## create the basic linux template in Azure (run once per template)
-	. ./scripts/load_env.sh && ./scripts/vm-create-template.sh --template-url ./templates/basic-linux/image_template.json --metadata-url ./templates/basic-linux/image_metadata.txt
+vm-build-image: ## builds specified VM image (requires first argument of TEMPLATE_PATH=<path_to_template>)
+	./scripts/check_template.sh $(TEMPLATE_PATH) \
+	&& . ./scripts/load_env.sh \
+	&& ./scripts/vm-build-image.sh --metadata-url $(TEMPLATE_PATH)/image_metadata.json
 
-vm-create-windows-template: ## createthe windows template (run once per template)
-	. ./scripts/load_env.sh && ./scripts/vm-create-template.sh --template-url ./templates/windows/image_template.json --metadata-url ./templates/windows/image_metadata.txt
+vm-delete-image-template: ## delete the specified image template in Azure (requires first argument of TEMPLATE_PATH=<path_to_template>)
+	./scripts/check_template.sh $(TEMPLATE_PATH) \
+	&& . ./scripts/load_env.sh \
+	&& ./scripts/vm-delete-template.sh --metadata-url $(TEMPLATE_PATH)/image_metadata.json
 
-vm-build-linux-image: ## builds the custom Linux VM image
-	. ./scripts/load_env.sh && ./scripts/vm-build-image.sh --metadata-url ./templates/linux/image_metadata.txt
+vm-update-image: ## update the specified image template in Azure (requires first argument of TEMPLATE_PATH=<path_to_template>)
+	./scripts/check_template.sh $(TEMPLATE_PATH) \
+	&& . ./scripts/load_env.sh \
+	&& ./scripts/vm-delete-template.sh --metadata-url $(TEMPLATE_PATH)/image_metadata.json \
+	&& ./scripts/vm-deploy-template-artifacts.sh ./templates \
+	&& ./scripts/vm-create-template.sh --template-url $(TEMPLATE_PATH)/image_template.json --metadata-url $(TEMPLATE_PATH)/image_metadata.json \
+	&& ./scripts/vm-build-image.sh --metadata-url $(TEMPLATE_PATH)/image_metadata.json
 
-vm-build-basic-linux-image: ## builds the basic Linux VM image
-	. ./scripts/load_env.sh && ./scripts/vm-build-image.sh --metadata-url ./templates/basic-linux/image_metadata.txt
+# vm-test-linux-vm-all: ## create linux vm test instance in Azure
+# 	. ./scripts/load_env.sh && ./scripts/vm-remove-test-vm.sh --metadata-url ./templates/linux/image_metadata.txt
+# 	. ./scripts/load_env.sh && ./scripts/vm-remove-template.sh --metadata-url ./templates/linux/image_metadata.txt
+# 	. ./scripts/load_env.sh && ./scripts/vm-deploy-template-artifacts.sh ./templates
+# 	. ./scripts/load_env.sh && ./scripts/vm-create-template.sh --template-url ./templates/linux/image_template.json --metadata-url ./templates/linux/image_metadata.txt
+# 	. ./scripts/load_env.sh && ./scripts/vm-build-image.sh --metadata-url ./templates/linux/image_metadata.txt
+# 	. ./scripts/load_env.sh && ./scripts/vm-create-test-vm.sh --metadata-url ./templates/linux/image_metadata.txt
+# 	. ./scripts/load_env.sh && ./scripts/vm-open-port.sh --metadata-url ./templates/linux/image_metadata.txt --port 3389
 
-vm-build-windows-image: ## builds the custom Windows VM image
-	. ./scripts/load_env.sh && ./scripts/vm-build-image.sh --metadata-url ./templates/windows/image_metadata.txt
-
-vm-remove-linux-template: ## remove the linux template in Azure
-	. ./scripts/load_env.sh && ./scripts/vm-remove-template.sh --metadata-url ./templates/linux/image_metadata.txt
-
-vm-remove-basic-linux-template: ## remove the basic linux template in Azure
-	. ./scripts/load_env.sh && ./scripts/vm-remove-template.sh --metadata-url ./templates/basic-linux/image_metadata.txt
-
-vm-remove-windows-template: ## remove the windows template in Azure
-	. ./scripts/load_env.sh && ./scripts/vm-remove-template.sh --metadata-url ./templates/windows/image_metadata.txt
-
-vm-rebuild-windows-template: ## Rebuild windows vm template
-	. ./scripts/load_env.sh && ./scripts/vm-deploy-template-artifacts.sh ./templates
-	. ./scripts/load_env.sh && ./scripts/vm-remove-template.sh --metadata-url ./templates/windows/image_metadata.txt
-	. ./scripts/load_env.sh && ./scripts/vm-create-template.sh --template-url ./templates/windows/image_template.json --metadata-url ./templates/windows/image_metadata.txt
-	. ./scripts/load_env.sh && ./scripts/vm-build-image.sh --metadata-url ./templates/windows/image_metadata.txt
-
-vm-rebuild-linux-template: ## Rebuild linux vm template
-	. ./scripts/load_env.sh && ./scripts/vm-deploy-template-artifacts.sh ./templates
-	. ./scripts/load_env.sh && ./scripts/vm-remove-template.sh --metadata-url ./templates/linux/image_metadata.txt
-	. ./scripts/load_env.sh && ./scripts/vm-create-template.sh --template-url ./templates/linux/image_template.json --metadata-url ./templates/linux/image_metadata.txt
-	. ./scripts/load_env.sh && ./scripts/vm-build-image.sh --metadata-url ./templates/linux/image_metadata.txt
-
-vm-create-linux-test-vm: ## create test linux vm in Azure
-	. ./scripts/load_env.sh && ./scripts/vm-create-test-vm.sh --metadata-url ./templates/linux/image_metadata.txt
-
-vm-create-windows-test-vm: ## create test windows vm in Azure
-	. ./scripts/load_env.sh && ./scripts/vm-create-test-vm.sh --metadata-url ./templates/windows/image_metadata.txt
-
-vm-remove-linux-test-vm: ## remove test linux vm from Azure
-	. ./scripts/load_env.sh && ./scripts/vm-remove-test-vm.sh --metadata-url ./templates/linux/image_metadata.txt
-
-vm-remove-windows-test-vm: ## remove test windows vm from Azure
-	. ./scripts/load_env.sh && ./scripts/vm-remove-test-vm.sh --metadata-url ./templates/windows/image_metadata.txt
-
-vm-test-linux-vm-all: ## create linux vm test instance in Azure
-	. ./scripts/load_env.sh && ./scripts/vm-remove-test-vm.sh --metadata-url ./templates/linux/image_metadata.txt
-	. ./scripts/load_env.sh && ./scripts/vm-remove-template.sh --metadata-url ./templates/linux/image_metadata.txt
-	. ./scripts/load_env.sh && ./scripts/vm-deploy-template-artifacts.sh ./templates
-	. ./scripts/load_env.sh && ./scripts/vm-create-template.sh --template-url ./templates/linux/image_template.json --metadata-url ./templates/linux/image_metadata.txt
-	. ./scripts/load_env.sh && ./scripts/vm-build-image.sh --metadata-url ./templates/linux/image_metadata.txt
-	. ./scripts/load_env.sh && ./scripts/vm-create-test-vm.sh --metadata-url ./templates/linux/image_metadata.txt
-	. ./scripts/load_env.sh && ./scripts/vm-open-port.sh --metadata-url ./templates/linux/image_metadata.txt --port 3389
-
-vm-test-windows-vm-all: ## create windows vm test instance in Azure
-	. ./scripts/load_env.sh && ./scripts/vm-remove-test-vm.sh --metadata-url ./templates/windows/image_metadata.txt
-	. ./scripts/load_env.sh && ./scripts/vm-remove-template.sh --metadata-url ./templates/windows/image_metadata.txt
-	. ./scripts/load_env.sh && ./scripts/vm-deploy-template-artifacts.sh ./templates
-	. ./scripts/load_env.sh && ./scripts/vm-create-template.sh --template-url ./templates/windows/image_template.json --metadata-url ./templates/windows/image_metadata.txt
-	. ./scripts/load_env.sh && ./scripts/vm-build-image.sh --metadata-url ./templates/windows/image_metadata.txt
-	. ./scripts/load_env.sh && ./scripts/vm-create-test-vm.sh --metadata-url ./templates/windows/image_metadata.txt
+# vm-test-windows-vm-all: ## create windows vm test instance in Azure
+# 	. ./scripts/load_env.sh && ./scripts/vm-remove-test-vm.sh --metadata-url ./templates/windows/image_metadata.txt
+# 	. ./scripts/load_env.sh && ./scripts/vm-remove-template.sh --metadata-url ./templates/windows/image_metadata.txt
+# 	. ./scripts/load_env.sh && ./scripts/vm-deploy-template-artifacts.sh ./templates
+# 	. ./scripts/load_env.sh && ./scripts/vm-create-template.sh --template-url ./templates/windows/image_template.json --metadata-url ./templates/windows/image_metadata.txt
+# 	. ./scripts/load_env.sh && ./scripts/vm-build-image.sh --metadata-url ./templates/windows/image_metadata.txt
+# 	. ./scripts/load_env.sh && ./scripts/vm-create-test-vm.sh --metadata-url ./templates/windows/image_metadata.txt
 
 

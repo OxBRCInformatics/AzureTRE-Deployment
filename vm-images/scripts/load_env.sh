@@ -11,6 +11,7 @@ if [ -z "$ENVIRONMENT_NAME" ]; then
 fi
 
 echo "Environment set: $ENVIRONMENT_NAME"
+echo "Current time: $(date)"
 
 # Pull in variables dependent on the envionment we are deploying to.
 if [ -f "$ENV_DIR/environments/$ENVIRONMENT_NAME.env" ]; then
