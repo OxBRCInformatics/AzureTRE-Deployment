@@ -1,6 +1,4 @@
 #!/bin/bash
-# shellcheck disable=SC1091
-
 set -e
 set -o errexit
 set -o pipefail
@@ -65,7 +63,7 @@ fi
 SUBSCRIPTION_ID=$(az account show --query id --output tsv)
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-source "$DIR/load_metadata.sh" "$METADATA_URL"
+source "$DIR/load_metadata_from_json.sh" "$METADATA_URL"
 
 # copy template into build artifacts folder
 IMAGE_JSON_PATH="${DIR}/../build_artifacts/${CVM_TEMPLATE_NAME}.json"
@@ -86,4 +84,8 @@ sed -i -e "s%<scriptStorageAccContainer>%$CVM_CONTAINER_NAME%g" "${IMAGE_JSON_PA
 
 # Create the vm image template as a resource
 echo -e "  ${GREEN}Creating Image Template${NO_COLOUR}"
-az image builder create --name "${CVM_TEMPLATE_NAME}" --resource-group "${CVM_RESOURCE_GROUP}" --image-template "${IMAGE_JSON_PATH}"
+az resource create --resource-group "${CVM_RESOURCE_GROUP}" \
+                   --properties @"${IMAGE_JSON_PATH}" \
+                   --is-full-object \
+                   --resource-type Microsoft.VirtualMachineImages/imageTemplates \
+                   --name "${CVM_TEMPLATE_NAME}"

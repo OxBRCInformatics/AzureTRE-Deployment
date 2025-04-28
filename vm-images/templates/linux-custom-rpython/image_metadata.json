@@ -1,0 +1,12 @@
+{
+    "IMAGE_DEFINITION_PREFIX": "imgdef-linux-vm-custom",
+    "TEMPLATE_NAME_PREFIX": "imgtemplate-linux-vm-custom",
+    "OFFER_PREFIX": "Linux_VM_Custom",
+    "PUBLISHER_NAME" : "OUH",
+    "SKU": "22.04-LTS",
+    "OSTYPE": "Linux",
+    "IMAGE_TAGS" : "Tag1=Ubuntu2204 Tag2=CustomOUH",
+    "IMAGE_DESCRIPTION": "Linux Custom VM with Python, R and other tooling",
+    "IMAGE_HYPERV_VERSION": "V2"
+}
+

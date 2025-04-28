@@ -129,6 +129,12 @@ inputs:
     description: "Firewall SKU"
     required: false
     default: ""
+  DOCKER_USERNAME:
+    description: "Docker Hub username"
+    required: true
+  DOCKER_TOKEN:
+    description: "Docker Hub access token"
+    required: true
 
 runs:
   using: composite
@@ -152,6 +158,10 @@ runs:
       run: |
         az acr login --name "${{ inputs.CI_CACHE_ACR_NAME }}"
 
+    - name: Log in to Docker Hub
+      shell: bash
+      run: echo "${{ inputs.DOCKER_TOKEN }}" | docker login -u "${{ inputs.DOCKER_USERNAME }}" --password-stdin
+
     - name: Construct TRE_URL
       shell: bash
       run: |
@@ -174,9 +184,19 @@ runs:
     - name: Run command in DevContainer
       shell: bash
       run: |
+        # Write command to a command.sh script file
+        cat <<EOF >> ./command.sh
+        #!/bin/bash
+        set -x
+        ${{ inputs.COMMAND }}
+        EOF
+
+        chmod +x ./command.sh
+
         docker run --rm --mount \
           "type=bind,src=${{ github.workspace }},dst=/workspaces/tre" \
           -v /var/run/docker.sock:/var/run/docker.sock \
+          -v "./command.sh:/workspaces/tre/command.sh" \
           --workdir /workspaces/tre \
           --user vscode \
           -e TF_INPUT="0" \
@@ -240,5 +260,10 @@ runs:
             && inputs.RESOURCE_PROCESSOR_NUMBER_PROCESSES_PER_INSTANCE) || 5 }}" \
             -e TF_VAR_firewall_sku=${{ inputs.FIREWALL_SKU }} \
           -e E2E_TESTS_NUMBER_PROCESSES="${{ inputs.E2E_TESTS_NUMBER_PROCESSES }}" \
+          -e DOCKER_USERNAME="${{ inputs.DOCKER_USERNAME }}" \
+          -e DOCKER_TOKEN="${{ inputs.DOCKER_TOKEN }}" \
           '${{ inputs.CI_CACHE_ACR_NAME }}${{ env.ACR_DOMAIN_SUFFIX }}/tredev:${{ inputs.DEVCONTAINER_TAG }}' \
-        bash -c "${{ inputs.COMMAND }}"
+        bash -c -x "./command.sh"
+
+        # Clean up temporary script file
+        rm ./command.sh
