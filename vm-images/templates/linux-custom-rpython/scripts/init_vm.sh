@@ -158,7 +158,7 @@ sudo azuredatastudio --extensions-dir /opt/vscode/extensions --user-data-dir /op
 ## Add ODBC drivers for SQL Server
 Write-Log "Install ODBC Drivers"
 curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-curl -fsSL https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list > /dev/null
+curl -fsSL https://packages.microsoft.com/config/ubuntu/"$(lsb_release -rs)"/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list > /dev/null
 sudo apt-get update
 sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18 mssql-tools18 unixodbc-dev
 
