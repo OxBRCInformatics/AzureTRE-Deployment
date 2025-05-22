@@ -41,11 +41,13 @@ sudo sed -i 's/"us"/"gb"/' /etc/default/keyboard
 
 ## VS Code
 Write-Log "Install VS Code"
-sudo apt-get install software-properties-common apt-transport-https wget -y
+export DEBIAN_FRONTEND=noninteractive
+sudo apt-get install -y software-properties-common apt-transport-https wget
 wget -O- https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor | sudo tee /usr/share/keyrings/vscode.gpg
 echo deb [arch=amd64 signed-by=/usr/share/keyrings/vscode.gpg] https://packages.microsoft.com/repos/vscode stable main | sudo tee /etc/apt/sources.list.d/vscode.list
-sudo apt update
-sudo apt install -y code
+sudo apt-get update
+sudo apt-get install -y code
+unset DEBIAN_FRONTEND
 
 ## VSCode Extensions
 Write-Log "Install VSCode extensions"
