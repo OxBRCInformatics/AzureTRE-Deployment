@@ -146,7 +146,6 @@ sudo adduser xrdp ssl-cert
 sudo -u "${VM_USER}" -i bash -c 'echo xfce4-session > ~/.xsession'
 sudo -u "${VM_USER}" -i bash -c 'echo xset s off >> ~/.xsession'
 sudo -u "${VM_USER}" -i bash -c 'echo xset -dpms >> ~/.xsession'
-sudo -u "${VM_USER}" -i bash -c 'echo Xft.dpi: 192 >> ~/.Xresources'
 
 # Fix for blank screen on DSVM (/sh -> /bash due to conflict with profile.d scripts)
 sudo sed -i 's|!/bin/sh|!/bin/bash|g' /etc/xrdp/startwm.sh
