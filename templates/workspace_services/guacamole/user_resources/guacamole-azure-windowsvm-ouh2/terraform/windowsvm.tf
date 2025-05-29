@@ -77,8 +77,8 @@ resource "azurerm_windows_virtual_machine" "windowsvm" {
   tags = merge(
     local.tre_user_resources_tags,
     {
-      backup      = "true",
-      archive     = "false"
+      backup  = "true",
+      archive = "false"
     }
   )
 

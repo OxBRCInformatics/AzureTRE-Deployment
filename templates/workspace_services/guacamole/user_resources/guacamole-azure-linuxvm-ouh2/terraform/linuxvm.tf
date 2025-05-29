@@ -65,8 +65,8 @@ resource "azurerm_linux_virtual_machine" "linuxvm" {
   tags = merge(
     local.tre_user_resources_tags,
     {
-      backup      = "true",
-      archive     = "false"
+      backup  = "true",
+      archive = "false"
     }
   )
 
