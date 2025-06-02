@@ -110,8 +110,8 @@ Start-Process $R_INSTALLER_FILE -ArgumentList $R_INSTALL_ARGS -Wait
 
 
 # RTools - This need to be install at the default location to avoid rtools not found errors.
-$RTools_INSTALLER_FILE="rtools43-5958-5975.exe"
-$RTools_DOWNLOAD_URL="https://cran.r-project.org/bin/windows/Rtools/rtools43/files/$RTools_INSTALLER_FILE"
+$RTools_INSTALLER_FILE="rtools44-6459-6401.exe"
+$RTools_DOWNLOAD_URL="https://cran.r-project.org/bin/windows/Rtools/rtools44/files/$RTools_INSTALLER_FILE"
 $RTools_INSTALL_ARGS="/VERYSILENT /NORESTART /ALLUSERS"
 
 Write-Log "Downloading RTools installer..."

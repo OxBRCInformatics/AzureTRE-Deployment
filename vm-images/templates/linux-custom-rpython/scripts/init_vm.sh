@@ -10,34 +10,9 @@ function Write-Log {
 Write-Log "START"
 sudo apt-get update
 
-# Install xrdp
-Write-Log "Install xrdp"
-sudo apt install -y xrdp
-sudo usermod -a -G ssl-cert xrdp
-
-# Make sure xrdp service starts up with the system
-Write-Log "Enable xrdp"
-sudo systemctl enable xrdp
-
-# Install desktop environment if image doesn't have one already
-Write-Log "Install XFCE"
-sudo apt-get install xorg xfce4 xfce4-goodies dbus-x11 x11-xserver-utils gdebi-core xfce4-screensaver --yes
-echo xfce4-session > ~/.xsession
-
-# Fix for blank screen on DSVM (/sh -> /bash due to conflict with profile.d scripts)
-sudo sed -i 's|!/bin/sh|!/bin/bash|g' /etc/xrdp/startwm.sh
-
-# Set the timezone to London
-Write-Log "Set Timezone"
-sudo timedatectl set-timezone Europe/London
-
 # Fix Keyboard Layout
 Write-Log "Set Keyboard Layout"
 sudo sed -i 's/"us"/"gb"/' /etc/default/keyboard
-
-# ## SMB Client
-# Write-Log "Install SMB Client"
-# sudo apt-get install smbclient -y
 
 ## VS Code
 Write-Log "Install VS Code"
@@ -63,20 +38,6 @@ sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode
 sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension ms-vscode-remote.remote-containers
 sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension janisdd.vscode-edit-csv
 
-
-# ## PyCharm Community
-# Write-Log "Install PyCharm"
-# sudo snap install pycharm-community --classic
-
-# ## dbeaver
-# Write-Log "Install Dbeaver"
-# sudo snap install dbeaver-ce
-
-# ## Azure Storage Explorer
-# Write-Log "Install Storage Explorer"
-# sudo apt install gnome-keyring -y
-# sudo snap install storage-explorer
-# sudo snap connect storage-explorer:password-manager-service :password-manager-service
 
 ## Anaconda
 Write-Log "Install Anaconda"
