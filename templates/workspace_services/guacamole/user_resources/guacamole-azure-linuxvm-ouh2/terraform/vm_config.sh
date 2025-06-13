@@ -8,6 +8,8 @@ set -o xtrace
 
 # Remove apt sources not included in sources.list file
 sudo rm -f /etc/apt/sources.list.d/*
+# Fix sources.list file to all be [trusted=yes]
+sudo sed -i 's|\[signed-by=[^]]*\]|[trusted=yes]|g' /etc/apt/sources.list
 
 # Update apt packages from configured Nexus sources
 echo "init_vm.sh: START"
@@ -22,6 +24,12 @@ sudo systemctl start gdm3 || true
 DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true dpkg-reconfigure gdm3 || true
 sudo apt install -y xfce4 xfce4-goodies xorg dbus-x11 x11-xserver-utils
 echo /usr/sbin/gdm3 > /etc/X11/default-display-manager
+
+## VS Code
+echo "init_vm.sh: VS Code"
+echo code code/add-microsoft-repo boolean false | sudo debconf-set-selections
+sudo apt install -y code
+sudo apt install -y gvfs-bin || true
 
 ## Python 3.8 and Jupyter
 sudo apt install -y jupyter-notebook microsoft-edge-dev

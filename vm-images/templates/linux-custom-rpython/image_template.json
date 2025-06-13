@@ -13,11 +13,11 @@
                 }
               },
   "properties": {
-      "buildTimeoutInMinutes" : 90,
+      "buildTimeoutInMinutes" : 60,
 
       "vmProfile":
           {
-          "vmSize": "Standard_DS2_v2",
+          "vmSize": "Standard_D8s_v3",
           "osDiskSizeGB": 30
           },
 

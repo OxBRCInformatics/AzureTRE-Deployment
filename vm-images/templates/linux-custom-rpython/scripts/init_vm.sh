@@ -2,6 +2,7 @@
 
 set -o errexit
 set -o pipefail
+set -x  # Debug command tracing
 
 function Write-Log {
   echo  "$(date '+%Y-%m-%d %H:%M') init_vm.sh: $1"
@@ -9,134 +10,93 @@ function Write-Log {
 
 Write-Log "START"
 sudo apt-get update
+sudo apt-get install -y software-properties-common apt-transport-https wget curl gnupg lsb-release
 
-# Fix Keyboard Layout
-Write-Log "Set Keyboard Layout"
-sudo sed -i 's/"us"/"gb"/' /etc/default/keyboard
+Write-Log "Download files in parallel"
+wget https://repo.anaconda.com/archive/Anaconda3-2024.10-1-Linux-x86_64.sh -P /tmp &
+wget -q https://download1.rstudio.org/electron/jammy/amd64/rstudio-2024.12.1-563-amd64.deb -P /tmp &
+wget https://aka.ms/downloadazcopy-v10-linux -P /tmp &
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -P /tmp &
+wait
 
 ## VS Code
-Write-Log "Install VS Code"
-export DEBIAN_FRONTEND=noninteractive
-sudo apt-get install -y software-properties-common apt-transport-https wget
-wget -O- https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor | sudo tee /usr/share/keyrings/vscode.gpg
-echo deb [arch=amd64 signed-by=/usr/share/keyrings/vscode.gpg] https://packages.microsoft.com/repos/vscode stable main | sudo tee /etc/apt/sources.list.d/vscode.list
-sudo apt-get update
-sudo apt-get install -y code
-unset DEBIAN_FRONTEND
+# Write-Log "Install VS Code"
+# export DEBIAN_FRONTEND=noninteractive
+# wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /usr/share/keyrings/vscode.gpg > /dev/null
+# echo "deb [arch=amd64 signed-by=/usr/share/keyrings/vscode.gpg] https://packages.microsoft.com/repos/vscode stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
+# sudo apt-get update
+# timeout 5m sudo apt-get install -y code || Write-Log "VS Code install failed or timed out"
+# unset DEBIAN_FRONTEND
 
-## VSCode Extensions
-Write-Log "Install VSCode extensions"
-sudo mkdir /opt/vscode
-sudo mkdir /opt/vscode/user-data
-sudo mkdir /opt/vscode/extensions
-sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension ms-python.python
-sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension REditorSupport.r
-sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension RDebugger.r-debugger
-sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension ms-python.vscode-pylance
-sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension ms-toolsai.vscode-ai-remote
-# sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension ms-toolsai.vscode-ai
-sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension ms-vscode-remote.remote-containers
-sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension janisdd.vscode-edit-csv
-
+# Write-Log "Install VSCode extensions"
+# sudo mkdir -p /opt/vscode/user-data /opt/vscode/extensions
+# timeout 2m sudo code --extensions-dir="/opt/vscode/extensions" --user-data-dir="/opt/vscode/user-data" --install-extension janisdd.vscode-edit-csv || Write-Log "VSCode extension install failed"
 
 ## Anaconda
-Write-Log "Install Anaconda"
-sudo apt -y install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor1 libxcomposite1 libasound2 libxi6 libxtst6
-wget https://repo.anaconda.com/archive/Anaconda3-2024.06-1-Linux-x86_64.sh -P /tmp
-chmod +x /tmp/Anaconda3-2024.06-1-Linux-x86_64.sh
-sudo bash /tmp/Anaconda3-2024.06-1-Linux-x86_64.sh -b -p /opt/anaconda
-/opt/anaconda/bin/conda install -y -c anaconda anaconda-navigator
+Write-Log "Configure Anaconda"
+chmod +x /tmp/Anaconda3-2024.10-1-Linux-x86_64.sh
+sudo bash /tmp/Anaconda3-2024.10-1-Linux-x86_64.sh -b -p /opt/anaconda
+echo "export PATH=\"/opt/anaconda/bin:\$PATH\"" | sudo tee /etc/profile.d/anaconda.sh > /dev/null
 
 ## R
 Write-Log "Install R"
-wget -q https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc -O- | sudo apt-key add -
-sudo add-apt-repository -y "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
-sudo apt update
-sudo apt install -y r-base
+wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | gpg --dearmor | sudo tee /usr/share/keyrings/r-project.gpg > /dev/null
+echo "deb [signed-by=/usr/share/keyrings/r-project.gpg] https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/" | sudo tee /etc/apt/sources.list.d/r.list > /dev/null
+sudo apt-get update
+timeout 10m sudo apt-get install -y r-base || Write-Log "R install failed or timed out"
 
 ## RStudio Desktop
 Write-Log "Install RStudio"
-wget -q https://download1.rstudio.org/electron/jammy/amd64/rstudio-2024.12.1-563-amd64.deb -P /tmp
-sudo gdebi --non-interactive /tmp/rstudio-2024.12.1-563-amd64.deb
+timeout 5m sudo dpkg -i /tmp/rstudio-2024.12.1-563-amd64.deb || sudo apt-get install -f -y
 
-
-
-## Azure CLI
+## Azure CLI
 Write-Log "Install Azure CLI"
-curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-az extension add --name arcdata
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash || Write-Log "Azure CLI install failed"
+az extension add --name arcdata || Write-Log "Azure CLI extension 'arcdata' failed"
 
 ## AzCopy
-Write-Log "Install AZCopy"
-wget https://aka.ms/downloadazcopy-v10-linux -P /tmp
+Write-Log "Install AzCopy"
 tar -xvf /tmp/downloadazcopy-v10-linux
 sudo cp /tmp/azcopy_linux_amd64_*/azcopy /usr/bin/
 sudo chmod 755 /usr/bin/azcopy
 
 ## Google Chrome
 Write-Log "Install Google Chrome"
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -P /tmp
-sudo gdebi --non-interactive /tmp/google-chrome-stable_current_amd64.deb
+timeout 5m sudo dpkg -i /tmp/google-chrome-stable_current_amd64.deb || sudo apt-get install -f -y
 
 ## Docker CE
 Write-Log "Install Docker CE"
-sudo apt-get update &&  sudo apt-get install -y ca-certificates curl gnupg lsb-release
+sudo apt-get install -y ca-certificates curl gnupg
 sudo mkdir -m 0755 -p /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+timeout 15m sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin || Write-Log "Docker install failed"
 
 ## Azure Data Studio
 Write-Log "Install Azure Data Studio"
-# Static filename for the latest download
-ADS_FILENAME="azuredatastudio-latest.deb"
+ADS_FILENAME="/tmp/azuredatastudio-latest.deb"
 ADS_URL="https://azuredatastudio-update.azurewebsites.net/latest/linux-deb-x64/stable/"
-
-# Download and rename the latest version
-wget --content-disposition "$ADS_URL"
-mv azuredatastudio-linux-*.deb "$ADS_FILENAME"
-
-# Install prerequisites and ADS
+wget -qO "$ADS_FILENAME" "$ADS_URL"
 sudo apt-get install -y libunwind8
-sudo dpkg -i "$ADS_FILENAME" || sudo apt-get install -f -y
-
-# Clean up
+timeout 5m sudo dpkg -i "$ADS_FILENAME" || sudo apt-get install -f -y
 rm -f "$ADS_FILENAME"
 
-## ADS Extensions
-Write-Log "Install ADS extensions"
-sudo mkdir /opt/azuredatastudio
-sudo mkdir /opt/azuredatastudio/user-data
-sudo azuredatastudio --extensions-dir /opt/vscode/extensions --user-data-dir /opt/azuredatastudio/user-data --install-extension microsoft.azcli
-sudo azuredatastudio --extensions-dir /opt/vscode/extensions --user-data-dir /opt/azuredatastudio/user-data --install-extension microsoft.azuredatastudio-mysql
-sudo azuredatastudio --extensions-dir /opt/vscode/extensions --user-data-dir /opt/azuredatastudio/user-data --install-extension microsoft.admin-pack
-sudo azuredatastudio --extensions-dir /opt/vscode/extensions --user-data-dir /opt/azuredatastudio/user-data --install-extension microsoft.arc
-sudo azuredatastudio --extensions-dir /opt/vscode/extensions --user-data-dir /opt/azuredatastudio/user-data --install-extension microsoft.machine-learning
-sudo azuredatastudio --extensions-dir /opt/vscode/extensions --user-data-dir /opt/azuredatastudio/user-data --install-extension microsoft.azuredatastudio-postgresql
-
-## Add ODBC drivers for SQL Server
+## ODBC Drivers
 Write-Log "Install ODBC Drivers"
-curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-curl -fsSL https://packages.microsoft.com/config/ubuntu/"$(lsb_release -rs)"/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list > /dev/null
+curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /usr/share/keyrings/microsoft.gpg > /dev/null
+echo "deb [signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list" | sudo tee /etc/apt/sources.list.d/mssql-release.list > /dev/null
 sudo apt-get update
-sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18 mssql-tools18 unixodbc-dev
+timeout 5m sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18 mssql-tools18 unixodbc-dev || Write-Log "ODBC driver install failed"
 
-# ## Add psql client
-# Write-Log "Install PSQL client"
-# sudo apt-get update
-# sudo apt-get install -y postgresql-client
-
-## Grant access to Colord Policy file to avoid errors on RDP connections
+## Colord Policy
 Write-Log "Install Colord policy"
 sudo cp -n /tmp/45-allow-colord.pkla /etc/polkit-1/localauthority/50-local.d/45-allow-colord.pkla
 
-## Install script to run at user login
+## User Login Script
 Write-Log "Add User Login Script"
 sudo cp /tmp/init_user_profile.sh /etc/profile.d/init_user_profile.sh
 
 ## Cleanup
 Write-Log "Cleanup"
-rm /tmp/init_vm.sh
-rm /tmp/45-allow-colord.pkla
+rm -f /tmp/init_vm.sh /tmp/45-allow-colord.pkla /tmp/Anaconda3-2024.06-1-Linux-x86_64.sh /tmp/google-chrome-stable_current_amd64.deb /tmp/downloadazcopy-v10-linux /tmp/rstudio-2024.12.1-563-amd64.deb
