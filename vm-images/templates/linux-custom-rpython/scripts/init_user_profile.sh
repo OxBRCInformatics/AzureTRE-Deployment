@@ -11,8 +11,8 @@ export VSCODE_EXTENSIONS=/opt/vscode/extensions
 export PATH="$PATH:/opt/mssql-tools18/bin"
 
 # Add user to docker group (only once)
-if ! groups $USER | grep -q docker; then
-    sudo usermod -aG docker $USER
+if ! groups "$USER" | grep -q docker; then
+    sudo usermod -aG docker "$USER"
     echo "Added $USER to docker group. Please log out and back in for changes to take effect."
 fi
 

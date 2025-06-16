@@ -46,6 +46,8 @@
           "B-Series | 2 CPU | 4GB RAM | Text editing | £0.05 / hour",
           "Dsv5 Series | 2 CPU | 8GB RAM | £0.15 / hour",
           "Dsv5 Series | 4 CPU | 16GB RAM | £0.30 / hour",
+          "D4as_v5 Series | 4 CPU | 16GB RAM | £0.30 / hour",
+          "F4s_v2 Series | 4 CPU | 16GB RAM | £0.30 / hour",
           "Dsv5 Series | 8 CPU | 32GB RAM | £0.65 / hour",
           "Easv4 Series | 8 CPU | 64GB RAM | £0.75 / hour",
           "Dsv5 Series | 16 CPU | 64GB RAM | £1.25 / hour",

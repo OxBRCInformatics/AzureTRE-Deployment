@@ -137,7 +137,7 @@ sudo chmod -R 755 /opt/azuredatastudio
 ## Add ODBC drivers for SQL Server
 Write-Log "Install ODBC Drivers"
 # Use the same key we already imported for consistency
-curl -fsSL https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list > /dev/null
+curl -fsSL https://packages.microsoft.com/config/ubuntu/"$(lsb_release -rs)"/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list > /dev/null
 sudo apt-get update
 sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18 mssql-tools18 unixodbc-dev
 
