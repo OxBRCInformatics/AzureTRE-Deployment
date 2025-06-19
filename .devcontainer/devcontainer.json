@@ -18,7 +18,7 @@
       "DOCKER_GROUP_ID": "${localEnv:DOCKER_GROUP_ID}",
       "INTERACTIVE": "true",
       "UPSTREAM_REPO": "OxBRCInformatics/AzureTRE",
-      "UPSTREAM_REPO_VERSION": "feature/urgent_rp_fix_and_tagging",
+      "UPSTREAM_REPO_VERSION": "v0.21.1",
       "GITHUB_TOKEN": ""
     }
   },
