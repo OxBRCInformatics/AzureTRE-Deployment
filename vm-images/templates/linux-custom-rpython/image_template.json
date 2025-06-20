@@ -13,12 +13,12 @@
                 }
               },
   "properties": {
-      "buildTimeoutInMinutes" : 90,
+      "buildTimeoutInMinutes" : 180,
 
       "vmProfile":
           {
-          "vmSize": "Standard_DS2_v2",
-          "osDiskSizeGB": 30
+          "vmSize": "Standard_D8s_v3",
+          "osDiskSizeGB": 64
           },
 
       "source": {
@@ -30,6 +30,14 @@
 
       },
       "customize": [
+        {
+            "type": "Shell",
+            "name": "updateSystem",
+            "inline": [
+                "sudo apt-get update",
+                "sudo apt-get upgrade -y"
+            ]
+        },
         {
             "type": "File",
             "name": "VMInitScript",
@@ -54,7 +62,18 @@
             "inline": [
                 "cd /tmp",
                 "chmod +x init_vm.sh",
-                "sudo /tmp/init_vm.sh"
+                "sudo ./init_vm.sh"
+            ]
+        },
+        {
+            "type": "Shell",
+            "name": "finalCleanup",
+            "inline": [
+                "sudo apt-get autoremove -y",
+                "sudo apt-get autoclean",
+                "sudo rm -rf /var/cache/apt/archives/*",
+                "sudo rm -rf /tmp/*",
+                "sudo journalctl --vacuum-time=1d"
             ]
         }
       ],
@@ -65,7 +84,10 @@
             "runOutputName": "<runOutputName>",
             "artifactTags": {
                 "source": "azureVmImageBuilder",
-                "baseosimg": "ubuntu2204"
+                "baseosimg": "ubuntu2204",
+                "build_date": "$(date +%Y%m%d)",
+                "anaconda": "2024.06-1",
+                "tools": "vscode-rstudio-docker"
             },
             "replicationRegions": ["uksouth"],
             "storageAccountType": "Standard_LRS"

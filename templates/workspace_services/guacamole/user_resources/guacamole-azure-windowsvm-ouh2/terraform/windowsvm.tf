@@ -74,7 +74,13 @@ resource "azurerm_windows_virtual_machine" "windowsvm" {
     type = "SystemAssigned"
   }
 
-  tags = local.tre_user_resources_tags
+  tags = merge(
+    local.tre_user_resources_tags,
+    {
+      backup  = "true",
+      archive = "false"
+    }
+  )
 
   # ignore changes to secure_boot_enabled and vtpm_enabled as these are destructive
   # (may be allowed once https://github.com/hashicorp/terraform-provider-azurerm/issues/25808 is fixed)
