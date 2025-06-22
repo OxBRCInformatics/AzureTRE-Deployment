@@ -6,31 +6,17 @@ set -o nounset
 # Uncomment this line to see each command for debugging (careful: this will show secrets!)
 # set -o xtrace
 
-# Set environment variables for non-interactive installation
-export DEBIAN_FRONTEND=noninteractive
-export NEEDRESTART_MODE=a
-
-# Wait for any running package operations to complete
-if sudo fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1; then
-    sleep 30
-fi
-if sudo fuser /var/lib/apt/lists/lock >/dev/null 2>&1; then
-    sleep 30
-fi
-
 # Remove apt sources not included in sources.list file
 sudo rm -f /etc/apt/sources.list.d/*
 
-# Fix sources.list file to all be [trusted=yes]
-sudo sed -i 's|\[signed-by=[^]]*\]|[trusted=yes]|g' /etc/apt/sources.list
+# # Fix sources.list file to all be [trusted=yes]
+# sudo sed -i 's|\[signed-by=[^]]*\]|[trusted=yes]|g' /etc/apt/sources.list
 
 # Update apt packages from configured Nexus sources
 echo "init_vm.sh: START"
 sudo apt update || true
 sudo apt upgrade -y
-
-# Install essential packages (fixed package names for Ubuntu 22.04)
-sudo apt install -y gnupg software-properties-common apt-transport-https wget dirmngr gdebi-core
+sudo apt install -y gnupg software-properties-common apt-transport-https wget dirmngr gdebi-core debconf-utils
 sudo apt-get update || true
 
 ## Desktop
@@ -81,7 +67,7 @@ END
 
 if [ "${SHARED_STORAGE_ACCESS}" -eq 1 ]; then
   # Install required packages
-  sudo apt-get install autofs -y
+  sudo apt-get install -y autofs cifs-utils
 
   # Pass in required variables
   storageAccountName="${STORAGE_ACCOUNT_NAME}"
