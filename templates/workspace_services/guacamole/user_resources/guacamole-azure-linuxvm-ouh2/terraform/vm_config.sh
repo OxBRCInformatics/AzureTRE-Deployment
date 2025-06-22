@@ -4,10 +4,20 @@ set -o errexit
 set -o pipefail
 set -o nounset
 # Uncomment this line to see each command for debugging (careful: this will show secrets!)
-set -o xtrace
+# set -o xtrace
+
+# Set environment variables for non-interactive installation
+export DEBIAN_FRONTEND=noninteractive
+export NEEDRESTART_MODE=a
+
+# Wait for any running package operations to complete
+sudo fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1 && sleep 30 || true
+sudo fuser /var/lib/apt/lists/lock >/dev/null 2>&1 && sleep 30 || true
+
 
 # Remove apt sources not included in sources.list file
 sudo rm -f /etc/apt/sources.list.d/*
+
 # Fix sources.list file to all be [trusted=yes]
 sudo sed -i 's|\[signed-by=[^]]*\]|[trusted=yes]|g' /etc/apt/sources.list
 
@@ -15,7 +25,9 @@ sudo sed -i 's|\[signed-by=[^]]*\]|[trusted=yes]|g' /etc/apt/sources.list
 echo "init_vm.sh: START"
 sudo apt update || true
 sudo apt upgrade -y
-sudo apt install -y gnupg2 software-properties-common apt-transport-https wget dirmngr gdebi-core debconf-utils
+
+# Install essential packages (fixed package names for Ubuntu 22.04)
+sudo apt install -y gnupg software-properties-common apt-transport-https wget dirmngr gdebi-core
 sudo apt-get update || true
 
 ## Desktop
@@ -24,12 +36,6 @@ sudo systemctl start gdm3 || true
 DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true dpkg-reconfigure gdm3 || true
 sudo apt install -y xfce4 xfce4-goodies xorg dbus-x11 x11-xserver-utils
 echo /usr/sbin/gdm3 > /etc/X11/default-display-manager
-
-## VS Code
-echo "init_vm.sh: VS Code"
-echo code code/add-microsoft-repo boolean false | sudo debconf-set-selections
-sudo apt install -y code
-sudo apt install -y gvfs-bin || true
 
 ## Python 3.8 and Jupyter
 sudo apt install -y jupyter-notebook microsoft-edge-dev
