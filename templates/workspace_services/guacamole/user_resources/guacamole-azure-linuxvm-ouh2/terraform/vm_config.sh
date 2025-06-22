@@ -11,9 +11,12 @@ export DEBIAN_FRONTEND=noninteractive
 export NEEDRESTART_MODE=a
 
 # Wait for any running package operations to complete
-sudo fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1 && sleep 30 || true
-sudo fuser /var/lib/apt/lists/lock >/dev/null 2>&1 && sleep 30 || true
-
+if sudo fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1; then
+    sleep 30
+fi
+if sudo fuser /var/lib/apt/lists/lock >/dev/null 2>&1; then
+    sleep 30
+fi
 
 # Remove apt sources not included in sources.list file
 sudo rm -f /etc/apt/sources.list.d/*
