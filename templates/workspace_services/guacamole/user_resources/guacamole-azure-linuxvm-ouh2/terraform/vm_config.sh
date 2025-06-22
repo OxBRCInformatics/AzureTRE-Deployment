@@ -4,16 +4,19 @@ set -o errexit
 set -o pipefail
 set -o nounset
 # Uncomment this line to see each command for debugging (careful: this will show secrets!)
-set -o xtrace
+# set -o xtrace
 
 # Remove apt sources not included in sources.list file
 sudo rm -f /etc/apt/sources.list.d/*
+
+# # Fix sources.list file to all be [trusted=yes]
+# sudo sed -i 's|\[signed-by=[^]]*\]|[trusted=yes]|g' /etc/apt/sources.list
 
 # Update apt packages from configured Nexus sources
 echo "init_vm.sh: START"
 sudo apt update || true
 sudo apt upgrade -y
-sudo apt install -y gnupg2 software-properties-common apt-transport-https wget dirmngr gdebi-core debconf-utils
+sudo apt install -y gnupg software-properties-common apt-transport-https wget dirmngr gdebi-core debconf-utils
 sudo apt-get update || true
 
 ## Desktop
@@ -64,7 +67,7 @@ END
 
 if [ "${SHARED_STORAGE_ACCESS}" -eq 1 ]; then
   # Install required packages
-  sudo apt-get install autofs -y
+  sudo apt-get install -y autofs cifs-utils
 
   # Pass in required variables
   storageAccountName="${STORAGE_ACCOUNT_NAME}"
@@ -146,7 +149,6 @@ sudo adduser xrdp ssl-cert
 sudo -u "${VM_USER}" -i bash -c 'echo xfce4-session > ~/.xsession'
 sudo -u "${VM_USER}" -i bash -c 'echo xset s off >> ~/.xsession'
 sudo -u "${VM_USER}" -i bash -c 'echo xset -dpms >> ~/.xsession'
-sudo -u "${VM_USER}" -i bash -c 'echo Xft.dpi: 192 >> ~/.Xresources'
 
 # Fix for blank screen on DSVM (/sh -> /bash due to conflict with profile.d scripts)
 sudo sed -i 's|!/bin/sh|!/bin/bash|g' /etc/xrdp/startwm.sh

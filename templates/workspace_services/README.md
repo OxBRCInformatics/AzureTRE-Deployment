@@ -51,10 +51,15 @@ In `porter.yaml`, the `custom` section contains a couple of sub-sections (shown 
 custom:
   # For information on vm_sizes and image_options, see README.me in the guacamole/user-resources folder
   vm_sizes:
-    "2 CPU | 8GB RAM": Standard_D2s_v5
-    "4 CPU | 16GB RAM": Standard_D4s_v5
-    "8 CPU | 32GB RAM": Standard_D8s_v5
-    "16 CPU | 64GB RAM": Standard_D16s_v5
+    "2 CPU | 4GB RAM | Text editing | £0.05 / hour": Standard_B2s
+    "2 CPU | 8GB RAM | £0.10 / hour": Standard_D2s_v5
+    "4 CPU | 16GB RAM | £0.20 / hour": Standard_D4s_v5
+    "8 CPU | 32GB RAM | £0.35 / hour": Standard_D8s_v5
+    "8 CPU | 64GB RAM | £0.45 / hour": Standard_E8as_v4
+    "16 CPU | 64GB RAM | £0.65 / hour": Standard_D16s_v5
+    "6 CPU - 112GB RAM | 1 V100 GPU - 16GB RAM | £3 / hour": Standard_NC6s_v3
+    "12 CPU - 224GB RAM | 2 V100 GPU - 32GB RAM | £6 / hour": Standard_NC12s_v3
+    "6 CPU - 55GB RAM | 1 A10 GPU - 4GB RAM | £0.45 / hour": Standard_NV6ads_A10_v5
   image_options:
     "Ubuntu 22.04 LTS":
       source_image_reference:
@@ -64,7 +69,17 @@ custom:
         version: latest
         apt_sku: 22.04
       install_ui: true
-      conda_config: false
+      conda_config: true
+      r_config: false
+      docker_config: false
+      secure_boot_enabled: true
+      vtpm_enabled: true
+    "OUH Ubuntu 22.04 Data Science VM":
+      source_image_name: imgdef-linux-vm-custom
+      install_ui: true
+      conda_config: true
+      r_config: true
+      docker_config: true
       secure_boot_enabled: true
       vtpm_enabled: true
     # "Custom Image From Gallery":

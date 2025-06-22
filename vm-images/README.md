@@ -225,4 +225,23 @@ OSTYPE| The OS type used when publishing the image in Azure Compute Gallery. Can
 
 Once an Image Version has been build it is possible to create VMs based upon that Image Version. This can be done within the portal, or via the Azure CLI.
 
+## Examples
 
+To create a new Linux image in DEV:
+
+```bash
+
+ENVIRONMENT_NAME=development make vm-define-image TEMPLATE_PATH=templates/linux-custom-rpython/
+ENVIRONMENT_NAME=development make vm-deploy-template-artifacts
+ENVIRONMENT_NAME=development make vm-create-image-template TEMPLATE_PATH=templates/linux-custom-rpython/
+ENVIRONMENT_NAME=development  make vm-build-image TEMPLATE_PATH=templates/linux-custom-rpython/
+
+```
+
+To update the linux image in DEV:
+
+```bash
+
+ENVIRONMENT_NAME=development make vm-update-image TEMPLATE_PATH=templates/linux-custom-rpython/
+
+```
