@@ -1,5 +1,10 @@
 # Azure TRE Upgrade: vFROM_VERSION → vTO_VERSION
 
+**TRE ID:** `<Update after first run>`
+
+*delete this after*
+`Find the TRE ID under the first step of the pipeline. Preparation > Get run id > using id of: XXXXXX`
+
 ## **Purpose**
 
 This upgrade brings our Azure TRE from version FROM_VERSION to TO_VERSION, including upstream improvements while preserving our custom OUH configurations and resource bundles.

@@ -57,3 +57,5 @@ jobs:
       CI_CACHE_ACR_NAME: ${{ secrets.ACR_NAME }}
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+      ENCRYPTION_KV_NAME: ${{ secrets.ENCRYPTION_KV_NAME }}
+      EXTERNAL_KEY_STORE_ID: ${{ secrets.EXTERNAL_KEY_STORE_ID }}
