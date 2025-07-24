@@ -93,6 +93,12 @@ on:  # yamllint disable-line rule:truthy
       DOCKER_TOKEN:
         description: "Docker Hub access token"
         required: true
+      ENCRYPTION_KV_NAME:
+        description: ""
+        required: false
+      EXTERNAL_KEY_STORE_ID:
+        description: ""
+        required: false
 
 # This will prevent multiple runs of this entire workflow.
 # We should NOT cancel in progress runs as that can destabilize the environment.
@@ -248,6 +254,9 @@ jobs:
           MGMT_STORAGE_ACCOUNT_NAME: ${{ secrets.MGMT_STORAGE_ACCOUNT_NAME }}
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+          ENABLE_CMK_ENCRYPTION: ${{ vars.ENABLE_CMK_ENCRYPTION }}
+          ENCRYPTION_KV_NAME: ${{ secrets.ENCRYPTION_KV_NAME }}
+          EXTERNAL_KEY_STORE_ID: ${{ secrets.EXTERNAL_KEY_STORE_ID }}
 
       - name: ACR Login
         # failure in the first attempt indicates a new ACR, so we need to try again after it's been created
@@ -376,6 +385,9 @@ jobs:
           APP_GATEWAY_SKU: ${{ vars.APP_GATEWAY_SKU }}
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+          ENABLE_CMK_ENCRYPTION: ${{ vars.ENABLE_CMK_ENCRYPTION }}
+          ENCRYPTION_KV_NAME: ${{ secrets.ENCRYPTION_KV_NAME }}
+          EXTERNAL_KEY_STORE_ID: ${{ secrets.EXTERNAL_KEY_STORE_ID }}
 
       - name: API Healthcheck
         uses: ./.github/actions/devcontainer_run_command
