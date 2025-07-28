@@ -1,6 +1,6 @@
 # Workspace Templates
 
-Workspace Templates are located in this folder. These Templates are for the Composition Service to make instances of.
+Workspace Service Templates are located in this folder. We make use of our own custom user resource templates, this is where you can find those templates.
 
 | VM type | Template name | Description |
 | --- | --- | --- |
@@ -9,29 +9,39 @@ Workspace Templates are located in this folder. These Templates are for the Comp
 
 ## Available VM sizes
 
-  | CPU | GPU / RAM | Price | Size |
-  | --- | --- | --- | --- |
-  |   2 CPU              | 4GB                    | £0.05 / hour | Standard_B2s           |
-  |   2 CPU              | 8GB                    | £0.15 / hour | Standard_D2s_v5        |
-  |   4 CPU              | 16GB                   | £0.30 / hour | Standard_D4s_v5        |
-  |   8 CPU              | 32GB                   | £0.65 / hour | Standard_D8s_v5        |
-  |   8 CPU              | 64GB                   | £0.75 / hour | Standard_E8as_v4       |
-  |   16 CPU             | 64GB                   | £1.25 / hour | Standard_D16s_v5       |
-  |   6 CPU              | 55GB RAM - 1 A10 GPU   | £0.45 / hour | Standard_NV6ads_A10_v5 |
-  |   6 CPU - 112GB RAM  | 1 GPU - 16GB           | £3.21 / hour | Standard_NC6s_v3       |
-  |   12 CPU - 224GB RAM | 2 GPU - 32GB           | £6.42 / hour | Standard_NC12s_v3      |
+| vCPU | RAM (GB) | GPU        | GPU Memory (GB) | CPU Type | Azure Series | Use Case                              | Price/Hour |
+| ---- | -------- | ---------- | --------------- | -------- | ------------ | ------------------------------------- | ---------- |
+| 2    | 4        | None       | -               | Intel    | B-Series     | Basic development/coding              | £0.05      |
+| 2    | 8        | None       | -               | Intel    | Dsv5         | Data preprocessing/analysis           | £0.15      |
+| 4    | 16       | None       | -               | Intel    | Dsv5         | ML data preparation                   | £0.30      |
+| 4    | 16       | None       | -               | AMD      | D4as_v5      | ML data preparation                   | £0.30      |
+| 4    | 16       | None       | -               | Intel    | F4s_v2       | CPU-intensive ML tasks                | £0.30      |
+| 8    | 32       | None       | -               | Intel    | Dsv5         | Large dataset processing              | £0.65      |
+| 8    | 64       | None       | -               | AMD      | Easv4        | Memory-intensive ML workloads         | £0.75      |
+| 16   | 64       | None       | -               | Intel    | Dsv5         | Complex data analysis                 | £1.25      |
+| 6    | 55       | 1/6 A10    | 4               | AMD      | NVadsA10_v5  | Small ML model training/inference     | £0.61      |
+| 12   | 110      | 1/3 A10    | 8               | AMD      | NVadsA10_v5  | Medium ML model training              | £1.22      |
+| 18   | 220      | 1/2 A10    | 12              | AMD      | NVadsA10_v5  | Advanced ML model training            | £2.05      |
+| 6    | 112      | 1 V100     | 16              | Intel    | NC6s_v3      | Legacy AI/ML training (retiring)      | £3.21      |
+| 36   | 440      | 1 A10      | 24              | AMD      | NVadsA10_v5  | Large ML model training               | £4.11      |
+| 24   | 220      | 1 A100     | 80              | AMD      | NC_A100_v4   | High-end AI/deep learning training    | £4.14      |
+| 12   | 224      | 2 V100     | 32              | Intel    | NC12s_v3     | Legacy multi-GPU training (retiring)  | £6.42      |
+| 40   | 320      | 1 H100 NVL | 94              | AMD      | NCadsH100_v5 | LLM training/cutting-edge AI research | £7.70      |
+| 48   | 440      | 2 A100     | 160             | AMD      | NC_A100_v4   | Multi-GPU deep learning training      | £8.29      |
+| 96   | 880      | 4 A100     | 320             | AMD      | NC_A100_v4   | Large-scale neural network training   | £16.60     |
   
 ## Current VM Image options
 
 ### Windows
 
-- OUH image
 - Windows 10
 - Windows 11
+- OUH Server 2019 Data Science VM
 
 ### Linux
 
-- Ubuntu 22.04
+- Ubuntu 22.04 LTS
+- OUH Ubuntu 22.04 Data Science VM
 
 ## Customising the user resources
 
