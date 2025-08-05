@@ -29,6 +29,8 @@ Workspace Service Templates are located in this folder. We make use of our own c
 | 40   | 320      | 1 H100 NVL | 94              | AMD      | NCadsH100_v5 | LLM training/cutting-edge AI research | £7.70      |
 | 48   | 440      | 2 A100     | 160             | AMD      | NC_A100_v4   | Multi-GPU deep learning training      | £8.29      |
 | 96   | 880      | 4 A100     | 320             | AMD      | NC_A100_v4   | Large-scale neural network training   | £16.60     |
+
+*Update to GPU options required due to the NC models becoming retired.*
   
 ## Current VM Image options
 
