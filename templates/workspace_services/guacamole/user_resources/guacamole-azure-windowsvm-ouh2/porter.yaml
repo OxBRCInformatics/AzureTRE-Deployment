@@ -10,13 +10,13 @@ custom:
   # For information on vm_sizes and image_options, see README.me in the guacamole/user-resources folder
   vm_sizes:
     "B-Series | 2 CPU | 4GB RAM | Text editing | £0.05 / hour": Standard_B2s
-    "Dsv5 Series | 2 CPU | 8GB RAM | £0.10 / hour": Standard_D2s_v5
-    "Dsv5 Series | 4 CPU | 16GB RAM | £0.20 / hour": Standard_D4s_v5
-    "D4as_v5 Series | 4 CPU | 16GB RAM | £0.15 / hour": Standard_D4as_v5
-    "F4s_v2 Series | 4 CPU | 16GB RAM | £0.15 / hour": Standard_F4s_v2
-    "Dsv5 Series | 8 CPU | 32GB RAM | £0.35 / hour": Standard_D8s_v5
-    "Dsv5 Series | 16 CPU | 64GB RAM | £0.65 / hour": Standard_D16s_v5
-    "Easv4 Series | 8 CPU | 64GB RAM | £0.45 / hour": Standard_E8as_v4
+    "Dsv5 Series | 2 CPU | 8GB RAM | £0.15 / hour": Standard_D2s_v5
+    "Dsv5 Series | 4 CPU | 16GB RAM | £0.30 / hour": Standard_D4s_v5
+    "D4as_v5 Series | 4 CPU | 16GB RAM | £0.30 / hour": Standard_D4as_v5
+    "F4s_v2 Series | 4 CPU | 16GB RAM | £0.30 / hour": Standard_F4s_v2
+    "Dsv5 Series | 8 CPU | 32GB RAM | £0.65 / hour": Standard_D8s_v5
+    "Dsv5 Series | 16 CPU | 64GB RAM | £1.25 / hour": Standard_D16s_v5
+    "Easv4 Series | 8 CPU | 64GB RAM | £0.75 / hour": Standard_E8as_v4
     "RETIRING - NC6s_v3 Series | 6 CPU - 112GB RAM | 1 V100 GPU - 16GB RAM | £3.00 / hour": Standard_NC6s_v3
     "RETIRING - NC6s_v3 Series | 12 CPU - 224GB RAM | 2 V100 GPU - 32GB RAM | £6.00 / hour": Standard_NC12s_v3
     "NV6ads_A10_v5 Series | 6 CPU - 55GB RAM | 1/6 A10 GPU - 4GB RAM | £0.61 / hour": Standard_NV6ads_A10_v5
