@@ -58,10 +58,9 @@
         "NV12ads_A10_v5 Series | 12 CPU - 110GB RAM | 1/3 A10 GPU - 8GB RAM | £0.85 / hour",
         "NV18ads_A10_v5 Series | 18 CPU - 220GB RAM | 1/2 A10 GPU - 12GB RAM | £1.50 / hour",
         "NV36ads_A10_v5 Series | 36 CPU - 440GB RAM | 1 A10 GPU - 24GB RAM | £3.00 / hour",
-        "NC24ads_A100_v4 Series | 24 CPU - 220GB RAM | 1 A100 GPU - 80GB RAM | £3.45 / hour",
-        "NC48ads_A100_v4 Series | 48 CPU - 440GB RAM | 2 A100 GPU - 160GB RAM | £6.90 / hour",
-        "NC96ads_A100_v4 Series | 96 CPU - 880GB RAM | 4 A100 GPU - 320GB RAM | £13.80 / hour",
-        "NC40ads_H100_v5 Series | 40 CPU - 320GB RAM | 1 H100 NVL GPU - 94GB RAM | £6.55 / hour"
+        "NV72ads_A10_v5 Series | 72 CPU - 880GB RAM | 2 A10 GPU - 48GB RAM | £6.15 / hour",
+        "NC40ads_H100_v5 Series | 40 CPU - 320GB RAM | 1 H100 NVL GPU - 94GB RAM | £6.55 / hour",
+        "NC80adis_H100_v5 Series | 80 CPU - 640GB RAM | 2 H100 NVL GPU - 188GB RAM | £13.15 / hour"
       ],
       "updateable": true
     },
