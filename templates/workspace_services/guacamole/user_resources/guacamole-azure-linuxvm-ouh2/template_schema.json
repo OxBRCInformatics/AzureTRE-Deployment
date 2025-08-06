@@ -37,6 +37,13 @@
         "OUH Ubuntu 22.04 Data Science VM"
       ]
     },
+      "message": {
+        "type": "string",
+        "title": "Deployment Message",
+        "description": "The NC6s_v3 Series of GPU VMs will be retired on 30th September. These wil not be usable from 01-10-2025. Please migrate your work to a new GPU or CPU VM before this date. The A10 series is recommended.",
+        "default": "",
+        "updateable": true
+      },
     "vm_size": {
       "$id": "#/properties/vm_size",
       "type": "string",

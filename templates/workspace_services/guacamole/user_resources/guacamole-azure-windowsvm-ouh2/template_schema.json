@@ -36,11 +36,18 @@
           "OUH Server 2019 Data Science VM"
         ]
       },
+      "message": {
+        "type": "string",
+        "title": "Deployment Message",
+        "description": "The NC6s_v3 Series of GPU VMs will be retired on 30th September. These wil not be usable from 01-10-2025. Please migrate your work to a new GPU or CPU VM before this date. The A10 series is recommended.",
+        "default": "",
+        "updateable": true
+      },
       "vm_size": {
         "$id": "#/properties/vm_size",
         "type": "string",
         "title": "VM Size",
-        "description": "Select size of VM\nVMs can only be resized within the same series (e.g., Dsv5 → Dsv5). Resizing across different series is not supported due to hardware and storage differences.",
+        "description": "Select size of VM. VMs can only be resized within the same series (e.g., Dsv5 → Dsv5). Resizing across different series is not supported due to hardware and storage differences.",
         "default": "F4s_v2 Series | 4 CPU | 16GB RAM | £0.15 / hour",
         "enum": [
           "B-Series | 2 CPU | 4GB RAM | Text editing | £0.05 / hour",
