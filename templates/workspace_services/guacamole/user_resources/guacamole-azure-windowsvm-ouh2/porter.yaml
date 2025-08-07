@@ -23,7 +23,7 @@ custom:
     "NV12ads_A10_v5 Series | 12 CPU 110GB RAM | 1/3 A10 GPU 8GB RAM | £1.22/ hour": Standard_NV12ads_A10_v5
     "NV18ads_A10_v5 Series | 18 CPU 220GB RAM | 1/2 A10 GPU 12GB RAM | £2.05/ hour": Standard_NV18ads_A10_v5
     "NV36ads_A10_v5 Series | 36 CPU 440GB RAM | 1 A10 GPU 24GB RAM | £4.11/ hour": Standard_NV36ads_A10_v5
-    "NV72ads_A10_v5 Series | 72 CPU 880GB RAM | 2 A10 GPU 48GB RAM | £8.60/ hour": Standard_NV72ads_A10_v5 
+    "NV72ads_A10_v5 Series | 72 CPU 880GB RAM | 2 A10 GPU 48GB RAM | £8.60/ hour": Standard_NV72ads_A10_v5
     # GPU VMs - H100 Series (ordered by price)
     "NC40ads_H100_v5 Series | 40 CPU 320GB RAM | 1 H100 NVL GPU 94GB RAM | £7.70/ hour": Standard_NC40ads_H100_v5
     "NC80adis_H100_v5 Series | 80 CPU 640GB RAM | 2 H100 NVL GPU 188GB RAM | £15.90/ hour": Standard_NC80adis_H100_v5
