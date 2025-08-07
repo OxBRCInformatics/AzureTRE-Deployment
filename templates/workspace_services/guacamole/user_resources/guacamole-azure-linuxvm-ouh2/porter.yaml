@@ -10,30 +10,26 @@ custom:
   # For information on vm_sizes and image_options, see README.me in the guacamole/user-resources folder
   vm_sizes:
     # CPU-only VMs (ordered by price)
-    "B-Series | 2 CPU | 4GB RAM | Text editing | £0.05 / hour": Standard_B2s
-    "Dsv5 Series | 2 CPU | 8GB RAM | £0.10 / hour": Standard_D2s_v5
-    "D4as_v5 Series | 4 CPU | 16GB RAM | £0.15 / hour": Standard_D4as_v5
-    "F4s_v2 Series | 4 CPU | 16GB RAM | £0.15 / hour": Standard_F4s_v2
-    "Dsv5 Series | 4 CPU | 16GB RAM | £0.20 / hour": Standard_D4s_v5
-    "Dsv5 Series | 8 CPU | 32GB RAM | £0.35 / hour": Standard_D8s_v5
-    "Easv4 Series | 8 CPU | 64GB RAM | £0.45 / hour": Standard_E8as_v4
-    "Dsv5 Series | 16 CPU | 64GB RAM | £0.65 / hour": Standard_D16s_v5
-    
+    "B-Series | 2 CPU | 4GB RAM | Text editing | £0.05/ hour": Standard_B2s
+    "Dsv5 Series | 2 CPU | 8GB RAM | £0.10/ hour": Standard_D2s_v5
+    "D4as_v5 Series | 4 CPU | 16GB RAM | £0.15/ hour": Standard_D4as_v5
+    "F4s_v2 Series | 4 CPU | 16GB RAM | £0.15/ hour": Standard_F4s_v2
+    "Dsv5 Series | 4 CPU | 16GB RAM | £0.20/ hour": Standard_D4s_v5
+    "Dsv5 Series | 8 CPU | 32GB RAM | £0.35/ hour": Standard_D8s_v5
+    "Easv4 Series | 8 CPU | 64GB RAM | £0.45/ hour": Standard_E8as_v4
+    "Dsv5 Series | 16 CPU | 64GB RAM | £0.65/ hour": Standard_D16s_v5
     # GPU VMs - A10 Series (ordered by price)
-    "NV6ads_A10_v5 Series | 6 CPU - 55GB RAM | 1/6 A10 GPU - 4GB RAM | £0.45 / hour": Standard_NV6ads_A10_v5
-    "NV12ads_A10_v5 Series | 12 CPU - 110GB RAM | 1/3 A10 GPU - 8GB RAM | £0.85 / hour": Standard_NV12ads_A10_v5
-    "NV18ads_A10_v5 Series | 18 CPU - 220GB RAM | 1/2 A10 GPU - 12GB RAM | £1.50 / hour": Standard_NV18ads_A10_v5
-    "NV36ads_A10_v5 Series | 36 CPU - 440GB RAM | 1 A10 GPU - 24GB RAM | £3.00 / hour": Standard_NV36ads_A10_v5
-    "NV72ads_A10_v5 Series | 72 CPU - 880GB RAM | 2 A10 GPU - 48GB RAM | £6.15 / hour": Standard_NV72ads_A10_v5
-    
+    "NV6ads_A10_v5 Series | 6 CPU 55GB RAM | 1/6 A10 GPU 4GB RAM | £0.45/ hour": Standard_NV6ads_A10_v5
+    "NV12ads_A10_v5 Series | 12 CPU 110GB RAM | 1/3 A10 GPU 8GB RAM | £0.85/ hour": Standard_NV12ads_A10_v5
+    "NV18ads_A10_v5 Series | 18 CPU 220GB RAM | 1/2 A10 GPU 12GB RAM | £1.50/ hour": Standard_NV18ads_A10_v5
+    "NV36ads_A10_v5 Series | 36 CPU 440GB RAM | 1 A10 GPU 24GB RAM | £3.00/ hour": Standard_NV36ads_A10_v5
+    "NV72ads_A10_v5 Series | 72 CPU 880GB RAM | 2 A10 GPU 48GB RAM | £6.15/ hour": Standard_NV72ads_A10_v5
     # GPU VMs - H100 Series (ordered by price)
-    "NC40ads_H100_v5 Series | 40 CPU - 320GB RAM | 1 H100 NVL GPU - 94GB RAM | £6.55 / hour": Standard_NC40ads_H100_v5
-    "NC80adis_H100_v5 Series | 80 CPU - 640GB RAM | 2 H100 NVL GPU - 188GB RAM | £13.15 / hour": Standard_NC80adis_H100_v5
-    
+    "NC40ads_H100_v5 Series | 40 CPU 320GB RAM | 1 H100 NVL GPU 94GB RAM | £6.55/ hour": Standard_NC40ads_H100_v5
+    "NC80adis_H100_v5 Series | 80 CPU 640GB RAM | 2 H100 NVL GPU 188GB RAM | £13.15/ hour": Standard_NC80adis_H100_v5
     # RETIRING - V100 Series (at bottom with warning)
-    "⚠️ RETIRING SEPT 30 - NC6s_v3 Series | 6 CPU - 112GB RAM | 1 V100 GPU - 16GB RAM | £3.00 / hour": Standard_NC6s_v3
-    "⚠️ RETIRING SEPT 30 - NC6s_v3 Series | 12 CPU - 224GB RAM | 2 V100 GPU - 32GB RAM | £6.00 / hour": Standard_NC12s_v3
-
+    "⚠️ RETIRING SEPT30 - NC6s_v3 Series | 6 CPU 112GB RAM | 1 V100 GPU 16GB RAM | £3.00/ hour": Standard_NC6s_v3
+    "⚠️ RETIRING SEPT30 - NC6s_v3 Series | 12 CPU 224GB RAM | 2 V100 GPU 32GB RAM | £6.00/ hour": Standard_NC12s_v3
   image_options:
     "Ubuntu 22.04 LTS":
       source_image_reference:
@@ -142,7 +138,7 @@ parameters:
     default: "OUH Ubuntu 22.04 Data Science VM"
   - name: vm_size
     type: string
-    default: "F4s_v2 Series | 4 CPU | 16GB RAM | £0.15 / hour"
+    default: "F4s_v2 Series | 4 CPU | 16GB RAM | £0.15/ hour"
   - name: shared_storage_access
     type: boolean
     default: true
