@@ -3,7 +3,7 @@
     "$id": "https://github.com/microsoft/AzureTRE/templates/workspace_services/guacamole/user_resources/guacamole-azure-windowsvm/template_schema.json",
     "type": "object",
     "title": "Windows Virtual Machine",
-    "description": "Windows virtual machine.",
+    "description": "Windows virtual machine. ⚠️ NC6s_v3 VMs retire Sept 30, 2025. Migrate to A10 series before this date.",
     "required": [
     ],
     "authorizedRoles": [
@@ -36,37 +36,30 @@
           "OUH Server 2019 Data Science VM"
         ]
       },
-      "message": {
-        "type": "string",
-        "title": "Deployment Message",
-        "description": "The NC6s_v3 Series of GPU VMs will be retired on 30th September. These wil not be usable from 01-10-2025. Please migrate your work to a new GPU or CPU VM before this date. The A10 series is recommended.",
-        "default": "",
-        "updateable": true
-      },
       "vm_size": {
         "$id": "#/properties/vm_size",
         "type": "string",
         "title": "VM Size",
-        "description": "Select size of VM. VMs can only be resized within the same series (e.g., Dsv5 → Dsv5). Resizing across different series is not supported due to hardware and storage differences.",
+        "description": "Select size of VM. VMs can only be resized within the same series (e.g., Dsv5 → Dsv5). Resizing across different series is not supported due to hardware and storage differences. Only deploy H100 VMs for limited periods where possible.",
         "default": "F4s_v2 Series | 4 CPU | 16GB RAM | £0.15 / hour",
         "enum": [
           "B-Series | 2 CPU | 4GB RAM | Text editing | £0.05 / hour",
           "Dsv5 Series | 2 CPU | 8GB RAM | £0.15 / hour",
-          "Dsv5 Series | 4 CPU | 16GB RAM | £0.30 / hour",
           "D4as_v5 Series | 4 CPU | 16GB RAM | £0.30 / hour",
+          "Dsv5 Series | 4 CPU | 16GB RAM | £0.30 / hour",
           "F4s_v2 Series | 4 CPU | 16GB RAM | £0.30 / hour",
           "Dsv5 Series | 8 CPU | 32GB RAM | £0.65 / hour",
-          "Dsv5 Series | 16 CPU | 64GB RAM | £1.25 / hour",
           "Easv4 Series | 8 CPU | 64GB RAM | £0.75 / hour",
-          "RETIRING - NC6s_v3 Series | 6 CPU - 112GB RAM | 1 V100 GPU - 16GB RAM | £3.00 / hour",
-          "RETIRING - NC6s_v3 Series | 12 CPU - 224GB RAM | 2 V100 GPU - 32GB RAM | £6.00 / hour",
+          "Dsv5 Series | 16 CPU | 64GB RAM | £1.25 / hour",
           "NV6ads_A10_v5 Series | 6 CPU - 55GB RAM | 1/6 A10 GPU - 4GB RAM | £0.61 / hour",
           "NV12ads_A10_v5 Series | 12 CPU - 110GB RAM | 1/3 A10 GPU - 8GB RAM | £1.22 / hour",
           "NV18ads_A10_v5 Series | 18 CPU - 220GB RAM | 1/2 A10 GPU - 12GB RAM | £2.05 / hour",
           "NV36ads_A10_v5 Series | 36 CPU - 440GB RAM | 1 A10 GPU - 24GB RAM | £4.11 / hour",
           "NV72ads_A10_v5 Series | 72 CPU - 880GB RAM | 2 A10 GPU - 48GB RAM | £8.60 / hour",
           "NC40ads_H100_v5 Series | 40 CPU - 320GB RAM | 1 H100 NVL GPU - 94GB RAM | £7.70 / hour",
-          "NC80adis_H100_v5 Series | 80 CPU - 640GB RAM | 2 H100 NVL GPU - 188GB RAM | £15.90 / hour"
+          "NC80adis_H100_v5 Series | 80 CPU - 640GB RAM | 2 H100 NVL GPU - 188GB RAM | £15.90 / hour",
+          "⚠️ RETIRING SEPT 30 - NC6s_v3 Series | 6 CPU - 112GB RAM | 1 V100 GPU - 16GB RAM | £3.00 / hour",
+          "⚠️ RETIRING SEPT 30 - NC6s_v3 Series | 12 CPU - 224GB RAM | 2 V100 GPU - 32GB RAM | £6.00 / hour"
         ],
         "updateable": true
       },
