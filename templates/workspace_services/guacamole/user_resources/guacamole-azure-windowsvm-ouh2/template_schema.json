@@ -28,7 +28,7 @@
         "$id": "#/properties/os_image",
         "type": "string",
         "title": "Windows image",
-        "description": "Select Windows image to use for VM",
+        "description": "Select Windows image to use for VM. (OUH image will not work with the H100 GPU VMs at the moment.)",
         "default": "OUH Server 2019 Data Science VM",
         "enum": [
           "Windows 10",
@@ -40,7 +40,7 @@
         "$id": "#/properties/vm_size",
         "type": "string",
         "title": "VM Size",
-        "description": "Select size of VM. VMs can only be resized within the same series (e.g., Dsv5 → Dsv5). Resizing across different series is not supported due to hardware and storage differences. Only deploy H100 VMs for limited periods where possible.",
+        "description": "Select size of VM. VMs can only be resized within the same series (e.g., Dsv5 → Dsv5). Resizing across different series is not supported. GPU VMs should only be deployed when actively needed due to limited quota. H100 quota is especially limited - deploy only for essential workloads and limited periods.",
         "default": "F4s_v2 Series | 4 CPU | 16GB RAM | £0.15 / hour",
         "enum": [
           "B-Series | 2 CPU | 4GB RAM | Text editing | £0.05/ hour",

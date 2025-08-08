@@ -9,26 +9,29 @@ Workspace Service Templates are located in this folder. We make use of our own c
 
 ## Available VM sizes
 
-| vCPU | RAM (GB) | GPU        | GPU Memory (GB) | CPU Type | Azure Series | Use Case                              | Price/Hour |
-| ---- | -------- | ---------- | --------------- | -------- | ------------ | ------------------------------------- | ---------- |
-| 2    | 4        | None       | -               | Intel    | B-Series     | Basic development/coding              | £0.05      |
-| 2    | 8        | None       | -               | Intel    | Dsv5         | Data preprocessing/analysis           | £0.15      |
-| 4    | 16       | None       | -               | Intel    | Dsv5         | ML data preparation                   | £0.30      |
-| 4    | 16       | None       | -               | AMD      | D4as_v5      | ML data preparation                   | £0.30      |
-| 4    | 16       | None       | -               | Intel    | F4s_v2       | CPU-intensive ML tasks                | £0.30      |
-| 8    | 32       | None       | -               | Intel    | Dsv5         | Large dataset processing              | £0.65      |
-| 8    | 64       | None       | -               | AMD      | Easv4        | Memory-intensive ML workloads         | £0.75      |
-| 16   | 64       | None       | -               | Intel    | Dsv5         | Complex data analysis                 | £1.25      |
-| 6    | 55       | 1/6 A10    | 4               | AMD      | NVadsA10_v5  | Small ML model training/inference     | £0.61      |
-| 12   | 110      | 1/3 A10    | 8               | AMD      | NVadsA10_v5  | Medium ML model training              | £1.22      |
-| 18   | 220      | 1/2 A10    | 12              | AMD      | NVadsA10_v5  | Advanced ML model training            | £2.05      |
-| 6    | 112      | 1 V100     | 16              | Intel    | NC6s_v3      | Legacy AI/ML training (retiring)      | £3.21      |
-| 36   | 440      | 1 A10      | 24              | AMD      | NVadsA10_v5  | Large ML model training               | £4.11      |
-| 24   | 220      | 1 A100     | 80              | AMD      | NC_A100_v4   | High-end AI/deep learning training    | £4.14      |
-| 12   | 224      | 2 V100     | 32              | Intel    | NC12s_v3     | Legacy multi-GPU training (retiring)  | £6.42      |
-| 40   | 320      | 1 H100 NVL | 94              | AMD      | NCadsH100_v5 | LLM training/cutting-edge AI research | £7.70      |
-| 48   | 440      | 2 A100     | 160             | AMD      | NC_A100_v4   | Multi-GPU deep learning training      | £8.29      |
-| 96   | 880      | 4 A100     | 320             | AMD      | NC_A100_v4   | Large-scale neural network training   | £16.60     |
+| VM Size                            | vCPU | RAM (GB) | GPU        | GPU Memory (GB) | Price/Hour | Azure SKU                 |
+| ---------------------------------- | ---- | -------- | ---------- | --------------- | ---------- | ------------------------- |
+| **CPU-Only VMs**                   |      |          |            |                 |            |                           |
+| B-Series                           | 2    | 4        | None       | -               | £0.05      | Standard_B2s              |
+| Dsv5 Series                        | 2    | 8        | None       | -               | £0.15      | Standard_D2s_v5           |
+| D4as_v5 Series                     | 4    | 16       | None       | -               | £0.30      | Standard_D4as_v5          |
+| Dsv5 Series                        | 4    | 16       | None       | -               | £0.30      | Standard_D4s_v5           |
+| F4s_v2 Series                      | 4    | 16       | None       | -               | £0.30      | Standard_F4s_v2           |
+| Dsv5 Series                        | 8    | 32       | None       | -               | £0.65      | Standard_D8s_v5           |
+| Easv4 Series                       | 8    | 64       | None       | -               | £0.75      | Standard_E8as_v4          |
+| Dsv5 Series                        | 16   | 64       | None       | -               | £1.25      | Standard_D16s_v5          |
+| **GPU VMs - A10 Series**           |      |          |            |                 |            |                           |
+| NV6ads_A10_v5 Series               | 6    | 55       | 1/6 A10    | 4               | £0.61      | Standard_NV6ads_A10_v5    |
+| NV12ads_A10_v5 Series              | 12   | 110      | 1/3 A10    | 8               | £1.22      | Standard_NV12ads_A10_v5   |
+| NV18ads_A10_v5 Series              | 18   | 220      | 1/2 A10    | 12              | £2.05      | Standard_NV18ads_A10_v5   |
+| NV36ads_A10_v5 Series              | 36   | 440      | 1 A10      | 24              | £4.11      | Standard_NV36ads_A10_v5   |
+| NV72ads_A10_v5 Series              | 72   | 880      | 2 A10      | 48              | £8.60      | Standard_NV72ads_A10_v5   |
+| **GPU VMs - H100 Series**          |      |          |            |                 |            |                           |
+| NC40ads_H100_v5 Series             | 40   | 320      | 1 H100 NVL | 94              | £7.70      | Standard_NC40ads_H100_v5  |
+| NC80adis_H100_v5 Series            | 80   | 640      | 2 H100 NVL | 188             | £15.90     | Standard_NC80adis_H100_v5 |
+| **⚠️ Retiring VMs (Sept 30, 2025)** |      |          |            |                 |            |                           |
+| NC6s_v3 Series                     | 6    | 112      | 1 V100     | 16              | £3.00      | Standard_NC6s_v3          |
+| NC6s_v3 Series                     | 12   | 224      | 2 V100     | 32              | £6.00      | Standard_NC12s_v3         |
 
 *Update to GPU options required due to the NC models becoming retired.*
   
