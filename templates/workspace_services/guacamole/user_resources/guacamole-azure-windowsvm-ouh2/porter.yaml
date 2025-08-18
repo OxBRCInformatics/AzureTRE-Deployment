@@ -1,7 +1,7 @@
 ---
 schemaVersion: 1.0.0
 name: tre-service-guacamole-windowsvm-ouh2
-version: 1.1.6
+version: 1.1.7
 description: "An Azure TRE User Resource Template for Guacamole (Windows 10)"
 dockerfile: Dockerfile.tmpl
 registry: azuretre
@@ -13,8 +13,8 @@ custom:
     "B-Series | 2 CPU | 4GB RAM | Text editing | £0.05/ hour": Standard_B2s
     "Dsv5 Series | 2 CPU | 8GB RAM | £0.15/ hour": Standard_D2s_v5
     "D4as_v5 Series | 4 CPU | 16GB RAM | £0.30/ hour": Standard_D4as_v5
+    "F4s_v2 Series | 4 CPU | 8GB RAM | £0.30/ hour": Standard_F4s_v2
     "Dsv5 Series | 4 CPU | 16GB RAM | £0.30/ hour": Standard_D4s_v5
-    "F4s_v2 Series | 4 CPU | 16GB RAM | £0.30/ hour": Standard_F4s_v2
     "Dsv5 Series | 8 CPU | 32GB RAM | £0.65/ hour": Standard_D8s_v5
     "Easv4 Series | 8 CPU | 64GB RAM | £0.75/ hour": Standard_E8as_v4
     "Dsv5 Series | 16 CPU | 64GB RAM | £1.25/ hour": Standard_D16s_v5
@@ -28,8 +28,8 @@ custom:
     "NC40ads_H100_v5 Series | 40 CPU 320GB RAM | 1 H100 NVL GPU 94GB RAM | £7.70/ hour": Standard_NC40ads_H100_v5
     "NC80adis_H100_v5 Series | 80 CPU 640GB RAM | 2 H100 NVL GPU 188GB RAM | £15.90/ hour": Standard_NC80adis_H100_v5
     # RETIRING - V100 Series (at bottom)
-    "⚠️ RETIRING SEPT30 - NC6s_v3 Series | 6 CPU 112GB RAM | 1 V100 GPU 16GB RAM | £3.00/ hour": Standard_NC6s_v3
-    "⚠️ RETIRING SEPT30 - NC6s_v3 Series | 12 CPU 224GB RAM | 2 V100 GPU 32GB RAM | £6.00/ hour": Standard_NC12s_v3
+    "⚠️ RETIRING SEPT30. NC6s_v3 Series | 6 CPU 112GB RAM | 1 V100 GPU 16GB RAM | £3.00/ hour": Standard_NC6s_v3
+    "⚠️ RETIRING SEPT30. NC6s_v3 Series | 12 CPU 224GB RAM | 2 V100 GPU 32GB RAM | £6.00/ hour": Standard_NC12s_v3
   image_options:
     "Windows 10":
       source_image_reference:
@@ -118,7 +118,7 @@ parameters:
     default: "Windows 10"
   - name: vm_size
     type: string
-    default: "F4s_v2 Series | 4 CPU | 16GB RAM | £0.15 / hour"
+    default: "F4s_v2 Series | 4 CPU | 8GB RAM | £0.30/ hour"
   - name: shared_storage_access
     type: boolean
     default: true
