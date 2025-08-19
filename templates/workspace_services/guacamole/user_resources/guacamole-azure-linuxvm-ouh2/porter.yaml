@@ -1,7 +1,7 @@
 ---
 schemaVersion: 1.0.0
 name: tre-service-guacamole-linuxvm-ouh2
-version: 1.1.6
+version: 1.2.1
 description: "An Azure TRE User Resource Template for Guacamole (Linux)"
 dockerfile: Dockerfile.tmpl
 registry: azuretre
@@ -15,8 +15,10 @@ custom:
     "D4as_v5 Series | 4 CPU | 16GB RAM | £0.15/ hour": Standard_D4as_v5
     "F4s_v2 Series | 4 CPU | 8GB RAM | £0.15/ hour": Standard_F4s_v2
     "Dsv5 Series | 4 CPU | 16GB RAM | £0.20/ hour": Standard_D4s_v5
+    "F8s_v2 Series | 8 CPU | 16GB RAM | £0.30/ hour": Standard_F8s_v2
     "Dsv5 Series | 8 CPU | 32GB RAM | £0.35/ hour": Standard_D8s_v5
     "Easv4 Series | 8 CPU | 64GB RAM | £0.45/ hour": Standard_E8as_v4
+    "F16s_v2 Series | 16 CPU | 32GB RAM | £0.60/ hour": 	Standard_F16s_v2
     "Dsv5 Series | 16 CPU | 64GB RAM | £0.65/ hour": Standard_D16s_v5
     # GPU VMs - A10 Series (ordered by price)
     "NV6ads_A10_v5 Series | 6 CPU 55GB RAM | 1/6 A10 GPU 4GB RAM | £0.45/ hour": Standard_NV6ads_A10_v5
