@@ -48,14 +48,14 @@ variable "key_store_id" {
   type = string
 }
 variable "auth_tenant_id" {
-  type        = string
+  type = string
 }
 variable "auth_client_id" {
-  type        = string
+  type = string
 }
 variable "auth_client_secret" {
-  type        = string
+  type = string
 }
 variable "admin_username" {
-  type        = string
+  type = string
 }
