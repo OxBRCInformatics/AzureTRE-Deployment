@@ -29,12 +29,7 @@ Workspace Service Templates are located in this folder. We make use of our own c
 | **GPU VMs - H100 Series**          |      |          |            |                 |            |                           |
 | NC40ads_H100_v5 Series             | 40   | 320      | 1 H100 NVL | 94              | £7.70      | Standard_NC40ads_H100_v5  |
 | NC80adis_H100_v5 Series            | 80   | 640      | 2 H100 NVL | 188             | £15.90     | Standard_NC80adis_H100_v5 |
-| **⚠️ Retiring VMs (Sept 30, 2025)** |      |          |            |                 |            |                           |
-| NC6s_v3 Series                     | 6    | 112      | 1 V100     | 16              | £3.00      | Standard_NC6s_v3          |
-| NC6s_v3 Series                     | 12   | 224      | 2 V100     | 32              | £6.00      | Standard_NC12s_v3         |
 
-*Update to GPU options required due to the NC models becoming retired.*
-  
 ## Current VM Image options
 
 ### Windows

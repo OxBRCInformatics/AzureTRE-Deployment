@@ -1,7 +1,7 @@
 ---
 schemaVersion: 1.0.0
 name: tre-service-guacamole-windowsvm-ouh2
-version: 1.1.4
+version: 1.1.5
 description: "An Azure TRE User Resource Template for Guacamole (Windows 10)"
 dockerfile: Dockerfile.tmpl
 registry: azuretre
@@ -29,9 +29,6 @@ custom:
     # GPU VMs - H100 Series (ordered by price)
     "NC40ads_H100_v5 Series | 40 CPU 320GB RAM | 1 H100 NVL GPU 94GB RAM | £7.70/ hour": Standard_NC40ads_H100_v5
     "NC80adis_H100_v5 Series | 80 CPU 640GB RAM | 2 H100 NVL GPU 188GB RAM | £15.90/ hour": Standard_NC80adis_H100_v5
-    # RETIRING - V100 Series (at bottom)
-    "⚠️ RETIRING SEPT30. NC6s_v3 Series | 6 CPU 112GB RAM | 1 V100 GPU 16GB RAM | £3.00/ hour": Standard_NC6s_v3
-    "⚠️ RETIRING SEPT30. NC6s_v3 Series | 12 CPU 224GB RAM | 2 V100 GPU 32GB RAM | £6.00/ hour": Standard_NC12s_v3
   image_options:
     "Windows 10":
       source_image_reference:
@@ -118,6 +115,9 @@ parameters:
   - name: os_image
     type: string
     default: "Windows 10"
+  - name: admin_username
+    type: string
+    default: ""
   - name: vm_size
     type: string
     default: "F4s_v2 Series | 4 CPU | 8GB RAM | £0.30/ hour"
@@ -178,6 +178,7 @@ install:
         parent_service_id: ${ bundle.parameters.parent_service_id }
         tre_resource_id: ${ bundle.parameters.id }
         image: ${ bundle.parameters.os_image }
+        admin_username: ${ bundle.parameters.admin_username }
         vm_size: ${ bundle.parameters.vm_size }
         shared_storage_access: ${ bundle.parameters.shared_storage_access }
         shared_storage_name: ${ bundle.parameters.shared_storage_name }
@@ -210,6 +211,7 @@ upgrade:
         parent_service_id: ${ bundle.parameters.parent_service_id }
         tre_resource_id: ${ bundle.parameters.id }
         image: ${ bundle.parameters.os_image }
+        admin_username: ${ bundle.parameters.admin_username }
         vm_size: ${ bundle.parameters.vm_size }
         shared_storage_access: ${ bundle.parameters.shared_storage_access }
         shared_storage_name: ${ bundle.parameters.shared_storage_name }
@@ -254,6 +256,7 @@ uninstall:
         parent_service_id: ${ bundle.parameters.parent_service_id }
         tre_resource_id: ${ bundle.parameters.id }
         image: ${ bundle.parameters.os_image }
+        admin_username: ${ bundle.parameters.admin_username }
         vm_size: ${ bundle.parameters.vm_size }
         shared_storage_access: ${ bundle.parameters.shared_storage_access }
         shared_storage_name: ${ bundle.parameters.shared_storage_name }
