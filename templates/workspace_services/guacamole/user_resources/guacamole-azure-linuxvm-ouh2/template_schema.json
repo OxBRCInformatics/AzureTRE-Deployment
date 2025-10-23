@@ -3,7 +3,7 @@
   "$id": "https://github.com/microsoft/AzureTRE/templates/workspace_services/guacamole/user_resources/guacamole-azure-linuxvm/template_schema.json",
   "type": "object",
   "title": "Linux Virtual Machine",
-  "description": "Linux virtual machine. ⚠️ NC6s_v3 VMs retire Sept 30, 2025. Migrate to A10 series before this date.",
+  "description": "Linux virtual machine",
   "required": [
     "os_image",
     "vm_size"

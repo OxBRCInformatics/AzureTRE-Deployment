@@ -3,7 +3,7 @@
     "$id": "https://github.com/microsoft/AzureTRE/templates/workspace_services/guacamole/user_resources/guacamole-azure-windowsvm/template_schema.json",
     "type": "object",
     "title": "Windows Virtual Machine",
-    "description": "Windows virtual machine. ⚠️ NC6s_v3 VMs retire Sept 30, 2025. Migrate to A10 series before this date.",
+    "description": "Windows virtual machine ",
     "required": [
     ],
     "authorizedRoles": [
