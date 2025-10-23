@@ -57,5 +57,5 @@ variable "auth_client_secret" {
   type        = string
 }
 variable "admin_username" {
-  type = string
+  type        = string
 }
