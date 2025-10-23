@@ -36,6 +36,12 @@
           "OUH Server 2019 Data Science VM"
         ]
       },
+      "admin_username": {
+        "type": "string",
+        "title": "Admin username",
+        "description": "Overide automatic admin username generation.",
+        "default": ""
+      },
       "vm_size": {
         "$id": "#/properties/vm_size",
         "type": "string",
@@ -59,9 +65,7 @@
           "NV36ads_A10_v5 Series | 36 CPU 440GB RAM | 1 A10 GPU 24GB RAM | £4.11/ hour",
           "NV72ads_A10_v5 Series | 72 CPU 880GB RAM | 2 A10 GPU 48GB RAM | £8.60/ hour",
           "NC40ads_H100_v5 Series | 40 CPU 320GB RAM | 1 H100 NVL GPU 94GB RAM | £7.70/ hour",
-          "NC80adis_H100_v5 Series | 80 CPU 640GB RAM | 2 H100 NVL GPU 188GB RAM | £15.90/ hour",
-          "⚠️ RETIRING SEPT30. NC6s_v3 Series | 6 CPU 112GB RAM | 1 V100 GPU 16GB RAM | £3.00/ hour",
-          "⚠️ RETIRING SEPT30. NC6s_v3 Series | 12 CPU 224GB RAM | 2 V100 GPU 32GB RAM | £6.00/ hour"
+          "NC80adis_H100_v5 Series | 80 CPU 640GB RAM | 2 H100 NVL GPU 188GB RAM | £15.90/ hour"
         ],
         "updateable": true
       },
@@ -72,5 +76,10 @@
         "default": true,
         "description": "Enable access to shared storage"
       }
+    },
+    "uiSchema": {
+    "admin_username": {
+      "classNames": "tre-hidden"
+    }
     }
 }
