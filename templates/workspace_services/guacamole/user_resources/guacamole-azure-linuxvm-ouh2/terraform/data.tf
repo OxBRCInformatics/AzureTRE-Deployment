@@ -73,4 +73,5 @@ data "azurerm_storage_account" "stg" {
 
 data "azuread_user" "user" {
   object_id = var.owner_id
+  count     = var.admin_username == "" ? 1 : 0
 }

@@ -3,7 +3,7 @@
   "$id": "https://github.com/microsoft/AzureTRE/templates/workspace_services/guacamole/user_resources/guacamole-azure-linuxvm/template_schema.json",
   "type": "object",
   "title": "Linux Virtual Machine",
-  "description": "Linux virtual machine. ⚠️ NC6s_v3 VMs retire Sept 30, 2025. Migrate to A10 series before this date.",
+  "description": "Linux virtual machine",
   "required": [
     "os_image",
     "vm_size"
@@ -37,6 +37,12 @@
         "OUH Ubuntu 22.04 Data Science VM"
       ]
     },
+    "admin_username": {
+      "type": "string",
+      "title": "Admin username",
+      "description": "Overide automatic admin username generation.",
+      "default": ""
+    },
     "vm_size": {
       "$id": "#/properties/vm_size",
       "type": "string",
@@ -60,9 +66,7 @@
         "NV36ads_A10_v5 Series | 36 CPU 440GB RAM | 1 A10 GPU 24GB RAM | £3.00/ hour",
         "NV72ads_A10_v5 Series | 72 CPU 880GB RAM | 2 A10 GPU 48GB RAM | £6.15/ hour",
         "NC40ads_H100_v5 Series | 40 CPU 320GB RAM | 1 H100 NVL GPU 94GB RAM | £6.55/ hour",
-        "NC80adis_H100_v5 Series | 80 CPU 640GB RAM | 2 H100 NVL GPU 188GB RAM | £13.15/ hour",
-        "⚠️ RETIRING SEPT30. NC6s_v3 Series | 6 CPU 112GB RAM | 1 V100 GPU 16GB RAM | £3.00/ hour",
-        "⚠️ RETIRING SEPT30. NC6s_v3 Series | 12 CPU 224GB RAM | 2 V100 GPU 32GB RAM | £6.00/ hour"
+        "NC80adis_H100_v5 Series | 80 CPU 640GB RAM | 2 H100 NVL GPU 188GB RAM | £13.15/ hour"
       ],
       "updateable": true
     },
@@ -142,5 +146,10 @@
         ]
       }
     }
-  ]
+  ],
+  "uiSchema": {
+    "admin_username": {
+      "classNames": "tre-hidden"
+    }
+  }
 }
