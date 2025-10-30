@@ -18,7 +18,7 @@
       "DOCKER_GROUP_ID": "${localEnv:DOCKER_GROUP_ID}",
       "INTERACTIVE": "true",
       "UPSTREAM_REPO": "OxBRCInformatics/AzureTRE",
-      "UPSTREAM_REPO_VERSION": "tvstre-prod-main-v0.22.0",
+      "UPSTREAM_REPO_VERSION": "tvstre-prod-main-v0.23.1",
       "GITHUB_TOKEN": ""
     }
   },
