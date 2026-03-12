@@ -1,3 +1,5 @@
+This process is being replaced - ReadMe will remain but may be archived.
+
 # Custom Virtual Machine Images
 
 This folder contains files that deploy the infrastructre used to create and publish custom virtual machine (VM) images in Azure.
