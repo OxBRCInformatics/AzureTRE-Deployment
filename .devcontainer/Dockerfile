@@ -87,6 +87,9 @@ RUN curl -L --fail -o /tmp/azcopy.tar.gz "https://aka.ms/downloadazcopy-v10-linu
 ARG PAJV_VERSION="1.2.0"
 RUN npm install -g pajv@${PAJV_VERSION}
 
+# Install yarn (removed from base image)
+RUN npm install -g yarn
+
 # Install git - required for terraform's git modules
 RUN if [ "${INTERACTIVE}" = "false" ]; then \
 apt-get update && apt-get install --no-install-recommends -y git \
