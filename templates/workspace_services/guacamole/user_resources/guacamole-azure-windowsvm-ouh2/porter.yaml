@@ -323,7 +323,7 @@ start:
         - login
       flags:
         identity:
-        username: ${ bundle.credentials.azure_client_id }
+        client-id: ${ bundle.credentials.azure_client_id }
   - az:
       description: "Start the VM"
       arguments:
@@ -359,7 +359,7 @@ stop:
         - login
       flags:
         identity:
-        username: ${ bundle.credentials.azure_client_id }
+        client-id: ${ bundle.credentials.azure_client_id }
   - az:
       description: "Stop the VM"
       arguments:
@@ -398,7 +398,7 @@ reset_password:
         - login
       flags:
         identity:
-        username: ${ bundle.credentials.azure_client_id }
+        client-id: ${ bundle.credentials.azure_client_id }
   - exec:
       description: "Reset password and persist to keyvault"
       suppress-output: true
