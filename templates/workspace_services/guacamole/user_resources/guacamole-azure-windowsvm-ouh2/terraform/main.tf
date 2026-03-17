@@ -7,6 +7,8 @@ terraform {
       configuration_aliases = [azurerm.core]
     }
     random = {
+      source  = "hashicorp/random"
+      version = "= 3.7.2"
     }
     azuread = {
       source  = "hashicorp/azuread"
