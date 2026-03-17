@@ -75,6 +75,4 @@ sudo service xrdp restart
 # Docker — restart to ensure service is running
 # daemon.json (Nexus registry mirror) is already written in the image
 # ---------------------------------------------------------------------------
-if [ "${DOCKER_CONFIG}" == "true" ]; then
-  sudo systemctl restart docker
-fi
+sudo systemctl restart docker
