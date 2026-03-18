@@ -67,9 +67,18 @@ fi
 sudo -u "${VM_USER}" -i bash -c 'echo xfce4-session > ~/.xsession'
 sudo -u "${VM_USER}" -i bash -c 'echo xset s off >> ~/.xsession'
 sudo -u "${VM_USER}" -i bash -c 'echo xset -dpms >> ~/.xsession'
-
-sudo systemctl enable xrdp
-sudo service xrdp restart
+sudo -u "${VM_USER}" -i bash -c 'mkdir -p ~/.config/xfce4/xfconf/xfce-perchannel-xml'
+sudo -u "${VM_USER}" -i bash -c 'cat > ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-screensaver.xml << EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<channel name="xfce4-screensaver" version="1.0">
+  <property name="saver" type="empty">
+    <property name="enabled" type="bool" value="false"/>
+  </property>
+  <property name="lock" type="empty">
+    <property name="enabled" type="bool" value="false"/>
+  </property>
+</channel>
+EOF'
 
 # ---------------------------------------------------------------------------
 # Docker — restart to ensure service is running
