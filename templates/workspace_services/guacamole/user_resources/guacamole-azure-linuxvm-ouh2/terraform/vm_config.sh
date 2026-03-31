@@ -6,8 +6,8 @@ set -o nounset
 # set -o xtrace
 # ---------------------------------------------------------------------------
 # NOTE: The following are pre-configured in the VM image and are NOT repeated here:
-#   - apt sources (Nexus proxied repositories)
-#   - Base package installs (gnupg, wget, gdebi-core, etc.)
+#   - apt sources (Nexus proxied repositories only — no direct internet sources)
+#   - Base package installs (gnupg, wget, gdebi-core, autofs, cifs-utils, etc.)
 #   - Desktop environment (XFCE, xorg, dbus-x11)
 #   - Azure Storage Explorer (installed at /opt/storage-explorer with desktop entry)
 #   - pip (/etc/pip.conf)                    → Nexus PyPI proxy
@@ -16,13 +16,13 @@ set -o nounset
 #   - Docker daemon (/etc/docker/daemon.json) → Nexus registry mirror
 #   - Chrome (replaces Edge)
 #   - Jupyter (available via VS Code Jupyter extension)
-#   - xfce4-screensaver lock screen disabled via per-user xfconf XML (see Per-user xrdp / session setup below)
+#   - xrdp session defaults (/etc/skel/.xsession)
+#   - xfce4-screensaver lock screen disabled (/etc/skel/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-screensaver.xml)
 # ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 # Shared storage mount (per-workspace credentials, autofs/CIFS)
 # ---------------------------------------------------------------------------
 if [ "${SHARED_STORAGE_ACCESS}" -eq 1 ]; then
-  sudo apt-get install -y autofs cifs-utils
   storageAccountName="${STORAGE_ACCOUNT_NAME}"
   storageAccountKey="${STORAGE_ACCOUNT_KEY}"
   httpEndpoint="${HTTP_ENDPOINT}"
@@ -49,26 +49,6 @@ if [ "${SHARED_STORAGE_ACCESS}" -eq 1 ]; then
   # Symlink for constant visible mount point
   sudo ln -s "$mntPath" "/$fileShareName"
 fi
-# ---------------------------------------------------------------------------
-# Per-user xrdp / session setup
-# ---------------------------------------------------------------------------
-sudo -u "${VM_USER}" -i bash -c 'echo xfce4-session > ~/.xsession'
-sudo -u "${VM_USER}" -i bash -c 'echo xset s off >> ~/.xsession'
-sudo -u "${VM_USER}" -i bash -c 'echo xset -dpms >> ~/.xsession'
-sudo -u "${VM_USER}" -i bash -c 'mkdir -p ~/.config/xfce4/xfconf/xfce-perchannel-xml'
-sudo -u "${VM_USER}" -i bash -c 'cat > ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-screensaver.xml << EOF
-<?xml version="1.0" encoding="UTF-8"?>
-<channel name="xfce4-screensaver" version="1.0">
-  <property name="saver" type="empty">
-    <property name="enabled" type="bool" value="false"/>
-  </property>
-  <property name="lock" type="empty">
-    <property name="enabled" type="bool" value="false"/>
-    <property name="with-screensaver" type="bool" value="false"/>
-    <property name="sleep-activation" type="bool" value="false"/>
-  </property>
-</channel>
-EOF'
 # ---------------------------------------------------------------------------
 # Docker — restart to ensure service is running
 # daemon.json (Nexus registry mirror) is already written in the image
