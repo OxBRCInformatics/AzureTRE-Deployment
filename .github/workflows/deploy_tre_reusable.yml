@@ -430,11 +430,11 @@ jobs:
       matrix:
         include:
           - {BUNDLE_TYPE: "workspace",
-             BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspaces/base"}
+             BUNDLE_DIR: "./templates/workspaces/base"}
           - {BUNDLE_TYPE: "workspace",
-             BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspaces/unrestricted"}
+             BUNDLE_DIR: "./templates/workspaces/unrestricted"}
           - {BUNDLE_TYPE: "workspace",
-             BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspaces/airlock-import-review"}
+             BUNDLE_DIR: "./templates/workspaces/airlock-import-review"}
           - {BUNDLE_TYPE: "workspace_service",
              BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspace_services/guacamole"}
           - {BUNDLE_TYPE: "workspace_service",
@@ -623,11 +623,11 @@ jobs:
         include:
           # bundles type can be inferred from the bundle dir (but this is more explicit)
           - {BUNDLE_TYPE: "workspace",
-             BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspaces/base"}
+             BUNDLE_DIR: "./templates/workspaces/base"}
           - {BUNDLE_TYPE: "workspace",
-             BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspaces/unrestricted"}
+             BUNDLE_DIR: "./templates/workspaces/unrestricted"}
           - {BUNDLE_TYPE: "workspace",
-             BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspaces/airlock-import-review"}
+             BUNDLE_DIR: "./templates/workspaces/airlock-import-review"}
           - {BUNDLE_TYPE: "workspace_service",
              BUNDLE_DIR: "\\${AZURETRE_HOME}/templates/workspace_services/guacamole"}
           - {BUNDLE_TYPE: "workspace_service",
