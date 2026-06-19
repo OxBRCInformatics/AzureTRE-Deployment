@@ -49,112 +49,28 @@
             "description": "Select the size of VM for your workload. VMs can only be resized within the same series (e.g. Dsv5 to Dsv5); resizing across series is not supported. GPU quota is shared across all workspaces on the platform — deploying a GPU VM that is not actively in use consumes quota that may be needed by other researchers. Quota is only released when a VM is deleted, not when it is stopped.",
             "default": "Dsv5 Series | 2 CPU | 8GB RAM | £0.15/ hour",
             "updateable": true,
-            "oneOf": [
-                {
-                    "const": "B-Series | 2 CPU | 4GB RAM | Text editing | £0.05/ hour",
-                    "title": "B-Series | 2 CPU | 4GB RAM | Text editing | £0.05/ hour",
-                    "description": "Very low cost. Suitable for text editing, document review, and light portal use only. Not suitable for data analysis or scripting."
-                },
-                {
-                    "const": "Dsv5 Series | 2 CPU | 8GB RAM | £0.15/ hour",
-                    "title": "Dsv5 Series | 2 CPU | 8GB RAM | £0.15/ hour",
-                    "description": "Good starting point for general research workloads. Suitable for R and Python scripting, data exploration, and typical analysis tasks."
-                },
-                {
-                    "const": "Fas Series | 2 CPU | 8GB RAM | £0.20/ hour",
-                    "title": "Fas Series | 2 CPU | 8GB RAM | £0.20/ hour",
-                    "description": "Compute-optimised (AMD EPYC, 4th Gen). Each vCPU is a full physical core with no hyperthreading. Suited to parallelised or CPU-bound workloads."
-                },
-                {
-                    "const": "Das_v5 Series | 4 CPU | 16GB RAM | £0.30/ hour",
-                    "title": "Das_v5 Series | 4 CPU | 16GB RAM | £0.30/ hour",
-                    "description": "General purpose with AMD processor. Good balance of CPU and memory for mid-sized analysis workloads."
-                },
-                {
-                    "const": "Fs_v2 Series | 4 CPU | 8GB RAM | £0.30/ hour",
-                    "title": "Fs_v2 Series | 4 CPU | 8GB RAM | £0.30/ hour",
-                    "description": "Compute-optimised. Lower memory ratio than D-series; suited to CPU-intensive tasks where memory is not the constraint."
-                },
-                {
-                    "const": "Dsv5 Series | 4 CPU | 16GB RAM | £0.30/ hour",
-                    "title": "Dsv5 Series | 4 CPU | 16GB RAM | £0.30/ hour",
-                    "description": "General purpose. Good all-round choice for R and Python workloads with moderate memory requirements."
-                },
-                {
-                    "const": "Fas Series | 4 CPU | 16GB RAM | £0.40/ hour",
-                    "title": "Fas Series | 4 CPU | 16GB RAM | £0.40/ hour",
-                    "description": "Compute-optimised (AMD EPYC, 4th Gen). Each vCPU is a full physical core with no hyperthreading. Suited to parallelised or CPU-bound workloads."
-                },
-                {
-                    "const": "Fs_v2 Series | 8 CPU | 16GB RAM | £0.60/ hour",
-                    "title": "Fs_v2 Series | 8 CPU | 16GB RAM | £0.60/ hour",
-                    "description": "Compute-optimised. Lower memory ratio than D-series; suited to CPU-intensive tasks where memory is not the constraint."
-                },
-                {
-                    "const": "Dsv5 Series | 8 CPU | 32GB RAM | £0.65/ hour",
-                    "title": "Dsv5 Series | 8 CPU | 32GB RAM | £0.65/ hour",
-                    "description": "General purpose. Suitable for larger datasets and memory-intensive analysis. A good step up when 4 CPU / 16GB is insufficient."
-                },
-                {
-                    "const": "Fas Series | 8 CPU | 32GB RAM | £0.75/ hour",
-                    "title": "Fas Series | 8 CPU | 32GB RAM | £0.75/ hour",
-                    "description": "Compute-optimised (AMD EPYC, 4th Gen). Each vCPU is a full physical core with no hyperthreading. Suited to parallelised or CPU-bound workloads."
-                },
-                {
-                    "const": "Easv4 Series | 8 CPU | 64GB RAM | £0.75/ hour",
-                    "title": "Easv4 Series | 8 CPU | 64GB RAM | £0.75/ hour",
-                    "description": "Memory-optimised. High memory-to-CPU ratio. Suited to in-memory operations, large dataframes, or workloads that require holding substantial data in RAM."
-                },
-                {
-                    "const": "Fs_v2 Series | 16 CPU | 32GB RAM | £1.15/ hour",
-                    "title": "Fs_v2 Series | 16 CPU | 32GB RAM | £1.15/ hour",
-                    "description": "Compute-optimised. Lower memory ratio than D-series; suited to CPU-intensive tasks where memory is not the constraint."
-                },
-                {
-                    "const": "Dsv5 Series | 16 CPU | 64GB RAM | £1.25/ hour",
-                    "title": "Dsv5 Series | 16 CPU | 64GB RAM | £1.25/ hour",
-                    "description": "General purpose, large. Suitable for parallelised analysis, large model fitting, or workloads requiring both high CPU and substantial memory."
-                },
-                {
-                    "const": "Easv4 Series | 16 CPU | 128GB RAM | £1.50/ hour",
-                    "title": "Easv4 Series | 16 CPU | 128GB RAM | £1.50/ hour",
-                    "description": "Memory-optimised, large. High memory-to-CPU ratio. Suited to in-memory operations, large dataframes, or workloads that require holding substantial data in RAM."
-                },
-                {
-                    "const": "NV6ads_A10_v5 Series | 6 CPU 55GB RAM | 1/6 A10 GPU 4GB RAM | £0.61/ hour",
-                    "title": "NV6ads_A10_v5 Series | 6 CPU 55GB RAM | 1/6 A10 GPU 4GB RAM | £0.61/ hour",
-                    "description": "Entry-level GPU (NVIDIA A10, 4GB VRAM). Suitable for GPU-accelerated visualisation and light inference. GPU quota is shared across all workspaces and is only released when a VM is deleted — please delete this VM when it is no longer actively in use."
-                },
-                {
-                    "const": "NV12ads_A10_v5 Series | 12 CPU 110GB RAM | 1/3 A10 GPU 8GB RAM | £1.22/ hour",
-                    "title": "NV12ads_A10_v5 Series | 12 CPU 110GB RAM | 1/3 A10 GPU 8GB RAM | £1.22/ hour",
-                    "description": "Mid-range GPU partition (NVIDIA A10, 8GB VRAM). Suitable for GPU-accelerated inference and visualisation workloads. GPU quota is shared across all workspaces and is only released when a VM is deleted — please delete this VM when it is no longer actively in use."
-                },
-                {
-                    "const": "NV18ads_A10_v5 Series | 18 CPU 220GB RAM | 1/2 A10 GPU 12GB RAM | £2.05/ hour",
-                    "title": "NV18ads_A10_v5 Series | 18 CPU 220GB RAM | 1/2 A10 GPU 12GB RAM | £2.05/ hour",
-                    "description": "Half A10 GPU (NVIDIA A10, 12GB VRAM). Suitable for more demanding inference or visualisation workloads. GPU quota is shared across all workspaces and is only released when a VM is deleted — please delete this VM when it is no longer actively in use."
-                },
-                {
-                    "const": "NV36ads_A10_v5 Series | 36 CPU 440GB RAM | 1 A10 GPU 24GB RAM | £4.11/ hour",
-                    "title": "NV36ads_A10_v5 Series | 36 CPU 440GB RAM | 1 A10 GPU 24GB RAM | £4.11/ hour",
-                    "description": "Full A10 GPU (NVIDIA A10, 24GB VRAM). Suitable for GPU-accelerated ML inference and visualisation. GPU quota is shared across all workspaces and is only released when a VM is deleted — please delete this VM when it is no longer actively in use."
-                },
-                {
-                    "const": "NV72ads_A10_v5 Series | 72 CPU 880GB RAM | 2 A10 GPU 48GB RAM | £8.60/ hour",
-                    "title": "NV72ads_A10_v5 Series | 72 CPU 880GB RAM | 2 A10 GPU 48GB RAM | £8.60/ hour",
-                    "description": "Dual A10 GPU (2× NVIDIA A10, 48GB VRAM total). For workloads requiring maximum A10 GPU capacity. GPU quota is shared across all workspaces and is only released when a VM is deleted — please delete this VM when it is no longer actively in use."
-                },
-                {
-                    "const": "NC40ads_H100_v5 Series | 40 CPU 320GB RAM | 1 H100 NVL GPU 94GB RAM | £7.70/ hour",
-                    "title": "NC40ads_H100_v5 Series | 40 CPU 320GB RAM | 1 H100 NVL GPU 94GB RAM | £7.70/ hour",
-                    "description": "H100 GPU (NVIDIA H100 NVL, 94GB VRAM). For large model training and high-throughput GPU workloads. H100 quota is extremely limited and shared across all workspaces. Quota is only released when a VM is deleted — please delete this VM as soon as your work is complete."
-                },
-                {
-                    "const": "NC80adis_H100_v5 Series | 80 CPU 640GB RAM | 2 H100 NVL GPU 188GB RAM | £15.90/ hour",
-                    "title": "NC80adis_H100_v5 Series | 80 CPU 640GB RAM | 2 H100 NVL GPU 188GB RAM | £15.90/ hour",
-                    "description": "Dual H100 GPU (2× NVIDIA H100 NVL, 188GB VRAM total). For the largest model training workloads requiring maximum GPU capacity. H100 quota is extremely limited and shared across all workspaces. Quota is only released when a VM is deleted — please delete this VM as soon as your work is complete."
-                }
+            "enum": [
+                "B-Series | 2 CPU | 4GB RAM | Text editing | £0.05/ hour",
+                "Dsv5 Series | 2 CPU | 8GB RAM | £0.15/ hour",
+                "Dsv5 Series | 4 CPU | 16GB RAM | £0.30/ hour",
+                "Dsv5 Series | 8 CPU | 32GB RAM | £0.65/ hour",
+                "Dsv5 Series | 16 CPU | 64GB RAM | £1.25/ hour",
+                "Das_v5 Series | 4 CPU | 16GB RAM | £0.30/ hour",
+                "Das_v5 Series | 8 CPU | 32GB RAM | £0.60/ hour",
+                "Das_v5 Series | 16 CPU | 64GB RAM | £1.20/ hour",
+                "Das_v5 Series | 32 CPU | 128GB RAM | £2.40/ hour",
+                "Fs_v2 Series | 4 CPU | 8GB RAM | £0.30/ hour",
+                "Fs_v2 Series | 8 CPU | 16GB RAM | £0.60/ hour",
+                "Fs_v2 Series | 16 CPU | 32GB RAM | £1.15/ hour",
+                "Easv4 Series | 8 CPU | 64GB RAM | £0.75/ hour",
+                "Easv4 Series | 16 CPU | 128GB RAM | £1.50/ hour",
+                "NV6ads_A10_v5 Series | 6 CPU 55GB RAM | 1/6 A10 GPU 4GB RAM | £0.61/ hour",
+                "NV12ads_A10_v5 Series | 12 CPU 110GB RAM | 1/3 A10 GPU 8GB RAM | £1.22/ hour",
+                "NV18ads_A10_v5 Series | 18 CPU 220GB RAM | 1/2 A10 GPU 12GB RAM | £2.05/ hour",
+                "NV36ads_A10_v5 Series | 36 CPU 440GB RAM | 1 A10 GPU 24GB RAM | £4.11/ hour",
+                "NV72ads_A10_v5 Series | 72 CPU 880GB RAM | 2 A10 GPU 48GB RAM | £8.60/ hour",
+                "NC40ads_H100_v5 Series | 40 CPU 320GB RAM | 1 H100 NVL GPU 94GB RAM | £7.70/ hour",
+                "NC80adis_H100_v5 Series | 80 CPU 640GB RAM | 2 H100 NVL GPU 188GB RAM | £15.90/ hour"
             ]
         },
         "shared_storage_access": {
