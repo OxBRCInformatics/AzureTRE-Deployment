@@ -9,6 +9,8 @@ Workspace Service Templates are located in this folder. We make use of our own c
 
 ## Available VM sizes
 
+> Updates to be made
+
 | VM Size                            | vCPU | RAM (GB) | GPU        | GPU Memory (GB) | Price/Hour | Azure SKU                 |
 | ---------------------------------- | ---- | -------- | ---------- | --------------- | ---------- | ------------------------- |
 | **CPU-Only VMs**                   |      |          |            |                 |            |                           |
