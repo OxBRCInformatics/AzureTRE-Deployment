@@ -40,8 +40,6 @@ Workspace Service Templates are located in this folder. We make use of our own c
 | NC40ads_H100_v5 Series | 40 | 320 | 1× H100 NVL | 94 | £7.70 | £6.55 | Standard_NC40ads_H100_v5 |
 | NC80adis_H100_v5 Series | 80 | 640 | 2× H100 NVL | 188 | £15.90 | £13.15 | Standard_NC80adis_H100_v5 |
 
-Worth noting the original README only had a single price column — I've split it into Windows and Linux since the prices differ. You may want to update the table header in the doc to reflect that.
-
 ## Current VM Image options
 
 ### Windows
