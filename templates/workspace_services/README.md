@@ -9,28 +9,38 @@ Workspace Service Templates are located in this folder. We make use of our own c
 
 ## Available VM sizes
 
-> Updates to be made
+| VM Size | vCPU | RAM (GB) | GPU | GPU Memory (GB) | Windows Price/hr | Linux Price/hr | Azure SKU |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| **CPU-Only — B-Series** | | | | | | | |
+| B-Series | 2 | 4 | None | - | £0.05 | £0.05 | Standard_B2s |
+| **CPU-Only — Dsv5 Series (Intel)** | | | | | | | |
+| Dsv5 Series | 2 | 8 | None | - | £0.15 | £0.10 | Standard_D2s_v5 |
+| Dsv5 Series | 4 | 16 | None | - | £0.30 | £0.20 | Standard_D4s_v5 |
+| Dsv5 Series | 8 | 32 | None | - | £0.65 | £0.35 | Standard_D8s_v5 |
+| Dsv5 Series | 16 | 64 | None | - | £1.25 | £0.65 | Standard_D16s_v5 |
+| **CPU-Only — Das_v5 Series (AMD)** | | | | | | | |
+| Das_v5 Series | 4 | 16 | None | - | £0.30 | £0.15 | Standard_D4as_v5 |
+| Das_v5 Series | 8 | 32 | None | - | £0.60 | £0.30 | Standard_D8as_v5 |
+| Das_v5 Series | 16 | 64 | None | - | £1.20 | £0.60 | Standard_D16as_v5 |
+| Das_v5 Series | 32 | 128 | None | - | £2.40 | £1.20 | Standard_D32as_v5 |
+| **CPU-Only — Fs_v2 Series (compute-optimised)** | | | | | | | |
+| Fs_v2 Series | 4 | 8 | None | - | £0.30 | £0.15 | Standard_F4s_v2 |
+| Fs_v2 Series | 8 | 16 | None | - | £0.60 | £0.30 | Standard_F8s_v2 |
+| Fs_v2 Series | 16 | 32 | None | - | £1.15 | £0.60 | Standard_F16s_v2 |
+| **CPU-Only — Easv4 Series (memory-optimised)** | | | | | | | |
+| Easv4 Series | 8 | 64 | None | - | £0.75 | £0.45 | Standard_E8as_v4 |
+| Easv4 Series | 16 | 128 | None | - | £1.50 | £0.90 | Standard_E16as_v4 |
+| **GPU — A10 Series** | | | | | | | |
+| NV6ads_A10_v5 Series | 6 | 55 | 1/6 A10 | 4 | £0.61 | £0.45 | Standard_NV6ads_A10_v5 |
+| NV12ads_A10_v5 Series | 12 | 110 | 1/3 A10 | 8 | £1.22 | £0.85 | Standard_NV12ads_A10_v5 |
+| NV18ads_A10_v5 Series | 18 | 220 | 1/2 A10 | 12 | £2.05 | £1.50 | Standard_NV18ads_A10_v5 |
+| NV36ads_A10_v5 Series | 36 | 440 | 1× A10 | 24 | £4.11 | £3.00 | Standard_NV36ads_A10_v5 |
+| NV72ads_A10_v5 Series | 72 | 880 | 2× A10 | 48 | £8.60 | £6.15 | Standard_NV72ads_A10_v5 |
+| **GPU — H100 Series** | | | | | | | |
+| NC40ads_H100_v5 Series | 40 | 320 | 1× H100 NVL | 94 | £7.70 | £6.55 | Standard_NC40ads_H100_v5 |
+| NC80adis_H100_v5 Series | 80 | 640 | 2× H100 NVL | 188 | £15.90 | £13.15 | Standard_NC80adis_H100_v5 |
 
-| VM Size                            | vCPU | RAM (GB) | GPU        | GPU Memory (GB) | Price/Hour | Azure SKU                 |
-| ---------------------------------- | ---- | -------- | ---------- | --------------- | ---------- | ------------------------- |
-| **CPU-Only VMs**                   |      |          |            |                 |            |                           |
-| B-Series                           | 2    | 4        | None       | -               | £0.05      | Standard_B2s              |
-| Dsv5 Series                        | 2    | 8        | None       | -               | £0.15      | Standard_D2s_v5           |
-| D4as_v5 Series                     | 4    | 16       | None       | -               | £0.30      | Standard_D4as_v5          |
-| Dsv5 Series                        | 4    | 16       | None       | -               | £0.30      | Standard_D4s_v5           |
-| F4s_v2 Series                      | 4    | 16       | None       | -               | £0.30      | Standard_F4s_v2           |
-| Dsv5 Series                        | 8    | 32       | None       | -               | £0.65      | Standard_D8s_v5           |
-| Easv4 Series                       | 8    | 64       | None       | -               | £0.75      | Standard_E8as_v4          |
-| Dsv5 Series                        | 16   | 64       | None       | -               | £1.25      | Standard_D16s_v5          |
-| **GPU VMs - A10 Series**           |      |          |            |                 |            |                           |
-| NV6ads_A10_v5 Series               | 6    | 55       | 1/6 A10    | 4               | £0.61      | Standard_NV6ads_A10_v5    |
-| NV12ads_A10_v5 Series              | 12   | 110      | 1/3 A10    | 8               | £1.22      | Standard_NV12ads_A10_v5   |
-| NV18ads_A10_v5 Series              | 18   | 220      | 1/2 A10    | 12              | £2.05      | Standard_NV18ads_A10_v5   |
-| NV36ads_A10_v5 Series              | 36   | 440      | 1 A10      | 24              | £4.11      | Standard_NV36ads_A10_v5   |
-| NV72ads_A10_v5 Series              | 72   | 880      | 2 A10      | 48              | £8.60      | Standard_NV72ads_A10_v5   |
-| **GPU VMs - H100 Series**          |      |          |            |                 |            |                           |
-| NC40ads_H100_v5 Series             | 40   | 320      | 1 H100 NVL | 94              | £7.70      | Standard_NC40ads_H100_v5  |
-| NC80adis_H100_v5 Series            | 80   | 640      | 2 H100 NVL | 188             | £15.90     | Standard_NC80adis_H100_v5 |
+Worth noting the original README only had a single price column — I've split it into Windows and Linux since the prices differ. You may want to update the table header in the doc to reflect that.
 
 ## Current VM Image options
 
