@@ -9,6 +9,10 @@ Workspace Service Templates are located in this folder. We make use of our own c
 
 ## Available VM sizes
 
+That works fine then — researcher airlocks in the drivers they need for their specific GPU. No image changes required, and it's consistent with how you already handle CUDA wheels for A10.
+
+That removes the main blocker. You should be good to add the T4 sizes to the bundle. Here's the updated readme table:
+
 | VM Size | vCPU | RAM (GB) | GPU | GPU Memory (GB) | Windows Price/hr | Linux Price/hr | Azure SKU |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | **CPU-Only — B-Series** | | | | | | | |
@@ -30,6 +34,9 @@ Workspace Service Templates are located in this folder. We make use of our own c
 | **CPU-Only — Easv4 Series (memory-optimised)** | | | | | | | |
 | Easv4 Series | 8 | 64 | None | - | £0.75 | £0.45 | Standard_E8as_v4 |
 | Easv4 Series | 16 | 128 | None | - | £1.50 | £0.90 | Standard_E16as_v4 |
+| **GPU — T4 Series** | | | | | | | |
+| NCas_T4_v3 Series | 4 | 28 | 1× T4 | 16 | £0.60 | £0.50 | Standard_NC4as_T4_v3 |
+| NCas_T4_v3 Series | 8 | 56 | 1× T4 | 16 | £1.00 | £0.70 | Standard_NC8as_T4_v3 |
 | **GPU — A10 Series** | | | | | | | |
 | NV6ads_A10_v5 Series | 6 | 55 | 1/6 A10 | 4 | £0.61 | £0.45 | Standard_NV6ads_A10_v5 |
 | NV12ads_A10_v5 Series | 12 | 110 | 1/3 A10 | 8 | £1.22 | £0.85 | Standard_NV12ads_A10_v5 |

@@ -64,6 +64,8 @@
                 "Fs_v2 Series | 16 CPU | 32GB RAM | £1.15/ hour",
                 "Easv4 Series | 8 CPU | 64GB RAM | £0.75/ hour",
                 "Easv4 Series | 16 CPU | 128GB RAM | £1.50/ hour",
+                "NCas_T4_v3 Series | 4 CPU 28GB RAM | 1 T4 GPU 16GB RAM | £0.60/ hour",
+                "NCas_T4_v3 Series | 8 CPU 56GB RAM | 1 T4 GPU 16GB RAM | £1.00/ hour",
                 "NV6ads_A10_v5 Series | 6 CPU 55GB RAM | 1/6 A10 GPU 4GB RAM | £0.61/ hour",
                 "NV12ads_A10_v5 Series | 12 CPU 110GB RAM | 1/3 A10 GPU 8GB RAM | £1.22/ hour",
                 "NV18ads_A10_v5 Series | 18 CPU 220GB RAM | 1/2 A10 GPU 12GB RAM | £2.05/ hour",
