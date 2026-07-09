@@ -27,6 +27,9 @@ To work with devcontainers you will need:
 | -- | -- | -- |
 | v0.20.0 | Increase size of Nexus VM, Add option to configure auto shutdown for Linux VM | 18-03-2025 |
 
+## Environment variables
+<Add guidance on environment variables>
+
 ## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
