@@ -26,6 +26,9 @@ To work with devcontainers you will need:
 | Version | Key points | Date of OUH upgrade |
 | -- | -- | -- |
 | v0.20.0 | Increase size of Nexus VM, Add option to configure auto shutdown for Linux VM | 18-03-2025 |
+| *(not recorded)* | *placeholder — versions between v0.20.0 and v0.25.12 not documented* | — |
+| v0.25.12 | Upgraded ahead of schedule to pick up `az login -u` → `--client-id` change required for v0.27.0, plus other early v0.27.0 changes including Nexus PyPI/CRAN fix | 01-04-2025 |
+| v0.27.0 | v0.26.0 skipped — went straight from v0.25.12 to v0.27.0 to avoid repeating the cherry-pick exercise from last time. Includes: GitHub Actions federated credential migration, Nexus fix reapplied post-merge | *(in progress)* |
 
 ## Contributing
 
