@@ -1,7 +1,7 @@
 ---
 schemaVersion: 1.0.0
 name: tre-service-guacamole-windowsvm-ouh2
-version: 1.2.4
+version: 1.2.5
 description: "An Azure TRE User Resource Template for Guacamole (Windows)"
 dockerfile: Dockerfile.tmpl
 registry: azuretre
@@ -124,7 +124,7 @@ parameters:
     default: false
   - name: os_image
     type: string
-    default: "OUH Server 2019 Data Science VM"
+    default: "OUH Server 2022 Data Science VM"
   - name: admin_username
     type: string
     default: ""
