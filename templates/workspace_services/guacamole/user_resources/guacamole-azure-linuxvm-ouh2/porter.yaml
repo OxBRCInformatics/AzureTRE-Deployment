@@ -1,7 +1,7 @@
 ---
 schemaVersion: 1.0.0
 name: tre-service-guacamole-linuxvm-ouh2
-version: 1.2.7
+version: 1.2.8
 description: "An Azure TRE User Resource Template for Guacamole (Linux)"
 dockerfile: Dockerfile.tmpl
 registry: azuretre
@@ -59,16 +59,16 @@ custom:
       conda_config: false
       r_config: false
       docker_config: false
-      secure_boot_enabled: true
-      vtpm_enabled: true
+      secure_boot_enabled: false
+      vtpm_enabled: false
     "(GPU) OUH Ubuntu 22.04 Data Science VM":
       source_image_name: imgdef-linux-vm-gpu-gen2
       install_ui: false
       conda_config: false
       r_config: false
       docker_config: false
-      secure_boot_enabled: true
-      vtpm_enabled: true
+      secure_boot_enabled: false
+      vtpm_enabled: false
 
 
 credentials:
