@@ -1,7 +1,7 @@
 ---
 schemaVersion: 1.0.0
 name: tre-service-guacamole-linuxvm-ouh2
-version: 1.2.4
+version: 1.2.5
 description: "An Azure TRE User Resource Template for Guacamole (Linux)"
 dockerfile: Dockerfile.tmpl
 registry: azuretre
@@ -48,23 +48,16 @@ custom:
         version: latest
         apt_sku: 22.04
       install_ui: true
-      conda_config: true
+      conda_config: false
       r_config: false
       docker_config: false
       secure_boot_enabled: true
       vtpm_enabled: true
     "OUH Ubuntu 22.04 Data Science VM":
-      source_image_name: imgdef-linux-vm-custom-gen2
-      install_ui: true
-      conda_config: true
-      r_config: true
-      docker_config: true
-      # secure_boot and vtpm are disabled because the image was captured from a Standard
-      # security type build VM. The image definition does not have SecurityType=TrustedLaunchSupported
-      # and enabling these flags would cause a validation error on deployment.
-      # Revisit when rebuilding from a Trusted Launch build VM.
-      secure_boot_enabled: false
-      vtpm_enabled: false
+      source_image_name: imgdef-linux-vm-custom-gen2-ubuntu2204
+      conda_config: false
+      secure_boot_enabled: true
+      vtpm_enabled: true
 
 
 credentials:
