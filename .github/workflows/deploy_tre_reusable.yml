@@ -46,6 +46,16 @@ on: # yamllint disable-line rule:truthy
         type: string
         default: ""
         required: false
+      UI_MOTD_MSG:
+        description: Message of the day shown as a dismissible banner in the TRE portal
+        type: string
+        default: ""
+        required: false
+      UI_MOTD_URL:
+        description: URL for a "Learn more" link shown alongside the message of the day
+        type: string
+        default: ""
+        required: false
     secrets:
       AAD_TENANT_ID:
         description: ""
@@ -886,5 +896,7 @@ jobs:
           USER_MANAGEMENT_ENABLED: ${{ vars.USER_MANAGEMENT_ENABLED }}
           UI_SITE_NAME: "${{ inputs.UI_SITE_NAME || vars.UI_SITE_NAME }}"
           UI_FOOTER_TEXT: "${{ inputs.UI_FOOTER_TEXT || vars.UI_FOOTER_TEXT }}"
+          UI_MOTD_MSG: "${{ inputs.UI_MOTD_MSG || vars.UI_MOTD_MSG }}"
+          UI_MOTD_URL: "${{ inputs.UI_MOTD_URL || vars.UI_MOTD_URL }}"
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
