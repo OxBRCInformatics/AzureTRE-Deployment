@@ -34,7 +34,8 @@
       "default": "OUH Ubuntu 22.04 Data Science VM",
       "enum": [
         "Ubuntu 22.04 LTS",
-        "OUH Ubuntu 22.04 Data Science VM"
+        "OUH Ubuntu 22.04 Data Science VM",
+        "(GPU) OUH Ubuntu 22.04 Data Science VM"
       ]
     },
     "admin_username": {
