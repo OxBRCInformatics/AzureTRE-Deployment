@@ -53,7 +53,7 @@ That removes the main blocker. You should be good to add the T4 sizes to the bun
 
 - Windows 10
 - Windows 11
-- OUH Server 2019 Data Science VM
+- OUH Server 2022 Data Science VM
 
 ### Linux
 
